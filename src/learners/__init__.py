@@ -10,23 +10,18 @@
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
 
-# import all learners in the current directory
-# adapted from: http://stackoverflow.com/a/1057534/367489
-# FIXME: this architecture is probably fragile. Test where it fails and fix it.
-
-from os.path import dirname, basename, isfile
+"""
+import all learners in the current directory
+"""
 import glob
-modules = glob.glob(dirname(__file__) + "/*.py")
-for m in [basename(f)[:-3] for f in modules if isfile(f)]:
-    __import__('learners.' + m)
 
+modules = glob.glob('./*.py')
+for each_module in modules:
+    __import__('learner' + m)
 
-def set_view(self, view):
-    """ Sets the user interface to get the user input
+"""
+Sets the user interface to get the user input
+"""
+self._view = view
 
-    :param self:
-    :param view:
-    :return:
-    """
-    self._view = view
 
