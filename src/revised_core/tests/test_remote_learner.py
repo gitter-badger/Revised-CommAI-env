@@ -10,7 +10,12 @@
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
 
+
 def main():
+    """
+
+    :return:
+    """
     import zmq
     import random
 
@@ -34,6 +39,7 @@ def main():
             msg_out = str(message[cnt % 8])
         socket.send(msg_out)
         cnt += 1
+
 
 if __name__ == '__main__':
     try:
