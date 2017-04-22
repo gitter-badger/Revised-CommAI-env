@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #
 # Copyright (c) 2017-, Stephen B. Hope
 # All rights reserved.
