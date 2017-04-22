@@ -1,9 +1,15 @@
-# Copyright (c) 2016-present, Facebook, Inc.
+#!/usr/bin/env python3
+#
+# Copyright (c) 2017-, Stephen B. Hope
+# All rights reserved.
+#
+# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
+
 # TODO fix imports
 import core.environment as environment
 import core.serializer as serializer
@@ -42,6 +48,7 @@ class EnvironmentMessenger:
 
         :return:
         """
+        # TODO access protected memebr outside of class
         return self._env._output_channel.is_silent()
 
     def read(self):
@@ -69,6 +76,7 @@ class EnvironmentMessenger:
             """
             try:
                 return condition(self)
+            # TODO To broad, will never trigger
             except BaseException:
                 return False
         nbits = 0
@@ -129,6 +137,7 @@ class EnvironmentMessenger:
             return input_text[last_silence + n_silence:]
 
     def search_on(self, message, pattern):
+        # TODO method may be static
         """
 
         :param message:
@@ -173,7 +182,7 @@ class EnvironmentMessenger:
         return self._env._task_time
 
 
-class SingleTaskScheduler():
+class SingleTaskScheduler:
     """
 
     """
