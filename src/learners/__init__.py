@@ -19,3 +19,14 @@ import glob
 modules = glob.glob(dirname(__file__) + "/*.py")
 for m in [basename(f)[:-3] for f in modules if isfile(f)]:
     __import__('learners.' + m)
+
+
+def set_view(self, view):
+    """ Sets the user interface to get the user input
+
+    :param self:
+    :param view:
+    :return:
+    """
+    self._view = view
+
