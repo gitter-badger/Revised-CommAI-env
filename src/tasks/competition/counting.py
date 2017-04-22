@@ -28,12 +28,24 @@ vocab_size = len(vocabulary)
 
 
 class SimpleCountingTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
+        """
+
+        :param world:
+        """
         super(SimpleCountingTask, self).__init__(
             world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
+        """
+
+        :param event:
+        :return:
+        """
 
         separator = ""
         counter = {}
@@ -80,7 +92,11 @@ class SimpleCountingTask(BaseTask):
 
     @on_message(r'\.')
     def check_response(self, event):
-        # check if given answer matches
+        """ check if given answer matches
+
+        :param event:
+        :return:
+        """
         if event.is_message(self.answer, '.'):
             # if the message sent by the learner equals the teacher's
             # expected answer followed by a period, reward the learner.
@@ -91,10 +107,19 @@ class SimpleCountingTask(BaseTask):
 
     @on_timeout()
     def on_timeout(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         # if the learner has not produced any plausible answer by the max_time
         # allowed, fail the learner sending appropriate feedback.
         self.fail_learner()
 
     def fail_learner(self):
+        """
+
+        :return:
+        """
         # fail the learner sending a random fail feedback message
         self.set_reward(0, self.give_away_message)
