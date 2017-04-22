@@ -12,19 +12,31 @@
 
 from core.task import Task, on_message
 
+'''
+
+'''
+
 
 class BaseTask(Task):
-    '''
-    Base task for other tasks in the competition implementing
-    behaviour that should be shared by most of the tasks.
-    '''
-
+    """
+    Base task for other tasks in the competition implementing behaviour that should be shared by most of the tasks.
+    """
     def __init__(self, *args, **kwargs):
+        """
+
+        :param args:
+        :param kwargs:
+        """
         super(BaseTask, self).__init__(*args, **kwargs)
 
     # ignore anything the learner says while the teacher is speaking
     @on_message()
     def on_any_message(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         # if the environment is speaking
         if not self._env.is_silent():
             # and the last message was not a silence
@@ -34,6 +46,10 @@ class BaseTask(Task):
 
     # send out a silence to separate tasks if needed
     def deinit(self):
+        """
+
+        :return:
+        """
         silence = self.get_default_output()
         output_text = self._env._output_channel_listener.get_text()
         task_separator_issued = output_text.endswith(silence)
