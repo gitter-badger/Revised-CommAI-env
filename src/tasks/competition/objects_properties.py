@@ -22,20 +22,15 @@ import re
 global_properties = {
     'john': {
         'apple':
-            ['green', 'sour', 'hard', 'cheap', 'healthy', 'juicy',
-              'local'],
+            ['green', 'sour', 'hard', 'cheap', 'healthy', 'juicy', 'local'],
         'banana':
-            ['yellow', 'sweet', 'soft', 'cheap', 'healthy', 'exotic',
-             'ripe'],
+            ['yellow', 'sweet', 'soft', 'cheap', 'healthy', 'exotic', 'ripe'],
         'beet':
-            ['red', 'dirty', 'hard', 'old', 'cheap', 'sweet', 'healthy',
-             'local', 'large'],
+            ['red', 'dirty', 'hard', 'old', 'cheap', 'sweet', 'healthy', 'local', 'large'],
         'carrot':
-            ['orange', 'hard', 'fresh', 'local', 'healthy', 'sweet',
-             'crunchy'],
+            ['orange', 'hard', 'fresh', 'local', 'healthy', 'sweet', 'crunchy'],
         'cucumber':
-            ['green', 'fresh', 'juicy', 'local', 'cheap', 'healthy',
-             'frozen', 'crunchy'],
+            ['green', 'fresh', 'juicy', 'local', 'cheap', 'healthy', 'frozen', 'crunchy'],
         'mango':
             ['brown', 'rotten'],
         'onion':
@@ -45,19 +40,16 @@ global_properties = {
         'pineapple':
             ['yellow', 'sweet', 'hard', 'exotic', 'brown', 'rough'],
         'potato':
-            ['yellow', 'old', 'cheap', 'hard', 'tasteless', 'dirty',
-             'bumpy'],
+            ['yellow', 'old', 'cheap', 'hard', 'tasteless', 'dirty', 'bumpy'],
         'tomato':
             ['red', 'soft', 'sour', 'juicy', 'local', 'cheap']},
     'mary': {
         'apple':
-            ['red', 'sweet', 'hard', 'fresh', 'juicy', 'expensive',
-             'crunchy'],
+            ['red', 'sweet', 'hard', 'fresh', 'juicy', 'expensive', 'crunchy'],
         'asparagus':
             ['white', 'soft', 'old', 'long', 'expensive', 'dirty'],
         'avocado':
-            ['green', 'ripe', 'exotic', 'expensive', 'large', 'healthy',
-             'smooth', 'buttery'],
+            ['green', 'ripe', 'exotic', 'expensive', 'large', 'healthy', 'smooth', 'buttery'],
         'banana':
             ['yellow', 'tasteless', 'soft', 'sweet', 'old', 'exotic'],
         'carrot':
@@ -75,9 +67,10 @@ global_properties = {
         'tomato':
             ['red', 'soft', 'sour', 'local', 'cheap']}
 }
-
-# it's handy to have a reverse dictionary with the properties in the
-# above lists as keys, and the objects as values
+"""
+it's handy to have a reverse dictionary with the properties in the
+above lists as keys, and the objects as values
+"""
 rev_global_properties = {}
 for basket in global_properties:
     rev_global_properties[basket] = {}
@@ -95,22 +88,33 @@ for p in global_properties:
 global_objects = list(set(global_objects))
 
 # a list of questions about a number, shared by multiple tasks
-number_questions = ['please tell me the number.',
-                    'what\'s the number?',
-                    'what is the number?',
-                    'can you tell me the number?']
+number_questions = ['please tell me the number.', 'what\'s the number?', 'what is the number?', 'can you tell me the number?']
 
-# when an enumeration is given, each element but the last could be followed by:
-# ', ', ' and ', or ', and ' or ' '
+"""
+when an enumeration is given, each element but the last could be followed by:
+', ', ' and ', or ', and ' or ' '
+"""
 delimiters = r'(?:, | and |, and | )'
 
 
 class ObjectExistenceTask1(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
+        """
+
+        :param world:
+        """
         super(ObjectExistenceTask1, self).__init__(world=world, max_time=3000)
 
     @on_start()
     def on_start(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         self.obj = random.choice(global_objects)
         self.obj_question = random.choice(global_objects)
 
@@ -121,6 +125,11 @@ class ObjectExistenceTask1(BaseTask):
 
     @on_message("(yes|no).$")
     def on_message(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         if event.is_message("yes", '.'):
             if self.obj == self.obj_question:
                 self.set_reward(1, "Correct!")
@@ -140,16 +149,33 @@ class ObjectExistenceTask1(BaseTask):
 
     @on_timeout()
     def on_timeout(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         self.set_reward(0, "You are too slow! Let's try something else.")
 
 
 class ObjectExistenceTask2(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
+        """
+
+        :param world:
+        """
         super(ObjectExistenceTask2, self).__init__(
             world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
+        """
+
+        :param event:
+        :return:
+        """
 
         separator = ""
         counter = {}
@@ -196,6 +222,11 @@ class ObjectExistenceTask2(BaseTask):
 
     @on_message(r'\.')
     def check_response(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         # check if given answer matches
         if event.is_message(self.answer, '.'):
             # if the message sent by the learner equals the teacher's selected
@@ -207,53 +238,89 @@ class ObjectExistenceTask2(BaseTask):
 
     @on_timeout()
     def on_timeout(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         # if the learner has not produced any plausible answer by the max_time
         # allowed, fail the learner sending appropriate feedback.
         self.fail_learner()
 
     def fail_learner(self):
+        """
+
+        :return:
+        """
         # fail the learner sending a random fail feedback message
         self.set_reward(0, self.give_away_message)
 
 
 class AssociateObjectWithPropertyTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
-        super(AssociateObjectWithPropertyTask, self).__init__(
-            world=world, max_time=3000)
+        """
+
+        :param world:
+        """
+        super(AssociateObjectWithPropertyTask, self).__init__(world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         # pick some random basket, object and property
         basket = random.choice(list(global_properties.keys()))
         object_ = random.choice(list(global_properties[basket].keys()))
         self.property = random.choice(global_properties[basket][object_])
         # ask the leearner for the property
         self.set_message("{object} in {owner}'s basket is {property}. "
-                         "how is {object}?".format(
-                             object=object_,
-                             owner=basket,
-                             property=self.property
-                         ))
+                         "how is {object}?".format(object=object_, owner=basket, property=self.property))
 
     @on_message(r"\.")
     def check_response(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         if event.is_message(self.property, '.'):
             self.set_reward(1, random.choice(msg.congratulations))
 
     @on_timeout()
     def give_away_answer(self, event):
-        self.set_message('the right answer is: {answer}.'.format(
-            answer=self.property
-        ))
+        """
+
+        :param event:
+        :return:
+        """
+        self.set_message('the right answer is: {answer}.'.format(answer=self.property))
 
 
 class VerifyThatObjectHasPropertyTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
+        """
+
+        :param world:
+        """
         super(VerifyThatObjectHasPropertyTask, self).__init__(
             world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         basket = random.choice(list(global_properties.keys()))
         object_ = random.choice(list(global_properties[basket].keys()))
         object_properties = global_properties[basket][object_]
@@ -277,39 +344,53 @@ class VerifyThatObjectHasPropertyTask(BaseTask):
             property_ = random.choice(object_properties)
             self.answer = "yes"
         self.set_message("is {object} {property} in {owner}'s basket?'"
-                         .format(
-                             object=object_,
-                             property=property_,
-                             owner=basket
-                         ))
+                         .format( object=object_, property=property_, owner=basket))
 
     @on_message()
     def check_response(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         if event.is_message(self.answer, '.'):
             self.set_reward(1, random.choice(msg.congratulations))
 
     @on_timeout()
     def give_away_answer(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         self.set_message('the right answer is: ' + self.answer + '.')
 
 
 class ListPropertiesOfAnObjectTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
-        super(ListPropertiesOfAnObjectTask, self).__init__(
-            world=world, max_time=3500)
+        """
+
+        :param world:
+        """
+        super(ListPropertiesOfAnObjectTask, self).__init__(world=world, max_time=3500)
 
     @on_start()
     def give_instructions(self, event):
-        # select a random object from a random basket
+        """ select a random object from a random basket
+
+        :param event:
+        :return:
+        """
         basket = random.choice(list(global_properties.keys()))
         object_ = random.choice(list(global_properties[basket].keys()))
         # retrieving the properties of the selected object
         self.object_properties = set(global_properties[basket][object_])
 
         self.set_message("which properties does {object} have in "
-                         "{owner}'s basket?".format(
-                             object=object_,
-                             owner=basket))
+                         "{owner}'s basket?".format(object=object_,owner=basket))
 
         # building a regexp to match the answer
         enum_re = delimiters.join(
@@ -323,7 +404,11 @@ class ListPropertiesOfAnObjectTask(BaseTask):
     # on_message handler created dynamically when the number of
     # expected responses is known
     def check_response(self, event):
-        # get all the elements in the matched enumeration
+        """ get all the elements in the matched enumeration
+
+        :param event:
+        :return:
+        """
         potential_properties = set(event.get_match_groups())
         # if the produced elements match the expected properties
         # reward the learner
@@ -332,44 +417,62 @@ class ListPropertiesOfAnObjectTask(BaseTask):
 
     @on_timeout()
     def give_away_answer(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         correct_properties = list(self.object_properties)
         random.shuffle(correct_properties)
         answer = " ".join(correct_properties)
-        self.set_message('the right properties are: {answer}.'.format(
-            answer=answer
-        ))
+        self.set_message('the right properties are: {answer}.'.format(answer=answer))
 
 
 class NameAPropertyOfAnObjectTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
+        """
+
+        :param world:
+        """
         super(NameAPropertyOfAnObjectTask, self).__init__(
             world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
-        # pick some basket and object
+        """ pick some basket and object
+
+        :param event:
+        :return:
+        """
         basket = random.choice(list(global_properties.keys()))
         object_ = random.choice(list(global_properties[basket].keys()))
         # retrieving the properties of the selected object
         self.object_properties = global_properties[basket][object_]
 
         self.set_message("can you tell me a property of {object} "
-                         "in {owner}'s basket?".format(
-                             object=object_,
-                             owner=basket
-                         ))
+                         "in {owner}'s basket?".format(object=object_, owner=basket))
 
     @on_message()
     def check_response(self, event):
-        # traverse properties list, and see if you find one that is
-        # matching
+        """ traverse properties list, and see if you find one that is matching
+
+        :param event:
+        :return:
+        """
         if any(event.is_message(property_, '.')
                 for property_ in self.object_properties):
             self.set_reward(1, random.choice(msg.congratulations))
 
     @on_timeout()
     def give_away_answer(self, event):
-        # randomly picked right property
+        """ randomly picked right property
+
+        :param event:
+        :return:
+        """
         self.set_message('one right answer is: {answer}.'.format(
             answer=random.choice(self.object_properties)
         ))
