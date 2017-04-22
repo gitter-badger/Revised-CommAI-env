@@ -34,13 +34,13 @@ class BaseLearner(object):
         """
         pass
 
-    def next(self, input):
+    def next(self, user_input):
         """ do super fancy computations return our guess
 
         :param input:
         :return:
         """
-        return input
+        return user_input
 
 
 class RemoteLearner(BaseLearner):
