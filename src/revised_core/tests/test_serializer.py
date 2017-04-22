@@ -10,18 +10,21 @@
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+
 import unittest
-import sys
 from core import serializer
 
 
 class TestSerializer(unittest.TestCase):
+    """
+
+    """
 
     def testConsistency(self):
+        """
+
+        :return:
+        """
         slzr = serializer.StandardSerializer()
         self.assertEqual('a', slzr.to_text(slzr.to_binary('a')))
         self.assertEqual(' ', slzr.to_text(slzr.to_binary(' ')))
@@ -30,6 +33,10 @@ class TestSerializer(unittest.TestCase):
         self.assertEqual(u"\u03B1", slzr.to_text(slzr.to_binary(u"\u03B1")))
 
     def testScramblingSerializerWrapper(self):
+        """
+
+        :return:
+        """
         slzr = serializer.ScramblingSerializerWrapper(
             serializer.StandardSerializer())
         self.assertEqual(slzr.tokenize("a b"),
@@ -49,6 +56,10 @@ class TestSerializer(unittest.TestCase):
 
 
 def main():
+    """
+
+    :return:
+    """
     unittest.main()
 
 if __name__ == '__main__':
