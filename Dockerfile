@@ -7,7 +7,7 @@
 # of patent rights can be found in the PATENTS file in the same directory.
 
 # Use an official Python runtime as a base image
-FROM python:3.6-slim
+FROM python:3.5-slim
 
 # Set the working directory to /app
 WORKDIR /app
