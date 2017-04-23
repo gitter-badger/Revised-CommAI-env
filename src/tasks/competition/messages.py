@@ -13,6 +13,7 @@ import random
 
 # a list of congratulations messages to be issued when the learner solves a task
 congratulations = ['good job.', 'bravo.', 'congratulations.', 'nice work.', 'correct.']
+
 # a list of congratulations messages to be issued when the learner fails a task
 failed = ['wrong!', 'wrong.', 'you failed!', 'incorrect.']
 
