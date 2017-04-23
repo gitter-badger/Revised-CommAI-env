@@ -388,8 +388,7 @@ class PickUpInFrontTask(BaseTask):
             (self.on_object_picked_up))
 
         self.set_message("There is {indef_object} {n} steps forward, " "pick up the {object}.".format(
-                indef_object=msg.indef_article(self.target_obj),
-                n=msg.number_to_string(self.n),
+                indef_object=msg.indef_article(self.target_obj), n=msg.number_to_string(self.n),
                 object=self.target_obj))
 
     def on_object_picked_up(self, event):
@@ -439,14 +438,14 @@ class GivingTask(BaseTask):
         # inform the world that we can expect to receive such an object
         ws.teacher_accepts.add(self.state.target_obj)
 
-        self.set_message("I gave you {indef_object}. Give it back to me " "by saying \"I give you {indef_object}\"."
-            .format(indef_object=msg.indef_article(self.state.target_obj)))
+        self.set_message(
+                "I gave you {indef_object}. Give it back to me " "by saying \"I give you {indef_object}\".".format(
+                        indef_object=msg.indef_article(self.state.target_obj)))
 
-    # if I have one more of the target object, the learner solved the task.
     @on_state_changed(
         lambda ws, ts: ws.teacher_inventory[ts.target_obj] == ts.initial_count + 1)
     def on_give_me_object(self, event):
-        """
+        """ if I have one more of the target object, the learner solved the task.
 
         :param event:
         :return:
@@ -683,10 +682,10 @@ class CountingInventoryGivingTask(BaseTask):
             else:
                 self.set_reward(0, feedback)
 
-    # if I have one more of the target object, the learner solved the task if it also picked up the object in the grid.
     @on_state_changed(        lambda ws, ts: ws.teacher_inventory[ts.target_obj] == ts.initial_count + 1)
     def on_gave_me_target_object(self, event):
-        """
+        """ if I have one more of the target object, the learner solved the task if it also picked up the object in
+        the grid.
 
         :param event:
         :return:
@@ -744,9 +743,14 @@ class LookTask(BaseTask):
 
 
 class LookAroundTask(Task):
-    # the learner must look around his current position
-
+    """
+    the learner must look around his current position
+    """
     def __init__(self, world):
+        """
+
+        :param world:
+        """
         super(LookAroundTask, self).__init__(max_time=5000, world=world)
 
     @on_start()
