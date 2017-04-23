@@ -43,7 +43,7 @@ class TestEvents(unittest.TestCase):
         self.event_raised = False
 
         def on_start(self, event):
-            # TODO attr event not used
+            # TODO attr event not used, self shadowing
             """
 
             :param self:
