@@ -82,10 +82,8 @@ class TestEvents(unittest.TestCase):
         self.assertIn(self.get_func(TestTask.ended_handler), handlers)
         types = dict((t.event_handler, t.type) for t in triggers)
         self.assertEqual(task.Start, types[self.get_func(TestTask.start_handler)])
-        self.assertEqual(task.MessageReceived,
-                         types[self.get_func(TestTask.message_handler)])
-        self.assertEqual(task.Timeout,
-                         types[self.get_func(TestTask.timeout_handler)])
+        self.assertEqual(task.MessageReceived, types[self.get_func(TestTask.message_handler)])
+        self.assertEqual(task.Timeout, types[self.get_func(TestTask.timeout_handler)])
         self.assertEqual(task.Ended, types[self.get_func(TestTask.ended_handler)])
 
     def testInheritance(self):
@@ -126,10 +124,9 @@ class TestEvents(unittest.TestCase):
                 """
                 super(ConcreteTask, self).__init__(*args, **kwargs)
 
-            # overridden handler
             @task.on_start()
             def start_handler(self, event):
-                """
+                """ overridden handler
 
                 :param event:
                 :return:
@@ -163,12 +160,14 @@ class TestEvents(unittest.TestCase):
 
             @task.on_start()
             def start_handler(self, event):
+                # TODO event not used
                 """
 
                 :param event:
                 :return:
                 """
                 def end_handler(self, event):
+                    # TODO self and event not used
                     """
 
                     :param self:
@@ -203,6 +202,7 @@ class TestEvents(unittest.TestCase):
                 tt.start_handler(event)
 
             def _register_task_trigger(self, task, trigger):
+                # TODO task not used
                 """
 
                 :param task:
@@ -220,6 +220,7 @@ class TestEvents(unittest.TestCase):
         self.assertIn(self.get_func(tt.end_handler_func), handlers)
 
     def get_func(self, method):
+        # TODO get rid of static method
         """
 
         :param method:
@@ -227,10 +228,10 @@ class TestEvents(unittest.TestCase):
         """
         try:
             return method.im_func
-        except AttributeError: # Python 3
+        except AttributeError:  # Python 3
             try:
                 return method.__func__
-            except AttributeError: # Python 3 (unbound method == func)
+            except AttributeError:  # Python 3 (unbound method == func)
                 return method
 
 
