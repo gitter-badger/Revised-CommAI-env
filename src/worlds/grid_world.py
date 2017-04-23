@@ -10,11 +10,14 @@
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
 
+
+# TODO fix imports
 from core.task import World, on_world_start, on_message, on_sequence,\
     on_state_changed, on_timeout, on_output_message
 from collections import namedtuple, defaultdict
 import logging
 import tasks.competition.messages as msg
+
 
 class Point(namedtuple('Point', ('x', 'y'))):
     """
