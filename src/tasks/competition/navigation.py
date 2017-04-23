@@ -143,13 +143,12 @@ class MovingRelativeTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """
+        """ during initalization task, save the direction the learner is facing
 
         :param event:
         :return:
         """
         # TODO event not used
-        # during initalization task, save the direction the learner is facing
         self.state.init_dir = self.get_world().state.learner_direction
         # randomly choose a target direction and save the position one step forward in that direction
         self.state.initial_pos = self.get_world().state.learner_pos
@@ -198,13 +197,12 @@ class MovingAbsoluteTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """
+        """ during initalization task, save the direction the learner is facing
 
         :param event:
         :return:
         """
         # TODO event not used
-        # during initalization task, save the direction the learner is facing
         self.state.init_dir = self.get_world().state.learner_direction
         # randomly choose a target direction and save the position one step forward in that direction
         self.state.initial_pos = self.get_world().state.learner_pos
@@ -251,13 +249,12 @@ class PickUpTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """
+        """ choose some random object
 
         :param event:
         :return:
         """
         # TODO event not used
-        # choose some random object
         self.target_obj, = random.sample(objects, 1)
         # find the cell in front of the learner
         ws = self.get_world().state
@@ -270,9 +267,9 @@ class PickUpTask(BaseTask):
         self.add_handler(on_state_changed(lambda ws, ts: ws.learner_inventory[self.target_obj] == ts.initial_count + 1)
                          (self.on_object_picked_up))
 
-        self.set_message("You have {indef_object} in front of you. "
-                         "Pick up the {object}.".format(indef_object=msg.indef_article(self.target_obj),
-                                                        object=self.target_obj))
+        self.set_message(
+                "You have {indef_object} in front of you. " "Pick up the {object}.".format(
+                        indef_object=msg.indef_article(self.target_obj), object=self.target_obj))
 
     def on_object_picked_up(self, event):
         """
@@ -304,18 +301,17 @@ class PickUpAroundTask(BaseTask):
 
         :param world:
         """
-        super(PickUpAroundTask, self).__init__(max_time=50 * TIME_CHAR + 2 * TIME_PICK + 4 * TIME_MOVE + 4 * TIME_TURN,
-                                               world=world)
+        super(PickUpAroundTask, self).__init__(
+                max_time=50 * TIME_CHAR + 2 * TIME_PICK + 4 * TIME_MOVE + 4 * TIME_TURN, world=world)
 
     @on_start()
     def on_start(self, event):
-        """
+        """ choose a random object
 
         :param event:
         :return:
         """
         # TODO event not used
-        # choose a random object
         self.target_obj, = random.sample(objects, 1)
         # find a random cell around the learner
         self.direction = random.choice(list(self.get_world().valid_directions.keys()))
@@ -362,19 +358,17 @@ class PickUpInFrontTask(BaseTask):
 
         :param world:
         """
-        super(PickUpInFrontTask,
-              self).__init__(max_time=50 * TIME_CHAR + 2 * TIME_PICK + PickUpInFrontTask.max_steps_forward * TIME_MOVE,
-                             world=world)
+        super(PickUpInFrontTask, self).__init__(
+                max_time=50 * TIME_CHAR + 2 * TIME_PICK + PickUpInFrontTask.max_steps_forward * TIME_MOVE, world=world)
 
     @on_start()
     def on_start(self, event):
-        """
+        """ choose a random object
 
         :param event:
         :return:
         """
         # TODO event not used
-        # choose a random object
         self.target_obj, = random.sample(objects, 1)
         ws = self.get_world().state
         # select a random number of steps
@@ -384,8 +378,8 @@ class PickUpInFrontTask(BaseTask):
         self.state.initial_count = ws.learner_inventory[self.target_obj]
         self.get_world().put_entity(p, self.target_obj, True, True)
 
-        self.add_handler(on_state_changed(lambda ws, ts: ws.learner_inventory[self.target_obj] == ts.initial_count + 1)
-            (self.on_object_picked_up))
+        self.add_handler(on_state_changed(lambda ws, ts: ws.learner_inventory[self.target_obj
+                                                         ] == ts.initial_count + 1)(self.on_object_picked_up))
 
         self.set_message("There is {indef_object} {n} steps forward, " "pick up the {object}.".format(
                 indef_object=msg.indef_article(self.target_obj), n=msg.number_to_string(self.n),
@@ -505,14 +499,14 @@ class PickUpAroundAndGiveTask(BaseTask):
 
     @on_state_changed(lambda ws, ts: ws.learner_inventory[ts.target_obj] == ts.learner_initial_count + 1)
     def on_object_picked_up(self, event):
-        """
+        """ if I have one more of the target object, the learner solved the task if it also picked up the object in
+        the grid.
 
         :param event:
         :return:
         """
         # TODO event not used
         self.object_picked_up = True
-    # if I have one more of the target object, the learner solved the task if it also picked up the object in the grid.
 
     @on_state_changed(lambda ws, ts: ws.teacher_inventory[ts.target_obj] == ts.initial_count + 1)
     def on_give_me_object(self, event):
@@ -638,12 +632,11 @@ class CountingInventoryGivingTask(BaseTask):
 
     @on_message("(\w+)\.$")
     def on_answer_query(self, event):
-        """
+        """ if we are waiting for an object, then we don't expect an answer to a query
 
         :param event:
         :return:
         """
-        # if we are waiting for an object, then we don't expect an answer to a query
         if self.stage == 'waiting-give-back':
             return
         # if you just gave me an object, then this is not the answer for a query
@@ -671,8 +664,9 @@ class CountingInventoryGivingTask(BaseTask):
                     feedback=feedback))
             self.stage = 'one-more-query'
         elif self.stage == 'one-more-query':
-            self.set_message("{feedback} Now give the {object} back to me.".format(object=self.state.target_obj,
-                                                                                   feedback=feedback))
+            self.set_message(
+                    "{feedback} Now give the {object} back to me.".format(object=self.state.target_obj,
+                                                                          feedback=feedback))
             ws.teacher_accepts.add(self.state.target_obj)
             self.stage = 'waiting-give-back'
         elif self.stage == 'final-query':
