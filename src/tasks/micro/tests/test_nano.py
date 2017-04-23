@@ -31,11 +31,11 @@ class TestRepetitionTasks(unittest.TestCase):
             :return:
             """
             with task_messenger(lambda: Task(patient=patient), serializer=IdentitySerializer()) as m:
-                    N = m._env._max_reward_per_task
+                    n = m._env._max_reward_per_task
                     # rewards will be negative or positive
                     sign = correct and 1 or -1
                     # try to get as much reward as possible from the solution
-                    for i in range(N):
+                    for i in range(n):
                         m.send(solution)
                         self.assertEqual(m.get_cumulative_reward(), sign * (i + 1))
 
