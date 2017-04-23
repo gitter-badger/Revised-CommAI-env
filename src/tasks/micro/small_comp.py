@@ -84,11 +84,16 @@ class ReverseXTask(Task):
 
     """
     def __init__(self, world=None):
+        """
+
+        :param world:
+        """
         super(ReverseXTask, self).__init__(world=world, max_time=0)
         self.logger = logging.getLogger(__name__)
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
         message = "V" + proposed_string + "."
@@ -98,6 +103,7 @@ class ReverseXTask(Task):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -126,6 +132,7 @@ class RepeatNXTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
         repetitions = random.randint(1,4)
@@ -164,6 +171,7 @@ class RotateRXTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
         steps = random.randint(1,len(proposed_string))
@@ -174,6 +182,7 @@ class RotateRXTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -201,6 +210,7 @@ class ConcatenateXYTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string_1 = return_random_01_sequence(max_string_length)
         proposed_string_2 = return_random_01_sequence(max_string_length)
@@ -211,6 +221,7 @@ class ConcatenateXYTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -239,6 +250,7 @@ class ReverseRepeatNXTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         repetitions = random.randint(1,4)
         proposed_string = return_random_01_sequence(max_string_length)
@@ -249,6 +261,7 @@ class ReverseRepeatNXTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -277,6 +290,7 @@ class ReverseRotateRXTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
         steps = random.randint(1,len(proposed_string))
@@ -287,6 +301,7 @@ class ReverseRotateRXTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -314,6 +329,7 @@ class ReverseConcatenateXYTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string_1 = return_random_01_sequence(max_string_length)
         proposed_string_2 = return_random_01_sequence(max_string_length)
@@ -324,6 +340,7 @@ class ReverseConcatenateXYTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -351,6 +368,7 @@ class RepeatNReverseXTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
         repetitions = random.randint(1,4)
@@ -361,6 +379,7 @@ class RepeatNReverseXTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -388,6 +407,7 @@ class RepeatNRotateRXTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
         repetitions = random.randint(1,4)
@@ -426,6 +446,7 @@ class RepeatNConcatenateXYTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string_1 = return_random_01_sequence(max_string_length)
         proposed_string_2 = return_random_01_sequence(max_string_length)
@@ -437,6 +458,7 @@ class RepeatNConcatenateXYTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -464,6 +486,7 @@ class RotateRReverseXTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
         steps = random.randint(1,len(proposed_string))
@@ -474,6 +497,7 @@ class RotateRReverseXTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -501,6 +525,7 @@ class RotateRRepeatNXTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
         repetitions = random.randint(1,4)
@@ -539,6 +564,7 @@ class RotateRConcatenateXYTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string_1 = return_random_01_sequence(max_string_length)
         proposed_string_2 = return_random_01_sequence(max_string_length)
@@ -550,6 +576,7 @@ class RotateRConcatenateXYTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -577,6 +604,7 @@ class ConcatenateReverseXReverseYTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string_1 = return_random_01_sequence(max_string_length)
         proposed_string_2 = return_random_01_sequence(max_string_length)
@@ -587,11 +615,13 @@ class ConcatenateReverseXReverseYTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
     @on_message(r".$")
     def check_response(self, event):
+        # TODO event not used
         if (self.response_check):
 #            self.logger.info("current counter:" + str(self.response_counter))
             if (event.is_message(self.response_string[self.response_counter])):
@@ -607,13 +637,21 @@ class ConcatenateReverseXReverseYTask(BaseTask):
 #        self.set_reward(-1)
 
 class ConcatenateRepeatNXRepeatMYTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
+        """
+
+        :param world:
+        """
         super(ConcatenateRepeatNXRepeatMYTask, self).__init__(world=world, max_time=0)
         # NB: max_time will be dynamically adjusted below
 #        self.logger = logging.getLogger(__name__)
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         self.response_check = False
         proposed_string_1 = return_random_01_sequence(max_string_length)
         repetitions_1 = random.randint(1,4)
@@ -628,6 +666,7 @@ class ConcatenateRepeatNXRepeatMYTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -669,6 +708,7 @@ class ConcatenateRotateRXRotateSYTask(BaseTask):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
