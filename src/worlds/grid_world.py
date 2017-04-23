@@ -285,9 +285,6 @@ class GridWorld(World):
         else:
             self.set_message("I haven't asked you for {indef_object}.".format(indef_object=msg.indef_article(object_)))
 
-    '''
-
-    '''
     def turn(self, d):
         """ turns in the specified absolute (north, east, west, south) or clockwise relative (1, 2, 3, -1, 2, 3)
         direction.
@@ -365,8 +362,7 @@ class GridWorld(World):
             l.append('-' * cell_w)
             l.append('+')
         lines.append(''.join(l))
-        self.logger.debug("Drawing world with entities in " + str(
-            self.state.entities))
+        self.logger.debug("Drawing world with entities in " + str(self.state.entities))
         for i in range(grid_h):
             for k in range(cell_h):
                 l = []
@@ -393,9 +389,7 @@ class GridWorld(World):
                         l.append(' ' * cell_w)
                     l.append('+')
                 lines.append(''.join(l))
-            l = []
-            l.append(' ' * (cell_w + 1))
-            l.append('+')
+            l = [' ' * (cell_w + 1), '+']
             for j in range(grid_w):
                 l.append('-' * cell_w)
                 l.append('+')
