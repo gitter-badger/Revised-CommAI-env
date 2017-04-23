@@ -182,7 +182,7 @@ class RepeatNXTask(BaseTask):
         :return:
         """
         if (self.response_check):
-#            self.logger.info("current counter:" + str(self.response_counter))
+            # self.logger.info("current counter:" + str(self.response_counter))
             if (event.is_message(self.response_string[self.response_counter])):
                 if (self.response_counter==(len(self.response_string)-1)):
                     self.set_reward(1)
@@ -360,7 +360,7 @@ class ReverseRepeatNXTask(BaseTask):
         :return:
         """
         if (self.response_check):
-#            self.logger.info("current counter:" + str(self.response_counter))
+            # self.logger.info("current counter:" + str(self.response_counter))
             if (event.is_message(self.response_string[self.response_counter])):
                 if (self.response_counter==(len(self.response_string)-1)):
                     self.set_reward(1)
@@ -417,7 +417,7 @@ class ReverseRotateRXTask(BaseTask):
         :return:
         """
         if (self.response_check):
-#            self.logger.info("current counter:" + str(self.response_counter))
+            # self.logger.info("current counter:" + str(self.response_counter))
             if (event.is_message(self.response_string[self.response_counter])):
                 if (self.response_counter==(len(self.response_string)-1)):
                     self.set_reward(1)
@@ -476,7 +476,7 @@ class ReverseConcatenateXYTask(BaseTask):
         :return:
         """
         if (self.response_check):
-#            self.logger.info("current counter:" + str(self.response_counter))
+            # self.logger.info("current counter:" + str(self.response_counter))
             if (event.is_message(self.response_string[self.response_counter])):
                 if (self.response_counter==(len(self.response_string)-1)):
                     self.set_reward(1)
@@ -1010,7 +1010,7 @@ class ConcatenateRotateRXRotateSYTask(BaseTask):
         :return:
         """
         if (self.response_check):
-#            self.logger.info("current counter:" + str(self.response_counter))
+            # self.logger.info("current counter:" + str(self.response_counter))
             if (event.is_message(self.response_string[self.response_counter])):
                 if (self.response_counter==(len(self.response_string)-1)):
                     self.set_reward(1)
