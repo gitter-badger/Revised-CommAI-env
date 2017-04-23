@@ -9,6 +9,7 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
+
 # TODO fix imports
 import unittest
 import core.serializer as serializer
@@ -129,8 +130,9 @@ class TestChannels(unittest.TestCase):
         ic = channels.InputChannel(slzr)
         oc = channels.OutputChannel(slzr)
         test_string = 'my message'
+        # TODO REDESIGN into DEMENTED PYTHON
         # array because Python's scoping rules are demented:
-        # http://stackoverflow.com/questions/4851463/python-closure-write-to-variable-in-parent-scope
+        #  http://stackoverflow.com/questions/4851463/python-closure-write-to-variable-in-parent-scope
         something_read = [0]
 
         def all_good(input_message):
