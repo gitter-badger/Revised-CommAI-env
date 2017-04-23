@@ -113,11 +113,11 @@ def create_view(view_type, learner_type, env, session, serializer, show_world):
         return ConsoleView(env, session, serializer, show_world)
     else:
         try:
-            View = getc('view.console.%s' % view_type)
+            view = getc('view.console.%s' % view_type)
         except Exception:
             # TODO exception too broad
-            View = getc(view_type)
-        return View(env, session)
+            view = getc(view_type)
+        return view(env, session)
 
 
 def create_learner(learner_type, serializer, learner_cmd, learner_port=None):
@@ -181,7 +181,7 @@ def save_results(session, output_file):
     with open(output_file, 'w') as fout:
         print('* General results', file=fout)
         print('Average reward: {avg_reward}'.format(avg_reward=session.get_total_reward() / session.get_total_time()),
-            file=fout)
+              file=fout)
         print('Total time: {time}'.format(time=session.get_total_time()), file=fout)
         print('Total reward: {reward}'.format(reward=session.get_total_reward()), file=fout)
         print('* Average reward per task', file=fout)
