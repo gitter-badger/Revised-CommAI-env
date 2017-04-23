@@ -7,7 +7,7 @@
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
 
-
+# TODO fix imports
 from core.task import on_start, on_message, on_timeout
 from tasks.competition.base import BaseTask
 import tasks.competition.messages as msg
@@ -15,10 +15,10 @@ import random
 import string
 import re
 
-# global data structures to be called by multiple tasks
-
-# properties of objects in two baskets, for memory tasks
-# (please keep objects in alphabetical order for ease of debugging)
+"""
+global data structures to be called by multiple tasks properties of objects in two baskets, for memory tasks
+(please keep objects in alphabetical order for ease of debugging)
+"""
 global_properties = {
     'john': {
         'apple':
@@ -88,7 +88,8 @@ for p in global_properties:
 global_objects = list(set(global_objects))
 
 # a list of questions about a number, shared by multiple tasks
-number_questions = ['please tell me the number.', 'what\'s the number?', 'what is the number?', 'can you tell me the number?']
+number_questions = ['please tell me the number.', 'what\'s the number?', 'what is the number?',
+                    'can you tell me the number?']
 
 """
 when an enumeration is given, each element but the last could be followed by:
@@ -311,8 +312,7 @@ class VerifyThatObjectHasPropertyTask(BaseTask):
 
         :param world:
         """
-        super(VerifyThatObjectHasPropertyTask, self).__init__(
-            world=world, max_time=3000)
+        super(VerifyThatObjectHasPropertyTask, self).__init__(world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
@@ -393,8 +393,7 @@ class ListPropertiesOfAnObjectTask(BaseTask):
                          "{owner}'s basket?".format(object=object_,owner=basket))
 
         # building a regexp to match the answer
-        enum_re = delimiters.join(
-            [r'([a-z]+)'] * len(self.object_properties))
+        enum_re = delimiters.join([r'([a-z]+)'] * len(self.object_properties))
         # final string must be delimited by period
         enum_re += r'\.$'
         # add check_response as a handler for a message matching the
@@ -473,31 +472,44 @@ class NameAPropertyOfAnObjectTask(BaseTask):
         :param event:
         :return:
         """
-        self.set_message('one right answer is: {answer}.'.format(
-            answer=random.choice(self.object_properties)
-        ))
+        self.set_message('one right answer is: {answer}.'.format(answer=random.choice(self.object_properties)))
 
 
 class HowManyPropertiesDoesAnObjectHaveTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
+        """
+
+        :param world:
+        """
         super(HowManyPropertiesDoesAnObjectHaveTask, self).__init__(
             world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
         # pick some object in a random basket
         basket = random.choice(list(global_properties.keys()))
         object_ = random.choice(list(global_properties[basket].keys()))
         # counting properties of selected object
         self.property_count = len(global_properties[basket][object_])
         self.set_message("how many property does {object} have "
-                         "in {owner}'s basket?".format(
-                             object=object_,
-                             owner=basket
-                         ))
+                         "in {owner}'s basket?".format(object=object_, owner=basket))
 
     @on_message()
     def check_response(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         # check if the answer matches any of the possible ways of expressing
         # the correct number.
         # NB: note that here a longer digit string ending with the currect
@@ -509,19 +521,35 @@ class HowManyPropertiesDoesAnObjectHaveTask(BaseTask):
 
     @on_timeout()
     def give_away_answer(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
         # inform the answer randomly choosing a numeric or alphabetic format.
-        self.set_message('the right answer is: {answer}.'.format(
-            answer=msg.number_to_string(self.property_count)
-        ))
+        self.set_message('the right answer is: {answer}.'.format(answer=msg.number_to_string(self.property_count)))
 
 
 class ListObjectsWithACertainPropertyTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
-        super(ListObjectsWithACertainPropertyTask, self).__init__(
-            world=world, max_time=3500)
+        """
+
+        :param world:
+        """
+        super(ListObjectsWithACertainPropertyTask, self).__init__(world=world, max_time=3500)
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
         # chose a random property
         basket = random.choice(list(rev_global_properties.keys()))
         property_ = random.choice(list(rev_global_properties[basket].keys()))
@@ -544,6 +572,11 @@ class ListObjectsWithACertainPropertyTask(BaseTask):
     # expected responses is known
     @on_message(r'\.')
     def check_response(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         re_out=self.re_query.search(event.message)
         if (re_out):
             potential_objects=set(re_out.groups())
@@ -560,66 +593,103 @@ class ListObjectsWithACertainPropertyTask(BaseTask):
 
     @on_timeout()
     def give_away_answer(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
         answer = self.get_shuffled_correct_objects(self.objects)
-        self.set_message('you are too slow. the right objects are: {answer}.'.format(
-            answer=answer
-        ))
+        self.set_message('you are too slow. the right objects are: {answer}.'.format(answer=answer))
 
     def get_shuffled_correct_objects(self,ordered_correct_objects):
+        """
+
+        :param ordered_correct_objects:
+        :return:
+        """
         correct_objects = list(ordered_correct_objects)
         random.shuffle(correct_objects)
         return " ".join(correct_objects)
 
 
 class NameAnObjectWithAPropertyTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
-        super(NameAnObjectWithAPropertyTask, self).__init__(
-            world=world, max_time=3000)
+        """
+
+        :param world:
+        """
+        super(NameAnObjectWithAPropertyTask, self).__init__(world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
-        # chose a random property
+        # TODO event not used
+        """ chose a random property
+
+        :param event:
+        :return:
+        """
         basket = random.choice(list(rev_global_properties.keys()))
         property_ = random.choice(list(rev_global_properties[basket].keys()))
         # retrieving the objects that have the selected property
         self.objects = rev_global_properties[basket][property_]
 
-        self.question = "can you tell me an object that is {property} in {owner}'s basket?".format(
-                             property=property_,
-                             owner=basket)
+        self.question = "can you tell me an object that is {property} in {owner}'s basket?".format(property=property_,
+                                                                                                   owner=basket)
         self.set_message(self.question)
 
     @on_message('\.')
     def check_response(self, event):
-            # traverse objects list, and see if you find one that is
-            # matching
+        """ traverse objects list, and see if you find one that is matching
+
+        :param event:
+        :return:
+        """
             if any(event.is_message(object_, '.')
                    for object_ in self.objects):
                 # is match found, give reward
                 self.set_reward(1, random.choice(msg.congratulations))
             else:
-                feedback = 'one right answer is: {answer}. please try again. '.format(
-                    answer=random.choice(self.objects))
+                feedback = 'one right answer is: {answer}. please try again. '\
+                    .format(answer=random.choice(self.objects))
                 feedback += self.question
                 self.set_message(feedback)
 
     @on_timeout()
     def give_away_answer(self, event):
-        # randomly random right property
-        self.set_message('you are too slow. one right answer is: {answer}.'.format(
-            answer=random.choice(self.objects)
-        ))
+        # TODO event not used
+        """ randomly random right property
+
+        :param self:
+        :param event:
+        :return:
+        """
+        self.set_message('you are too slow. one right answer is: {answer}.'.format(answer=random.choice(self.objects)))
 
 
 class HowManyObjectsHaveACertainPropertyTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
-        super(HowManyObjectsHaveACertainPropertyTask, self).__init__(
-            world=world, max_time=3000)
+        """
+
+        :param world:
+        """
+        super(HowManyObjectsHaveACertainPropertyTask, self).__init__(world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
-        # we will sample from the actual properties, plus a random
-        # string representing a "property" that no object has
+        # TODO event not used
+        """ we will sample from the actual properties, plus a random string representing a "property" that no object
+        has
+
+        :param event:
+        :return:
+        """
         basket = random.choice(list(rev_global_properties.keys()))
         basket_properties = list(rev_global_properties[basket].keys())
         # added slots to make random properties more likely
@@ -642,11 +712,14 @@ class HowManyObjectsHaveACertainPropertyTask(BaseTask):
         self.set_message(self.question)
 
     def get_random_property(self, basket_properties):
-        # return a random property that is not in basket_properties
+        """ return a random property that is not in basket_properties
+
+        :param basket_properties:
+        :return:
+        """
         while True:
             # generate random property
-            property_ = "".join(random.sample(string.ascii_lowercase,
-                                              random.randint(1, 10)))
+            property_ = "".join(random.sample(string.ascii_lowercase, random.randint(1, 10)))
             # make sure this is not, by chance, identical to a real property
             # in the relevant basket
             if property_ not in basket_properties:
@@ -655,11 +728,14 @@ class HowManyObjectsHaveACertainPropertyTask(BaseTask):
 
     @on_message('\.')
     def check_response(self, event):
-        # check if the answer matches any of the possible ways of expressing
-        # the correct number.
-        # NB: note that here a longer digit string ending with the currect
-        # number will be considered correct (e.g., 321 when the correct answer
+        """ check if the answer matches any of the possible ways of expressing the correct number. NB: note that here
+        a longer digit string ending with the correct number will be considered correct (e.g., 321 when the correct
+        answer
         # is 1)
+
+        :param event:
+        :return:
+        """
         if any(event.is_message(correct_alt, '.')
                for correct_alt in msg.number_to_strings(self.object_count)):
             self.set_reward(1, random.choice(msg.congratulations))
@@ -673,17 +749,29 @@ class HowManyObjectsHaveACertainPropertyTask(BaseTask):
     def give_away_answer(self, event):
         # inform the answer randomly choosing a numeric or alphabetic format.
         self.set_message('you are too slow. the right answer is: {answer}.'.format(
-            answer=msg.number_to_string(self.object_count)
-        ))
+            answer=msg.number_to_string(self.object_count)))
 
 
 class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
+        """
+
+        :param world:
+        """
         super(WhoHasACertainObjectWithACertainPropertyTask, self).__init__(
             world=world, max_time=3500)
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
         object_, property_ = self.get_random_object_property()
         # we find the set of baskets that have the relevant
         # object and property combination
@@ -708,9 +796,11 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
         self.re_query = re.compile(enum_re)
 
     def get_random_object_property(self):
-        # we traverse the baskets building sets of all the objects and
-        # properties they contain as well as dictionary of sets
-        # recording the object+property pairs present in each basket
+        """ we traverse the baskets building sets of all the objects and properties they contain as well as
+        dictionary of sets recording the object+property pairs present in each basket
+
+        :return:
+        """
         objects_set = set([object_
                            for basket, object_properties
                            in global_properties.items()
@@ -727,6 +817,11 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
 
     @on_message(r'\.')
     def check_response(self, event):
+        """
+        \
+        :param event:
+        :return:
+        """
         re_out=self.re_query.search(event.message)
         if (re_out):
             potential_baskets=set(re_out.groups())
@@ -743,25 +838,47 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
 
     @on_timeout()
     def give_away_answer(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
         answer = self.get_shuffled_correct_baskets(self.basket_set)
         self.set_message('you are too slow. the right answer is: {answer}.'.format(
             answer=answer
         ))
 
     def get_shuffled_correct_baskets(self,ordered_correct_baskets):
+        """
+
+        :param ordered_correct_baskets:
+        :return:
+        """
         correct_baskets = list(ordered_correct_baskets)
         random.shuffle(correct_baskets)
         return " ".join(correct_baskets)
 
 
 class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
-        super(ListThePropertiesThatAnObjectHasInABasketOnlyTask, self).__init__(
-            world=world, max_time=3500)
+        """
+
+        :param world:
+        """
+        super(ListThePropertiesThatAnObjectHasInABasketOnlyTask, self).__init__(world=world, max_time=3500)
 
     @on_start()
     def give_instructions(self, event):
-        # get an object that appears in a least two baskets
+        # TODO event not used
+        """ get an object that appears in a least two baskets
+
+        :param event:
+        :return:
+        """
         object_, object_baskets = self.get_object_in_many_baskets()
         # choose one of the baskets
         basket = random.choice(object_baskets)
@@ -785,6 +902,13 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
         self.re_query = re.compile(enum_re)
 
     def get_expected_answer(self, object_, basket, object_baskets):
+        """
+
+        :param object_:
+        :param basket:
+        :param object_baskets:
+        :return:
+        """
         # get the properties for the object in the chosen basket
         properties_in_basket = set(global_properties[basket][object_])
         # get the list of properties that the object has in the given basket
@@ -805,8 +929,10 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
         return distinctive_properties_set
 
     def get_object_in_many_baskets(self):
-        # we traverse the baskets recording, for each object,
-        # the baskets it is in
+        """ we traverse the baskets recording, for each object, the baskets it is in
+
+        :return:
+        """
         baskets_with_object = {}
         for basket in global_properties:
             for obj in global_properties[basket]:
@@ -826,6 +952,11 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
 
     @on_message('\.')
     def check_response(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         re_out=self.re_query.search(event.message)
         if (re_out):
             potential_properties=set(re_out.groups())
@@ -842,25 +973,45 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
 
     @on_timeout()
     def give_away_answer(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
         answer = self.get_shuffled_correct_properties(self.distinctive_properties_set)
-        self.set_message('you are too slow. the right properties are: {answer}.'.format(
-            answer=answer
-        ))
+        self.set_message('you are too slow. the right properties are: {answer}.'.format(answer=answer))
 
     def get_shuffled_correct_properties(self,ordered_correct_properties):
+        """
+
+        :param ordered_correct_properties:
+        :return:
+        """
         correct_properties = list(ordered_correct_properties)
         random.shuffle(correct_properties)
         return " ".join(correct_properties)
 
 
 class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
-        super(ListThePropertiesThatAnObjectHasInAllBasketsTask, self).__init__(
-            world=world, max_time=3500)
+        """
+
+        :param world:
+        """
+        super(ListThePropertiesThatAnObjectHasInAllBasketsTask, self).__init__(world=world, max_time=3500)
 
     @on_start()
     def give_instructions(self, event):
-        # get an object that appears in a least two baskets
+        # TODO event not used
+        """ get an object that appears in a least two baskets
+
+        :param event:
+        :return:
+        """
         object_, object_baskets = self.get_object_in_many_baskets()
         # ask the learner
         self.question = "which properties does {object} have in all baskets?".format(
@@ -881,8 +1032,12 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
         self.re_query = re.compile(enum_re)
 
     def get_expected_answer(self, object_, object_baskets):
-        # get the properties that are present in all the baskets
-        # for the selected object
+        """ get the properties that are present in all the baskets for the selected object
+
+        :param object_:
+        :param object_baskets:
+        :return:
+        """
         shared_properties_set = set.intersection(*[
             set(prop for prop in global_properties[basket][object_])
             for basket in object_baskets])
@@ -892,8 +1047,10 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
         return shared_properties_set
 
     def get_object_in_many_baskets(self):
-        # we traverse the baskets recording, for each object,
-        # the baskets it is in
+        """ we traverse the baskets recording, for each object, the baskets it is in
+
+        :return:
+        """
         baskets_with_object = {}
         for basket in global_properties:
             for obj in global_properties[basket]:
@@ -913,6 +1070,11 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
 
     @on_message('\.')
     def check_response(self, event):
+        """
+
+        :param event:
+        :return:
+        """
         re_out=self.re_query.search(event.message)
         if (re_out):
             potential_properties=set(re_out.groups())
@@ -922,20 +1084,28 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
             self.set_reward(1, random.choice(msg.congratulations))
         else:
             answer = self.get_shuffled_correct_properties(self.shared_properties_set)
-            feedback = 'the right properties are: {answer}. please try again. '.format(
-                answer=answer)
+            feedback = 'the right properties are: {answer}. please try again. '.format(answer=answer)
             feedback += self.question
             self.set_message(feedback)
 
 
     @on_timeout()
     def give_away_answer(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
         answer = self.get_shuffled_correct_properties(self.shared_properties_set)
-        self.set_message('you are too slow. the right properties are: {answer}.'.format(
-            answer=answer
-        ))
+        self.set_message('you are too slow. the right properties are: {answer}.'.format(answer=answer))
 
     def get_shuffled_correct_properties(self,ordered_correct_properties):
+        """
+
+        :param ordered_correct_properties:
+        :return:
+        """
         correct_properties = list(ordered_correct_properties)
         random.shuffle(correct_properties)
         return " ".join(correct_properties)
