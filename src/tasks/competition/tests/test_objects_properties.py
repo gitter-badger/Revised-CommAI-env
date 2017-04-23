@@ -169,12 +169,11 @@ tasks testing routines
         :return:
         """
         def get_correct_answer(m):
-            """
+            """ find the answer in the instructions
 
             :param m:
             :return:
             """
-            # find the answer in the instructions
             property_, = m.search_last_message(r"basket is (\w+)")
             return property_, self.do_test_battery(
                     objects_properties.AssociateObjectWithPropertyTask, get_correct_answer)
@@ -198,8 +197,7 @@ tasks testing routines
                 answer = "yes"
             else:
                 answer = "no"
-            return answer,
-        self.do_test_battery(objects_properties.VerifyThatObjectHasPropertyTask, get_correct_answer)
+            return answer, self.do_test_battery(objects_properties.VerifyThatObjectHasPropertyTask, get_correct_answer)
 
     def testListPropertiesOfAnObject(self):
         """
@@ -382,10 +380,8 @@ tasks testing routines
                 :param m:
                 :return:
                 """
-                object_, = m.search_last_message(
-                    r"does (\w+) have")
-                all_baskets_props = set.union(
-                    *[set(object_props[object_]
+                object_, = m.search_last_message(r"does (\w+) have")
+                all_baskets_props = set.union(*[set(object_props[object_]
                             if object_ in object_props else [])
                         for basket2, object_props in
                         global_properties.items()])
@@ -393,9 +389,8 @@ tasks testing routines
                     answer = " ".join(all_baskets_props)
                 else:
                     answer = "none"
-                return answer,
-            self.do_test_battery(
-                    objects_properties.ListThePropertiesThatAnObjectHasInAllBasketsTask, get_correct_answer)
+                return answer, self.do_test_battery(
+                        objects_properties.ListThePropertiesThatAnObjectHasInAllBasketsTask, get_correct_answer)
 
 
 def main():
