@@ -63,8 +63,7 @@ class HumanLearner(BaseLearner):
         :param message:
         :return:
         """
-        if message[-2:] == self._serializer.SILENCE_TOKEN * 2 and \
-                self._output_channel.is_empty() and not self.speaking:
+        if message[-2:] == self._serializer.SILENCE_TOKEN * 2 and self._output_channel.is_empty() and not self.speaking:
             self.ask_for_input()
         elif self._output_channel.is_empty():
             # If we were speaking, we are not speaking anymore
