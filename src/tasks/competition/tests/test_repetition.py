@@ -10,7 +10,7 @@
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
 
-
+# TODO fix imports
 import unittest
 import tasks.competition.repetition as repetition
 import tasks.competition.messages as msg
@@ -35,8 +35,7 @@ class TestRepetitionTasks(unittest.TestCase):
         self.assertGreater(feedback_blen, 0)
         m.send()
         self.assertEqual(m.get_cumulative_reward(), 1,
-                         "answering '{0}' to query '{1}' didn't work.".format(
-                             answer, instructions))
+                         "answering '{0}' to query '{1}' didn't work.".format(answer, instructions))
 
     def check_negative_feedback(self, m, exp_answer):
         """
@@ -48,12 +47,10 @@ class TestRepetitionTasks(unittest.TestCase):
         # hear the feedback
         m.read()
         try:
-            answer, = m.search_last_message(
-                r"correct answer is: (.+)\.$")
+            answer, = m.search_last_message(r"correct answer is: (.+)\.$")
             self.assertEqual(answer, exp_answer)
         except RuntimeError:
-            # if the correct message wasn't given, the feedback was
-            # an error message
+            # if the correct message wasn't given, the feedback was an error message
             self.assertIn(m.get_last_message(), msg.failed)
 
     def solve_correctly_test(self, m, get_correct_answer):
@@ -89,8 +86,7 @@ class TestRepetitionTasks(unittest.TestCase):
         m.send(answer + " spam, spam, eggs, bacon and spam.")
         # hear feedback if there is any
         self.check_negative_feedback(m, answer)
-        self.assertEqual(m.get_cumulative_reward(), 0,
-                         "The correct answer must be an exact match.")
+        self.assertEqual(m.get_cumulative_reward(), 0, "The correct answer must be an exact match.")
         # stay silent until the end
         while m.is_silent():
             m.send()
@@ -194,18 +190,15 @@ class TestRepetitionTasks(unittest.TestCase):
         :return:
         """
         def get_correct_answer(m):
-            """
+            """ get the string to be repeated
 
             :param m:
             :return:
             """
-            # get the string to be repeated
-            answer, = m.search_last_message(r"(?:{verb}) (\w)\.".format(
-                verb="|".join(repetition.verbs)))
+            answer, = m.search_last_message(r"(?:{verb}) (\w)\.".format(verb="|".join(repetition.verbs)))
             return answer
         task = repetition.RepeatCharacterTask
-        # cannot use the add ending garbage test here
-        # (spam. could prompt a correct answer if the query is for m)
+        # cannot use the add ending garbage test here (spam. could prompt a correct answer if the query is for m)
         with task_messenger(task) as m:
             # test for solving the task correctly
             self.solve_correctly_test(m, get_correct_answer)
@@ -244,10 +237,8 @@ class TestRepetitionTasks(unittest.TestCase):
             :return:
             """
             # get the string to be repeated
-            answer, = m.search_last_message(
-                r"(?:{verb}) (.*) (?:{context})\.".format(
-                    verb="|".join(repetition.verbs),
-                    context="|".join(repetition.context)))
+            answer, = m.search_last_message(r"(?:{verb}) (.*) (?:{context})\.".format(
+                    verb="|".join(repetition.verbs), context="|".join(repetition.context)))
             return answer
         self.do_test_battery(repetition.RepeatWhatISay2Task, get_correct_answer)
 
@@ -280,13 +271,10 @@ class TestRepetitionTasks(unittest.TestCase):
             :param m:
             :return:
             """
-            answer, n = m.search_last_message(
-                r"(?:{verb}) (.*) (\w+) times (?:{context})\.".format(
-                    verb="|".join(repetition.verbs),
-                    context="|".join(repetition.context)))
+            answer, n = m.search_last_message(r"(?:{verb}) (.*) (\w+) times (?:{context})\.".format(
+                    verb="|".join(repetition.verbs), context="|".join(repetition.context)))
             return " ".join([answer] * msg.string_to_number(n))
-        self.do_test_battery(repetition.RepeatWhatISayMultipleTimes2Task,
-                             get_correct_answer)
+        self.do_test_battery(repetition.RepeatWhatISayMultipleTimes2Task, get_correct_answer)
 
     def testRepeatWhatISayMultipleTimesSeparatedByComma(self):
         """
@@ -299,14 +287,10 @@ class TestRepetitionTasks(unittest.TestCase):
             :param m:
             :return:
             """
-            answer, n = m.search_last_message(
-                r"(?:{verb}) (.*) (\w+) times separated".format(
-                    verb="|".join(repetition.verbs),
-                    context="|".join(repetition.context)))
+            answer, n = m.search_last_message(r"(?:{verb}) (.*) (\w+) times separated".format(
+                            verb="|".join(repetition.verbs),  context="|".join(repetition.context)))
             return ", ".join([answer] * msg.string_to_number(n))
-        self.do_test_battery(
-            repetition.RepeatWhatISayMultipleTimesSeparatedByCommaTask,
-            get_correct_answer)
+        self.do_test_battery(repetition.RepeatWhatISayMultipleTimesSeparatedByCommaTask, get_correct_answer)
 
     def testRepeatWhatISayMultipleTimesSeparatedByAnd(self):
         """
@@ -319,14 +303,10 @@ class TestRepetitionTasks(unittest.TestCase):
             :param m:
             :return:
             """
-            answer, n = m.search_last_message(
-                r"(?:{verb}) (.*) (\w+) times separated".format(
-                    verb="|".join(repetition.verbs),
-                    context="|".join(repetition.context)))
+            answer, n = m.search_last_message(r"(?:{verb}) (.*) (\w+) times separated".format(
+                    verb="|".join(repetition.verbs), context="|".join(repetition.context)))
             return " and ".join([answer] * msg.string_to_number(n))
-        self.do_test_battery(
-            repetition.RepeatWhatISayMultipleTimesSeparatedByAndTask,
-            get_correct_answer)
+        self.do_test_battery(repetition.RepeatWhatISayMultipleTimesSeparatedByAndTask, get_correct_answer)
 
     def testRepeatWhatISayMultipleTimesSeparatedByCA(self):
         """
@@ -339,15 +319,11 @@ class TestRepetitionTasks(unittest.TestCase):
             :param m:
             :return:
             """
-            answer, n = m.search_last_message(
-                r"(?:{verb}) (.*) (\w+) times separated".format(
-                    verb="|".join(repetition.verbs),
-                    context="|".join(repetition.context)))
+            answer, n = m.search_last_message(r"(?:{verb}) (.*) (\w+) times separated".format(
+                        verb="|".join(repetition.verbs), context="|".join(repetition.context)))
             enum = [answer] * msg.string_to_number(n)
             return " and ".join([", ".join(enum[:-1]), enum[-1]])
-        self.do_test_battery(
-            repetition.RepeatWhatISayMultipleTimesSeparatedByCATask,
-            get_correct_answer)
+        self.do_test_battery(repetition.RepeatWhatISayMultipleTimesSeparatedByCATask, get_correct_answer)
 
 
 def main():
