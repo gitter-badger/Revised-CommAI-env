@@ -3,9 +3,8 @@
 # Copyright (c) 2017-, Stephen B. Hope
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 from core.task import on_start, on_message, on_timeout
@@ -65,12 +64,12 @@ global_properties = {
         'pineapple':
             ['yellow', 'sweet', 'dry', 'fresh', 'expensive', 'exotic'],
         'tomato':
-            ['red', 'soft', 'sour', 'local', 'cheap']}
-}
+            ['red', 'soft', 'sour', 'local', 'cheap']}}
 """
 it's handy to have a reverse dictionary with the properties in the
 above lists as keys, and the objects as values
 """
+# TODO 4 deep
 rev_global_properties = {}
 for basket in global_properties:
     rev_global_properties[basket] = {}
@@ -88,7 +87,9 @@ for p in global_properties:
 global_objects = list(set(global_objects))
 
 # a list of questions about a number, shared by multiple tasks
-number_questions = ['please tell me the number.', 'what\'s the number?', 'what is the number?',
+number_questions = ['please tell me the number.',
+                    'what\'s the number?',
+                    'what is the number?',
                     'can you tell me the number?']
 
 """
@@ -167,8 +168,7 @@ class ObjectExistenceTask2(BaseTask):
 
         :param world:
         """
-        super(ObjectExistenceTask2, self).__init__(
-            world=world, max_time=3000)
+        super(ObjectExistenceTask2, self).__init__(world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
@@ -210,28 +210,24 @@ class ObjectExistenceTask2(BaseTask):
 
         self.answer = "Yes" if counter.get(object_in_question, 0) > 0 else "No"
 
-        self.give_away_message = "I do have {object}." \
-            if self.answer == "Yes" else "I do not have {object}."
-        self.give_away_message = self.give_away_message \
-                        .format(object=msg.indef_article(object_in_question))
+        self.give_away_message = "I do have {object}." if self.answer == "Yes" else "I do not have {object}."
+        self.give_away_message = self.give_away_message.format(object=msg.indef_article(object_in_question))
         self.give_away_message = "Wrong. " + self.give_away_message
         self.set_message('I have {listing_objects}. Do I have {object}? '
-                            .format(
-                                listing_objects=message,
-                                object=msg.indef_article(object_in_question)
-                            ))
+                            .format(listing_objects=message,  object=msg.indef_article(object_in_question)))
 
     @on_message(r'\.')
     def check_response(self, event):
-        """
+        """ check if given answer matches
 
         :param event:
         :return:
         """
-        # check if given answer matches
         if event.is_message(self.answer, '.'):
-            # if the message sent by the learner equals the teacher's selected
-            # phrase followed by a period, reward the learner.
+            """
+            if the message sent by the learner equals the teacher's selected phrase followed by a period, reward
+            the learner.
+            """
             self.set_reward(1, random.choice(msg.congratulations))
         else:
             # If the learner said anything else, it fails the task.
@@ -239,21 +235,19 @@ class ObjectExistenceTask2(BaseTask):
 
     @on_timeout()
     def on_timeout(self, event):
-        """
+        """ if the learner has not produced any plausible answer by the max_time allowed, fail the learner sending
+        appropriate feedback.
 
         :param event:
         :return:
         """
-        # if the learner has not produced any plausible answer by the max_time
-        # allowed, fail the learner sending appropriate feedback.
         self.fail_learner()
 
     def fail_learner(self):
-        """
+        """ fail the learner sending a random fail feedback message
 
         :return:
         """
-        # fail the learner sending a random fail feedback message
         self.set_reward(0, self.give_away_message)
 
 
@@ -270,12 +264,11 @@ class AssociateObjectWithPropertyTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
-        """
+        """ pick some random basket, object and property
 
         :param event:
         :return:
         """
-        # pick some random basket, object and property
         basket = random.choice(list(global_properties.keys()))
         object_ = random.choice(list(global_properties[basket].keys()))
         self.property = random.choice(global_properties[basket][object_])
@@ -326,10 +319,8 @@ class VerifyThatObjectHasPropertyTask(BaseTask):
         object_properties = global_properties[basket][object_]
         # extracting the set of properties (from both baskets)
         all_properties = set(property_
-                             for temp_basket, object_properties in
-                                global_properties.items()
-                             for temp_object, temp_properties in
-                                object_properties.items()
+                             for temp_basket, object_properties in global_properties.items()
+                             for temp_object, temp_properties in object_properties.items()
                              for property_ in temp_properties)
         # find the properties that that the selected objects does NOT have
         properties_complement = list(all_properties - set(object_properties))
@@ -396,21 +387,18 @@ class ListPropertiesOfAnObjectTask(BaseTask):
         enum_re = delimiters.join([r'([a-z]+)'] * len(self.object_properties))
         # final string must be delimited by period
         enum_re += r'\.$'
-        # add check_response as a handler for a message matching the
-        # above described enumeration
+        # add check_response as a handler for a message matching the above described enumeration
         self.add_handler(on_message(enum_re)(self.check_response))
 
-    # on_message handler created dynamically when the number of
-    # expected responses is known
     def check_response(self, event):
-        """ get all the elements in the matched enumeration
+        """  on_message handler created dynamically when the number of expected responses is known
+        get all the elements in the matched enumeration
 
         :param event:
         :return:
         """
         potential_properties = set(event.get_match_groups())
-        # if the produced elements match the expected properties
-        # reward the learner
+        # if the produced elements match the expected properties reward the learner
         if (self.object_properties == potential_properties):
             self.set_reward(1, random.choice(msg.congratulations))
 
@@ -545,20 +533,17 @@ class ListObjectsWithACertainPropertyTask(BaseTask):
     @on_start()
     def give_instructions(self, event):
         # TODO event not used
-        """
+        """ chose a random property
 
         :param event:
         :return:
         """
-        # chose a random property
         basket = random.choice(list(rev_global_properties.keys()))
         property_ = random.choice(list(rev_global_properties[basket].keys()))
         # retrieving the objects that have this property
         self.objects = set(rev_global_properties[basket][property_])
 
-        self.question = "which objects are {property} in {owner}'s basket?".format(
-                             property=property_,
-                             owner=basket)
+        self.question = "which objects are {property} in {owner}'s basket?".format(property=property_, owner=basket)
         self.set_message(self.question)
 
         # building a regexp to match the answer
@@ -568,11 +553,9 @@ class ListObjectsWithACertainPropertyTask(BaseTask):
         enum_re += r'\.$'
         self.re_query = re.compile(enum_re)
 
-    # on_message handler created dynamically when the number of
-    # expected responses is known
     @on_message(r'\.')
     def check_response(self, event):
-        """
+        """ on_message handler created dynamically when the number of expected responses is known
 
         :param event:
         :return:
@@ -637,8 +620,8 @@ class NameAnObjectWithAPropertyTask(BaseTask):
         # retrieving the objects that have the selected property
         self.objects = rev_global_properties[basket][property_]
 
-        self.question = "can you tell me an object that is {property} in {owner}'s basket?".format(property=property_,
-                                                                                                   owner=basket)
+        self.question = "can you tell me an object that is {property} in {owner}'s basket?".format(
+                property=property_, owner=basket)
         self.set_message(self.question)
 
     @on_message('\.')
@@ -653,8 +636,8 @@ class NameAnObjectWithAPropertyTask(BaseTask):
                 # is match found, give reward
                 self.set_reward(1, random.choice(msg.congratulations))
             else:
-                feedback = 'one right answer is: {answer}. please try again. '\
-                    .format(answer=random.choice(self.objects))
+                feedback = 'one right answer is: {answer}. please try again. '.format(
+                        answer=random.choice(self.objects))
                 feedback += self.question
                 self.set_message(feedback)
 
@@ -667,8 +650,8 @@ class NameAnObjectWithAPropertyTask(BaseTask):
         :param event:
         :return:
         """
-        self.set_message('you are too slow. one right answer is: {answer}.'.format(answer=random.choice(self.objects)))
-
+        self.set_message('you are too slow. one right answer is: {answer}.'.format(
+                answer=random.choice(self.objects)))
 
 class HowManyObjectsHaveACertainPropertyTask(BaseTask):
     """
@@ -695,20 +678,18 @@ class HowManyObjectsHaveACertainPropertyTask(BaseTask):
         # added slots to make random properties more likely
         property_pick = random.randint(0, len(basket_properties)+5)
         if property_pick >= len(basket_properties):
-            # if we picked the last integer or higher, we will generate a fake property
-            # for which the answer should be 0
+            """
+            if we picked the last integer or higher, we will generate a fake property for which the answer should be 0
+            """
             property_ = self.get_random_property(basket_properties)
             self.object_count = 0
         else:
-            # if instead we picked an integer within the property range,
-            # let's retrieve the objects and count them
+            # if instead we picked an integer within the property range, let's retrieve the objects and count them
             property_ = basket_properties[property_pick]
             self.object_count = len(
                 rev_global_properties[basket][property_])
 
-        self.question = "how many objects are {property} in {owner}'s basket?".format(
-                            property=property_,
-                            owner=basket)
+        self.question = "how many objects are {property} in {owner}'s basket?".format(property=property_, owner=basket)
         self.set_message(self.question)
 
     def get_random_property(self, basket_properties):
@@ -720,8 +701,7 @@ class HowManyObjectsHaveACertainPropertyTask(BaseTask):
         while True:
             # generate random property
             property_ = "".join(random.sample(string.ascii_lowercase, random.randint(1, 10)))
-            # make sure this is not, by chance, identical to a real property
-            # in the relevant basket
+            # make sure this is not, by chance, identical to a real property in the relevant basket
             if property_ not in basket_properties:
                 break
         return property_
@@ -741,15 +721,19 @@ class HowManyObjectsHaveACertainPropertyTask(BaseTask):
             self.set_reward(1, random.choice(msg.congratulations))
         else:
             feedback = 'the right answer is: {answer}. please try again. '.format(
-                answer=msg.number_to_string(self.object_count))
+                    answer=msg.number_to_string(self.object_count))
             feedback += self.question
             self.set_message(feedback)
 
     @on_timeout()
     def give_away_answer(self, event):
-        # inform the answer randomly choosing a numeric or alphabetic format.
+        """ inform the answer randomly choosing a numeric or alphabetic format.
+
+        :param event:
+        :return:
+        """
         self.set_message('you are too slow. the right answer is: {answer}.'.format(
-            answer=msg.number_to_string(self.object_count)))
+                answer=msg.number_to_string(self.object_count)))
 
 
 class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
@@ -761,8 +745,7 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
 
         :param world:
         """
-        super(WhoHasACertainObjectWithACertainPropertyTask, self).__init__(
-            world=world, max_time=3500)
+        super(WhoHasACertainObjectWithACertainPropertyTask, self).__init__(world=world, max_time=3500)
 
     @on_start()
     def give_instructions(self, event):
@@ -773,24 +756,19 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
         :return:
         """
         object_, property_ = self.get_random_object_property()
-        # we find the set of baskets that have the relevant
-        # object and property combination
-        self.basket_set = set(basket for basket, object_properties
-                                in global_properties.items()
-                                if object_ in object_properties and
-                                   property_ in object_properties[object_])
-        # at this point, if baskets list is empty we add "nobody" as
-        # the only item in it
+        # we find the set of baskets that have the relevant object and property combination
+        self.basket_set = set(basket for basket, object_properties in global_properties.items(
+            ) if object_ in object_properties and property_ in object_properties[object_])
+        # at this point, if baskets list is empty we add "nobody" as the only item in it
         if not self.basket_set:
             self.basket_set.add('nobody')
 
         self.question = "who has {property_object} in the basket?".format(
-            property_object=msg.indef_article(property_ + " " + object_))
+                property_object=msg.indef_article(property_ + " " + object_))
         self.set_message(self.question)
 
         # building a regexp to match the answer
-        enum_re = delimiters.join(
-            [r'([a-z]+)'] * len(self.basket_set))
+        enum_re = delimiters.join([r'([a-z]+)'] * len(self.basket_set))
         # final string must be delimited by period
         enum_re += r'\.$'
         self.re_query = re.compile(enum_re)
@@ -801,16 +779,11 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
 
         :return:
         """
-        objects_set = set([object_
-                           for basket, object_properties
-                           in global_properties.items()
-                           for object_ in object_properties])
-        properties_set = set([property_
-                              for basket, property_objects
-                              in rev_global_properties.items()
-                              for property_ in property_objects])
-        # now we build a random object+property combination from the
-        # sets of objects and properties in both baskets
+        objects_set = set([object_ for basket, object_properties in global_properties.items(
+            ) for object_ in object_properties])
+        properties_set = set([property_ for basket, property_objects in rev_global_properties.items(
+            ) for property_ in property_objects])
+        # now we build a random object+property combination from the sets of objects and properties in both baskets
         object_ = random.choice(list(objects_set))
         property_ = random.choice(list(properties_set))
         return object_, property_
@@ -831,8 +804,7 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
             self.set_reward(1, random.choice(msg.congratulations))
         else:
             answer = self.get_shuffled_correct_baskets(self.basket_set)
-            feedback = 'the right answer is: {answer}. please try again. '.format(
-                answer=answer)
+            feedback = 'the right answer is: {answer}. please try again. '.format(answer=answer)
             feedback += self.question
             self.set_message(feedback)
 
@@ -845,9 +817,7 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
         :return:
         """
         answer = self.get_shuffled_correct_baskets(self.basket_set)
-        self.set_message('you are too slow. the right answer is: {answer}.'.format(
-            answer=answer
-        ))
+        self.set_message('you are too slow. the right answer is: {answer}.'.format(answer=answer))
 
     def get_shuffled_correct_baskets(self,ordered_correct_baskets):
         """
@@ -887,16 +857,13 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
                              object=object_,
                              owner=basket)
         self.set_message(self.question)
-        # construct the expected answer which is given by the
-        # properties of the object in the given basket minus
-        # the properties in all the rest of the baskets:
-        self.distinctive_properties_set = self.get_expected_answer(
-            object_, basket, object_baskets
-        )
+        """ construct the expected answer which is given by the properties of the object in the given basket minus
+        the properties in all the rest of the baskets:
+        """
+        self.distinctive_properties_set = self.get_expected_answer(object_, basket, object_baskets)
 
         # building a regexp to match the answer
-        enum_re = delimiters.join(
-            [r'([a-z]+)'] * len(self.distinctive_properties_set))
+        enum_re = delimiters.join([r'([a-z]+)'] * len(self.distinctive_properties_set))
         # final string must be delimited by period
         enum_re += r'\.$'
         self.re_query = re.compile(enum_re)
@@ -911,19 +878,14 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
         """
         # get the properties for the object in the chosen basket
         properties_in_basket = set(global_properties[basket][object_])
-        # get the list of properties that the object has in the given basket
-        # but not in the others.
+        # get the list of properties that the object has in the given basket but not in the others.
         properties_in_other_baskets = set(
-            prop for other_basket in object_baskets
-            for prop in global_properties[other_basket][object_]
-            if other_basket != basket)
-        # we finally the set of properties that the object only has in
-        # the selected basket
-        distinctive_properties_set = properties_in_basket - \
-            properties_in_other_baskets
+                prop for other_basket in object_baskets for prop in global_properties[
+                    other_basket][object_] if other_basket != basket)
+        # we finally the set of properties that the object only has in the selected basket
+        distinctive_properties_set = properties_in_basket - properties_in_other_baskets
 
-        # if distinctive properties set is empty we add "none" as
-        # the only item in it
+        # if distinctive properties set is empty we add "none" as the only item in it
         if not distinctive_properties_set:
             distinctive_properties_set.add('none')
         return distinctive_properties_set
@@ -939,10 +901,9 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
                 if obj not in baskets_with_object:
                     baskets_with_object[obj] = []
                 baskets_with_object[obj].append(basket)
-        # traverse baskets_with_object, keeping track of those objects
-        # that occur in more than one basket (otherwise the "only"
-        # question does not make sense due to a presuppostion
-        # violation)
+                """ traverse baskets_with_object, keeping track of those objects that occur in more than one basket
+                (otherwise the "only" question does not make sense due to a presuppostion violation)
+        """
         legit_objects = [obj for obj, baskets in baskets_with_object.items()
                              if len(baskets) > 1]
         # now we pick a random object from this list
@@ -1014,19 +975,15 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
         """
         object_, object_baskets = self.get_object_in_many_baskets()
         # ask the learner
-        self.question = "which properties does {object} have in all baskets?".format(
-                             object=object_)
+        self.question = "which properties does {object} have in all baskets?".format(object=object_)
         self.set_message(self.question)
-        # construct the expected answer which is given by the
-        # properties of the object in the given basket minus
-        # the properties in all the rest of the baskets:
-        self.shared_properties_set = self.get_expected_answer(
-            object_, object_baskets
-        )
+        """ construct the expected answer which is given by the properties of the object in the given basket minus
+        the properties in all the rest of the baskets:
+        """
+        self.shared_properties_set = self.get_expected_answer(object_, object_baskets)
 
         # building a regexp to match the answer
-        enum_re = delimiters.join(
-            [r'([a-z]+)'] * len(self.shared_properties_set))
+        enum_re = delimiters.join([r'([a-z]+)'] * len(self.shared_properties_set))
         # final string must be delimited by period
         enum_re += r'\.$'
         self.re_query = re.compile(enum_re)
@@ -1038,8 +995,7 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
         :param object_baskets:
         :return:
         """
-        shared_properties_set = set.intersection(*[
-            set(prop for prop in global_properties[basket][object_])
+        shared_properties_set = set.intersection(*[set(prop for prop in global_properties[basket][object_])
             for basket in object_baskets])
         # if set is empty, we put 'none' in it
         if len(shared_properties_set) == 0:
@@ -1057,16 +1013,15 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
                 if obj not in baskets_with_object:
                     baskets_with_object[obj] = []
                 baskets_with_object[obj].append(basket)
-        # traverse baskets_with_object, keeping track of those objects
-        # that occur in more than one basket (otherwise the "only"
-        # question does not make sense due to a presuppostion
-        # violation)
-        legit_objects = [obj for obj, baskets in baskets_with_object.items()
-                             if len(baskets) > 1]
-        # now we pick a random object from this list
-        object_ = random.choice(legit_objects)
-        # return the object together with the baskets where it occurs
-        return object_, baskets_with_object[object_]
+                """  traverse baskets_with_object, keeping track of those objects that occur in more than one
+                basket (otherwise the "only" question does not make sense due to a presuppostion violation)
+                    legit_objects = [obj for obj, baskets in baskets_with_object.items()
+                        if len(baskets) > 1]
+                now we pick a random object from this list
+                    object_ = random.choice(legit_objects)
+                return the object together with the baskets where it occurs
+                    return object_, baskets_with_object[object_]
+                """
 
     @on_message('\.')
     def check_response(self, event):
