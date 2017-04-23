@@ -10,22 +10,29 @@
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
 
+# TODO fix imports
 from core.task import Task, on_start, on_message, on_timeout, on_output_message
 from tasks.competition.base import BaseTask
 import logging
 import random
 
-# the small composition task use the following vocabulary:
-# V reverse function
-# P repeat function
-# O rotate function
-# C concatenate function
-# 0/1 alphabet for argument strings
+"""
+the small composition task use the following vocabulary:
+    V reverse function
+    P repeat function
+    O rotate function
+    C concatenate function
+    0/1 alphabet for argument strings
 
-# constant to keep same input string length across tasks
-max_string_length = 5
+constant to keep same input string length across tasks max_string_length = 5
+"""
 
 def return_random_01_sequence(L):
+    """
+
+    :param L:
+    :return:
+    """
     maxL=random.randint(1,L)
     random_string = ""
     for i in range(maxL):
@@ -33,15 +40,32 @@ def return_random_01_sequence(L):
     return random_string
 
 def repeat_sequence(repetitions,sequence):
+    """
+
+    :param repetitions:
+    :param sequence:
+    :return:
+    """
     repeated_sequence = ""
     for i in range(repetitions):
         repeated_sequence += sequence
     return repeated_sequence
 
 def reverse_sequence(sequence):
+    """
+
+    :param sequence:
+    :return:
+    """
     return sequence[::-1]
 
 def rotate_sequence(steps,sequence):
+    """
+
+    :param steps:
+    :param sequence:
+    :return:
+    """
     string_length = len(sequence)
     if (steps>=string_length):
         steps=steps%string_length
@@ -56,10 +80,12 @@ def rotate_sequence(steps,sequence):
     return rotated_sequence
 
 class ReverseXTask(Task):
+    """ NB: max_time will be dynamically adjusted below
+
+    """
     def __init__(self, world=None):
         super(ReverseXTask, self).__init__(world=world, max_time=0)
-        # NB: max_time will be dynamically adjusted below
-#        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger(__name__)
 
     @on_start()
     def give_instructions(self, event):
