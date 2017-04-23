@@ -24,24 +24,21 @@ class BaseTask(Task):
         """
         super(BaseTask, self).__init__(*args, **kwargs)
 
-    # ignore anything the learner says while the teacher is speaking
     @on_message()
     def on_any_message(self, event):
-        """
+        """ ignore anything the learner says while the teacher is speaking if the environment is speaking
 
         :param event:
         :return:
         """
-        # if the environment is speaking
         if not self._env.is_silent():
             # and the last message was not a silence
             if event.message[-1] != ' ':
                 # i will ignore what the learner just said by forgetting it
                 self.ignore_last_char()
 
-    # send out a silence to separate tasks if needed
     def deinit(self):
-        """
+        """ send out a silence to separate tasks if needed
 
         :return:
         """
