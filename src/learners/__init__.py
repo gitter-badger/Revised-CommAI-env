@@ -22,6 +22,7 @@ for each_module in modules:
 """
 Sets the user interface to get the user input
 """
+# TODO unresovled reference
 self._view = view
 
 
