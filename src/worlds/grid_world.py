@@ -96,8 +96,7 @@ class GWEntity(namedtuple('GWEntity', ('name', 'pickable', 'traversable'))):
 
 class GridWorld(World):
     """
-    This is an infinite grid world where there can be
-    objects layed around (pickable or not, traversable or not).
+    This is an infinite grid world where there can be objects layed around (pickable or not, traversable or not).
 
     Learner primitives:
 
@@ -113,9 +112,8 @@ class GridWorld(World):
 
     Attributes:
 
-        valid_directions[direction]: a mapping from the possible directions to
-        a vector that goes one step in that direction
-        (which can be added to a position).
+        valid_directions[direction]: a mapping from the possible directions to a vector that goes one step in that
+        direction (which can be added to a position).
 
     State variables:
 
@@ -123,17 +121,14 @@ class GridWorld(World):
 
         learner_direction: current direction the learner is facing to.
 
-        entities: contains the objects in the world (better if accessed with
-        the get_entity primitive).
+        entities: contains the objects in the world (better if accessed with the get_entity primitive).
 
-        learner_inventory: a mapping acting as a multiset of the objects that
-        the learner has.
+        learner_inventory: a mapping acting as a multiset of the objects that the learner has.
 
-        teacher_inventory: a mapping acting as a multiset of the objects that
-        the teacher has.
+        teacher_inventory: a mapping acting as a multiset of the objects that the teacher has.
 
-        teacher_accepts: a set of objects that the teacher is willing to accept
-        if the learner wants to give one to the teacher.
+        teacher_accepts: a set of objects that the teacher is willing to accept if the learner wants to give one to
+        the teacher.
     """
 
     def __init__(self, init_pos=(0, 0), init_direction='north'):
@@ -147,7 +142,6 @@ class GridWorld(World):
         self._init_direction = init_direction
         self.valid_directions = {'north': Span(0, -1), 'east': Span(1, 0), 'south': Span(0, 1), 'west': Span(-1, 0)}
         self.clockwise_directions = ['north', 'east', 'south', 'west']
-        ''''''
         self.logger = logging.getLogger(__name__)
 
     def put_entity(self, position, name, pickable, traversable):
@@ -161,10 +155,8 @@ class GridWorld(World):
         :return:
         """
         self.state.entities[position] = GWEntity(name, pickable, traversable)
-        self.logger.info('Droped an entity {0} at position {1}'.format(
-            name, position))
+        self.logger.info('Droped an entity {0} at position {1}'.format(name, position))
 
-    ''''''
     def remove_entity(self, position):
         """ returns the entity at the given position.
 
@@ -174,8 +166,7 @@ class GridWorld(World):
         if position in self.state.entities:
             entity_name = self.state.entities[position].name
             del(self.state.entities[position])
-            self.logger.info('Removed an entity {0} at position {1}'.format(
-                entity_name, position))
+            self.logger.info('Removed an entity {0} at position {1}'.format(entity_name, position))
         else:
             self.logger.warn("Asked to remove a non-existent entity "
                              "at position {0}".format(position))
@@ -253,15 +244,10 @@ class GridWorld(World):
         :param event:
         :return:
         """
-        look_pos = self.state.learner_pos + \
-            self.valid_directions[self.state.learner_direction]
-        self.logger.debug("Looking at position {0} with entities {1}".format(
-            look_pos, self.state.entities
-        ))
+        look_pos = self.state.learner_pos + self.valid_directions[self.state.learner_direction]
+        self.logger.debug("Looking at position {0} with entities {1}".format(look_pos, self.state.entities))
         if look_pos in self.state.entities:
-            self.set_message("There is a {0}.".format(
-                self.state.entities[look_pos]
-            ))
+            self.set_message("There is a {0}.".format(self.state.entities[look_pos]))
         else:
             self.set_message("There is nothing here.")
 
@@ -273,10 +259,8 @@ class GridWorld(World):
         :return:
         """
         obj_name = event.get_match(1)
-        obj_pos = self.state.learner_pos + \
-            self.valid_directions[self.state.learner_direction]
-        if obj_pos in self.state.entities and \
-                obj_name == self.state.entities[obj_pos].name:
+        obj_pos = self.state.learner_pos + self.valid_directions[self.state.learner_direction]
+        if obj_pos in self.state.entities and obj_name == self.state.entities[obj_pos].name:
             # There is an object with the given name here
             if self.state.entities[obj_pos].pickable:
                 # We pick it up
@@ -294,11 +278,9 @@ class GridWorld(World):
         if object_ in self.state.teacher_accepts:
             self.state.learner_inventory[object_] -= 1
             self.state.teacher_inventory[object_] += 1
-            self.set_message("You gave me {indef_object}.".format(
-                indef_object=msg.indef_article(object_)))
+            self.set_message("You gave me {indef_object}.".format(indef_object=msg.indef_article(object_)))
         else:
-            self.set_message("I haven't asked you for {indef_object}.".format(
-                indef_object=msg.indef_article(object_)))
+            self.set_message("I haven't asked you for {indef_object}.".format(indef_object=msg.indef_article(object_)))
 
     '''
 
@@ -321,9 +303,7 @@ class GridWorld(World):
         :param d:
         :return:
         """
-        return self.clockwise_directions[
-            (self.clockwise_directions.index(
-                self.state.learner_direction) + d) % 4]
+        return self.clockwise_directions[(self.clockwise_directions.index(self.state.learner_direction) + d) % 4]
 
     def move_forward(self, dz):
         """
@@ -356,8 +336,7 @@ class GridWorld(World):
         :param p:
         :return:
         """
-        return p not in self.state.entities or \
-            self.state.entities[p].traversable
+        return p not in self.state.entities or self.state.entities[p].traversable
 
     def __str__(self):
         """ Creates a grid world representation as a string
@@ -374,9 +353,7 @@ class GridWorld(World):
         l = []
         l.append(' ' * (cell_w + 1))
         for j in range(grid_w):
-            l.append('{0: >{length}d} '.format(
-                self.state.learner_pos.x - int(cell_w / 2) - 1 + j,
-                length=cell_w))
+            l.append('{0: >{length}d} '.format(self.state.learner_pos.x - int(cell_w / 2) - 1 + j, length=cell_w))
         lines.append(''.join(l))
         l = []
         l.append(' ' * (cell_w + 1))
@@ -392,9 +369,8 @@ class GridWorld(World):
                 l = []
                 if k == 0:
                     # print the coordinates
-                    l.append('{0: >{length}d} '.format(
-                        self.state.learner_pos.y - int(cell_h / 2) - 1 + i,
-                        length=cell_w))
+                    l.append('{0: >{length}d} '.format(self.state.learner_pos.y - int(cell_h / 2) - 1 + i,
+                                                       length=cell_w))
                 else:
                     l.append(' ' * (cell_w + 1))
                 l.append('+')
@@ -404,16 +380,12 @@ class GridWorld(World):
                     absolute_j = self.state.learner_pos.x + j - int(grid_w / 2)
                     absolute_pos = Point(absolute_j, absolute_i)
                     if i == int(grid_h / 2) and j == int(grid_w / 2):
-                        # we print the learner in the middle, using its
-                        # facing direction first character
+                        # we print the learner in the middle, using its facing direction first character
                         l.append(self.state.learner_direction[0] * cell_w)
                     elif absolute_pos in self.state.entities:
                         e = self.state.entities[absolute_pos]
-                        # if there is an object, we fit as much as we can
-                        # of the name
-                        l.append('{0: <{length}}'.format(
-                            e.name[k * cell_w:(k + 1) * cell_w],
-                            length=cell_w))
+                        # if there is an object, we fit as much as we can of the name
+                        l.append('{0: <{length}}'.format(e.name[k * cell_w:(k + 1) * cell_w], length=cell_w))
                     else:
                         l.append(' ' * cell_w)
                     l.append('+')
