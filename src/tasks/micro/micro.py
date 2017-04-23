@@ -13,11 +13,9 @@
 from core.task import on_start, on_message, on_timeout
 from tasks.competition.base import BaseTask
 import random
-import string
-import re
 
-# list of congratulation and failed messages, in case we
-# want to play with it
+
+# list of congratulation and failed messages, in case we want to play with it
 micro_congratulations = ['correct.']
 # a list of congratulations messages to be issued when the learner fails a task
 micro_failed = ['wrong: ']
