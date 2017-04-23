@@ -3,23 +3,30 @@
 # Copyright (c) 2017-, Stephen B. Hope
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 
-
+# TODO fix imports
 from core.task import on_start, on_message, on_timeout
 from tasks.competition.base import BaseTask
 import tasks.competition.messages as msg
 import random
-
-# global data structures to be called by multiple tasks
-
-# a dictionary with all possible objects in the vocabulary
+"""
+global data structures to be called by multiple tasks, a dictionary with all possible objects in the vocabulary
+"""
 vocabulary = {
-    0: "apple", 1: "banana", 2: "beet", 3: "carrot", 4: "cucumber", 5: "mango",
-    6: "onion", 7: "pear", 8: "pineapple", 9: "potato", 10: "tomato"}
+    0: "apple",
+    1: "banana",
+    2: "beet",
+    3: "carrot",
+    4: "cucumber",
+    5: "mango",
+    6: "onion",
+    7: "pear",
+    8: "pineapple",
+    9: "potato",
+    10: "tomato"}
 
 # maximum number of objects to list
 max_total = 10
@@ -41,6 +48,7 @@ class SimpleCountingTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used, separator not used
         """
 
         :param event:
@@ -80,15 +88,10 @@ class SimpleCountingTask(BaseTask):
 
         self.answer = msg.numbers_in_words[counter.get(object_in_question, 0)]
 
-        self.give_away_message = 'Wrong. The right answer is: {answer}.'.format(
-            answer=self.answer
-        )
+        self.give_away_message = 'Wrong. The right answer is: {answer}.'.format(answer=self.answer)
 
-        self.set_message("I have {listing_objects}. How many {object} do I have? "\
-            .format(
-                listing_objects=partial_message,
-                object=msg.pluralize(object_in_question, 2)
-        ))
+        self.set_message("I have {listing_objects}. How many {object} do I have? "
+            .format(                listing_objects=partial_message, object=msg.pluralize(object_in_question, 2)))
 
     @on_message(r'\.')
     def check_response(self, event):
@@ -98,8 +101,10 @@ class SimpleCountingTask(BaseTask):
         :return:
         """
         if event.is_message(self.answer, '.'):
-            # if the message sent by the learner equals the teacher's
-            # expected answer followed by a period, reward the learner.
+            """
+            if the message sent by the learner equals the teacher's expected answer followed by a period, reward
+            the learner.
+            """
             self.set_reward(1, random.choice(msg.congratulations))
         else:
             # If the learner said anything else, it fails the task.
@@ -107,19 +112,18 @@ class SimpleCountingTask(BaseTask):
 
     @on_timeout()
     def on_timeout(self, event):
-        """
+        # TODO event not used
+        """ if the learner has not produced any plausible answer by the max_time allowed, fail the learner sending
+        # appropriate feedback.
 
         :param event:
         :return:
         """
-        # if the learner has not produced any plausible answer by the max_time
-        # allowed, fail the learner sending appropriate feedback.
         self.fail_learner()
 
     def fail_learner(self):
-        """
+        """ fail the learner sending a random fail feedback message
 
         :return:
         """
-        # fail the learner sending a random fail feedback message
         self.set_reward(0, self.give_away_message)
