@@ -89,8 +89,7 @@ class TestRepetitionTasks(unittest.TestCase):
         # stay silent until the end
         while m.is_silent():
             m.send()
-        self.assertEqual(m.get_cumulative_reward(), 0,
-                         "The correct answer must be an exact match.")
+        self.assertEqual(m.get_cumulative_reward(), 0, "The correct answer must be an exact match.")
 
     def timeout_test(self, m, get_correct_answer):
         """
@@ -108,18 +107,16 @@ class TestRepetitionTasks(unittest.TestCase):
             m.send()
         # hear the correction
         self.check_negative_feedback(m, answer)
-        self.assertEqual(m.get_cumulative_reward(), 0,
-                         "Doing nothing is not a solution")
+        self.assertEqual(m.get_cumulative_reward(), 0, "Doing nothing is not a solution")
 
     def repeat_everything(self, m, get_correct_answer):
         # TODO get_correct_answer not ussed
-        """
+        """ first, send one silence
 
         :param m:
         :param get_correct_answer:
         :return:
         """
-        # first, send one silence
         m.send()
         while not m.is_silent():
             # repeat the previous char sent by the teacher
@@ -287,7 +284,7 @@ class TestRepetitionTasks(unittest.TestCase):
             :return:
             """
             answer, n = m.search_last_message(r"(?:{verb}) (.*) (\w+) times separated".format(
-                            verb="|".join(repetition.verbs),  context="|".join(repetition.context)))
+                    verb="|".join(repetition.verbs),  context="|".join(repetition.context)))
             return ", ".join([answer] * msg.string_to_number(n))
         self.do_test_battery(repetition.RepeatWhatISayMultipleTimesSeparatedByCommaTask, get_correct_answer)
 
