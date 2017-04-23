@@ -6,9 +6,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the# LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 import core.environment as environment
@@ -105,8 +104,7 @@ class EnvironmentMessenger:
             # save the reward
             if reward is not None:
                 self.cum_reward += reward
-                # a reward marks the end of a task for now, so clear
-                # the buffers
+                # a reward marks the end of a task for now, so clear the buffers
             nbits += 1
         return nbits
 
@@ -128,8 +126,7 @@ class EnvironmentMessenger:
         input_text = self._input_channel.get_text()
         # remove the trailing silences
         input_text = input_text.rstrip(self._serializer.SILENCE_TOKEN)
-        # find the point where the last message started
-        # (after at least n_silence tokens)
+        # find the point where the last message started (after at least n_silence tokens)
         last_silence = input_text.rfind(self._serializer.SILENCE_TOKEN * n_silence)
         if last_silence == -1:
             return input_text
