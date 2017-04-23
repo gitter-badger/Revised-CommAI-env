@@ -10,6 +10,7 @@
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
 
+# TODO fix imports
 import unittest
 import tasks.micro.small_comp as small_comp
 from tasks.competition.tests.helpers import task_messenger
@@ -17,12 +18,17 @@ from core.serializer import IdentitySerializer
 
 
 class TestSmallCompTasks(unittest.TestCase):
-
-    #
-    # helper methods
-    #
-
+    """
+    helper methods
+    """
     def _test_solution(self, Task, get_answer, answer_correct=True):
+        """
+
+        :param Task:
+        :param get_answer:
+        :param answer_correct:
+        :return:
+        """
         sign = answer_correct and 1 or -1
         with task_messenger(Task,
                             serializer=IdentitySerializer()) as m:
@@ -41,27 +47,38 @@ class TestSmallCompTasks(unittest.TestCase):
                 m.send(answer)
                 # get the next task going
                 m.send()
-
-    #
-    # unit tests
-    #
-
+"""
+unit tests
+"""
     def testReverseXTask(self):
-        # function that reads the instructions and produces the correct answer
+        """ function that reads the instructions and produces the correct answer
+
+        :param self:
+        :return:
+        """
         def get_correct_answer(m):
+            """
+
+            :param m:
+            :return:
+            """
             answer, = m.search_full_message(r"V([01]*)\.$")
             return answer[::-1]
 
         # function that reads the instructions and produces an incorrect answer
         def get_incorrect_answer_impatient(m):
+            """
+
+            :param m:
+            :return:
+            """
             answer, = m.search_full_message(r"V([01]*)\.$")
             return "1" if answer[-1] == "0" else "0"
 
         # try to solve correctly
         self._test_solution(small_comp.ReverseXTask, get_correct_answer, True)
         # try to solve incorrectly with an impatient teacher
-        self._test_solution(small_comp.ReverseXTask,
-                            get_incorrect_answer_impatient, False)
+        self._test_solution(small_comp.ReverseXTask, get_incorrect_answer_impatient, False)
 
 
 def main():
