@@ -10,7 +10,7 @@
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
 
-
+# TODO fix imports
 import unittest
 from core import serializer
 
@@ -39,20 +39,13 @@ class TestSerializer(unittest.TestCase):
         """
         slzr = serializer.ScramblingSerializerWrapper(
             serializer.StandardSerializer())
-        self.assertEqual(slzr.tokenize("a b"),
-                         [("a", "WORD"), (" ", 'SILENCE'), ('b', 'WORD')])
-        self.assertEqual(slzr.tokenize("a  b"),
-                         [("a", "WORD"), (" ", 'SILENCE'), (" ", 'SILENCE'),
-                          ('b', 'WORD')])
-        self.assertEqual(slzr.tokenize("a b "),
-                         [("a", "WORD"), (" ", 'SILENCE'), ('b', 'WORD'),
-                          (' ', 'SILENCE')])
-        self.assertEqual(slzr.tokenize("a b, "),
-                         [("a", "WORD"), (" ", 'SILENCE'), ('b', 'WORD'),
-                          (',', 'PUNCT'), (' ', 'SILENCE')])
-        self.assertEqual(slzr.tokenize("a b ."),
-                         [("a", "WORD"), (" ", 'SILENCE'), ('b', 'WORD'),
-                          (' ', 'SILENCE'), ('.', 'PUNCT')])
+        self.assertEqual(slzr.tokenize("a b"), [("a", "WORD"), (" ", 'SILENCE'), ('b', 'WORD')])
+        self.assertEqual(slzr.tokenize("a  b"), [("a", "WORD"), (" ", 'SILENCE'), (" ", 'SILENCE'), ('b', 'WORD')])
+        self.assertEqual(slzr.tokenize("a b "), [("a", "WORD"), (" ", 'SILENCE'), ('b', 'WORD'), (' ', 'SILENCE')])
+        self.assertEqual(slzr.tokenize("a b, "), [("a", "WORD"), (" ", 'SILENCE'), ('b', 'WORD'),
+                                                  (',', 'PUNCT'), (' ', 'SILENCE')])
+        self.assertEqual(slzr.tokenize("a b ."), [("a", "WORD"), (" ", 'SILENCE'), ('b', 'WORD'), (' ', 'SILENCE'),
+                                                  ('.', 'PUNCT')])
 
 
 def main():
