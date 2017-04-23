@@ -1,6 +1,6 @@
 # Revised-CommAI-env
 A standard environment for machine learning and general AI research
- <a href="https://www.patreon.com/bePatron?u=5636094" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+ <a href="https://www.patreon.com/bePatron?u=5636094" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
 
 #### The Revised-CommAI-env, Pre-Release Ver. 0.1
 Copyright (c) 2017, Stephen B. Hope, All rights reserved, see LICENSE.md for details.
@@ -15,7 +15,7 @@ I am seeking contributions in any form. You may open a discussion by clicking th
 New Issue. Pull Requests are welcome at any time, before coding please check in as the code is being updated several
 times a day and may diverge from your work.
 
-Service access, financial donations, or any form of sponsorship would be very welcome.   <a href="https://www.patreon.com/bePatron?u=5636094" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+Service access, financial donations, or any form of sponsorship would be very welcome.   <a href="https://www.patreon.com/bePatron?u=5636094" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
 
 #### Stephen Hope
 Ottawa, Canada
