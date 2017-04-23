@@ -10,6 +10,7 @@
 # LICENSE file in the root directory of this source tree. An additional grant
 # of patent rights can be found in the PATENTS file in the same directory.
 
+# TODO fix imports
 import unittest
 import core.task as task
 import core.session as session
@@ -58,6 +59,7 @@ class EnvironmentMock(object):
         return token, 1
 
     def raise_event(self, event):
+        # TODO static
         """
 
         :param event:
@@ -66,6 +68,7 @@ class EnvironmentMock(object):
         pass
 
     def set_task_scheduler(self, ts):
+        # TODO static
         """
 
         :param ts:
@@ -79,6 +82,7 @@ class LearnerMock(object):
 
     """
     def next(self, token):
+        # TODO static
         """
 
         :param token:
@@ -87,6 +91,7 @@ class LearnerMock(object):
         return token
 
     def try_reward(self, r):
+        # TODO static
         """
 
         :param r:
@@ -114,6 +119,7 @@ class SingleTaskScheduler:
         return self.task
 
     def reward(self, reward):
+        # TODO static
         """
 
         :param reward:
@@ -132,8 +138,7 @@ class TestSession(unittest.TestCase):
 
         :return:
         """
-        env = environment.Environment(serializer.StandardSerializer(),
-                                      SingleTaskScheduler(NullTask()))
+        env = environment.Environment(serializer.StandardSerializer(), SingleTaskScheduler(NullTask()))
         learner = LearnerMock()
         s = session.Session(env, learner)
 
