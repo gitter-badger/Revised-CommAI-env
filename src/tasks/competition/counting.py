@@ -43,8 +43,7 @@ class SimpleCountingTask(BaseTask):
 
         :param world:
         """
-        super(SimpleCountingTask, self).__init__(
-            world=world, max_time=3000)
+        super(SimpleCountingTask, self).__init__(world=world, max_time=3000)
 
     @on_start()
     def give_instructions(self, event):
@@ -90,8 +89,8 @@ class SimpleCountingTask(BaseTask):
 
         self.give_away_message = 'Wrong. The right answer is: {answer}.'.format(answer=self.answer)
 
-        self.set_message("I have {listing_objects}. How many {object} do I have? "
-            .format(                listing_objects=partial_message, object=msg.pluralize(object_in_question, 2)))
+        self.set_message("I have {listing_objects}. How many {object} do I have? ".format(
+                listing_objects=partial_message, object=msg.pluralize(object_in_question, 2)))
 
     @on_message(r'\.')
     def check_response(self, event):
