@@ -1,9 +1,8 @@
 # Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 import unittest
@@ -16,17 +15,21 @@ global_properties = objects_properties.global_properties
 
 
 class TestObjectsProperties(unittest.TestCase):
-
-    #
-    # helper methods
-    #
+    """
+    helper methods
+    """
     def check_positive_feedback(self, m, instructions, answer):
-        # hear the congratulations
+        """ hear the congratulations
+
+        :param m:
+        :param instructions:
+        :param answer:
+        :return:
+        """
         feedback_blen = m.read()
         # there is some feedback
-        self.assertGreater(feedback_blen,
-                           0, "answering '{0}' to query '{1}' didn't work.".format(answer,
-                           instructions))m.send()
+        self.assertGreater(feedback_blen, 0,
+                           "answering '{0}' to query '{1}' didn't work.".format(answer, instructions))m.send()
         self.assertEqual(m.get_cumulative_reward(), 1,
                          "answering '{0}' to query '{1}' didn't work.".format(answer, instructions))
 
@@ -38,19 +41,15 @@ class TestObjectsProperties(unittest.TestCase):
         :return:
         """
         m.read()
-        answer, = m.search_last_message(
-            r"(?:one|the) right \w+ (?:is|are): (.+)\.$")
+        answer, = m.search_last_message(r"(?:one|the) right \w+ (?:is|are): (.+)\.$")
         m.send()
 
         try:
-            # the answer could be a space-separated list that
-            # solves the task in any order
-            self.assertEqual(set(self.string_to_enum(exp_answer)),
-                             set(self.string_to_enum(answer)),
+            # the answer could be a space-separated list that solves the task in any order
+            self.assertEqual(set(self.string_to_enum(exp_answer)), set(self.string_to_enum(answer)),
                              "{0} != {1}".format(exp_answer, answer))
         except AttributeError:
-            # exp_answer is not a string and thus,
-            # the expected answer is a collection of possibilities
+            # exp_answer is not a string and thus, the expected answer is a collection of possibilities
             self.assertIn(answer, exp_answer)
 
     def solve_correctly_test(self, m, get_correct_answer):
@@ -80,13 +79,12 @@ class TestObjectsProperties(unittest.TestCase):
         m.read_until(get_correct_answer)
         # get the answer
         answer = get_correct_answer(m)[0]
-        # borderline condition: send the first character and
-        # check that the teacher hasn't just stopped talking
-        # (if it did, then this would be a good response, and it's not
-        # what we are testing here)
+        """
+        # borderline condition: send the first character and check that the teacher hasn't just stopped talking
+        # (if it did, then this would be a good response, and it's not what we are testing here)
+        """
         m.send(answer[0])
-        self.assertFalse(m.is_silent(), "failed to interrupt teacher: "
-                                        "correct answer detected too late.")
+        self.assertFalse(m.is_silent(), "failed to interrupt teacher: " "correct answer detected too late.")
         # send the rest of the answer with the termination marker
         m.send("{0}.".format(answer[1:]))
         # interrupting the teacher shouldn't have worked for us
@@ -114,8 +112,7 @@ class TestObjectsProperties(unittest.TestCase):
         m.read()
         # get the answer
         answer = get_correct_answer(m)
-        # check if the answer is a collection of possibilities or just
-        # one option
+        # check if the answer is a collection of possibilities or just one option
         answer = answer[1] if len(answer) > 1 else answer[0]
         # stay silent
         while m.is_silent():
@@ -158,15 +155,14 @@ class TestObjectsProperties(unittest.TestCase):
         :return:
         """
         splitting = strlst.split
-        for sep in sorted(self.separators,
-                          key=lambda x: -len(x)):
+        for sep in sorted(self.separators, key=lambda x: -len(x)):
             if sep in strlst:
                 return splitting(sep)
         return [strlst]
 
-    #
-    # tasks testing routines
-    #
+"""
+tasks testing routines
+"""
     def testAssociateObjectWithProperty(self):
         """
 
@@ -180,9 +176,8 @@ class TestObjectsProperties(unittest.TestCase):
             """
             # find the answer in the instructions
             property_, = m.search_last_message(r"basket is (\w+)")
-            return property_,
-        self.do_test_battery(objects_properties.AssociateObjectWithPropertyTask,
-                             get_correct_answer)
+            return property_, self.do_test_battery(objects_properties.AssociateObjectWithPropertyTask,
+                                                   get_correct_answer)
 
     def testVerifyThatObjectHasProperty(self):
         """
@@ -195,8 +190,7 @@ class TestObjectsProperties(unittest.TestCase):
             :param m:
             :return:
             """
-            object_, property_, basket = m.search_last_message(
-                r"(\w+) (\w+) in (\w+)'s")
+            object_, property_, basket = m.search_last_message(r"(\w+) (\w+) in (\w+)'s")
             self.assertIn(basket, global_properties)
             self.assertIn(object_, global_properties[basket])
             # send the answer with the termination marker
@@ -205,8 +199,7 @@ class TestObjectsProperties(unittest.TestCase):
             else:
                 answer = "no"
             return answer,
-        self.do_test_battery(objects_properties.VerifyThatObjectHasPropertyTask,
-                             get_correct_answer)
+        self.do_test_battery(objects_properties.VerifyThatObjectHasPropertyTask, get_correct_answer)
 
     def testListPropertiesOfAnObject(self):
         """
@@ -219,14 +212,11 @@ class TestObjectsProperties(unittest.TestCase):
             :param m:
             :return:
             """
-            object_, basket = m.search_last_message(
-                r"does (\w+) have in (\w+)'s")
+            object_, basket = m.search_last_message(r"does (\w+) have in (\w+)'s")
             self.assertIn(basket, global_properties)
             self.assertIn(object_, global_properties[basket])
             answer = self.enum_to_string(global_properties[basket][object_])
-            return answer,
-        self.do_test_battery(objects_properties.ListPropertiesOfAnObjectTask,
-                             get_correct_answer)
+            return answer, self.do_test_battery(objects_properties.ListPropertiesOfAnObjectTask, get_correct_answer)
 
     def testNameAPropertyOfAnObject(self):
         """
@@ -245,8 +235,7 @@ class TestObjectsProperties(unittest.TestCase):
             all_answers = global_properties[basket][object_]
             answer = random.choice(all_answers)
             return answer, all_answers
-        self.do_test_battery(objects_properties.NameAPropertyOfAnObjectTask,
-                             get_correct_answer)
+        self.do_test_battery(objects_properties.NameAPropertyOfAnObjectTask, get_correct_answer)
 
     def testHowManyPropertiesDoesAnObjectHave(self):
         """
@@ -261,8 +250,7 @@ class TestObjectsProperties(unittest.TestCase):
             """
             object_, basket = m.search_last_message(
                 r"does (\w+) have in (\w+)'s")
-            if basket in global_properties and \
-                    object_ in global_properties[basket]:
+            if basket in global_properties and object_ in global_properties[basket]:
                 props = global_properties[basket][object_]
                 all_answers = [str(len(props))]
                 if len(props) <= len(msg.numbers_in_words):
@@ -271,9 +259,7 @@ class TestObjectsProperties(unittest.TestCase):
                 all_answers = ["0", "zero"]
             answer = random.choice(all_answers)
             return answer, all_answers
-        self.do_test_battery(
-            objects_properties.HowManyPropertiesDoesAnObjectHaveTask,
-            get_correct_answer)
+        self.do_test_battery(objects_properties.HowManyPropertiesDoesAnObjectHaveTask, get_correct_answer)
 
     def testListObjectsWithACertainProperty(self):
         """
@@ -286,17 +272,12 @@ class TestObjectsProperties(unittest.TestCase):
             :param m:
             :return:
             """
-            property_, basket = m.search_last_message(
-                r"objects are (\w+) in (\w+)'s")
+            property_, basket = m.search_last_message(r"objects are (\w+) in (\w+)'s")
             self.assertIn(basket, global_properties)
-            answer = [object_ for object_ in
-                        global_properties[basket]
-                        if property_ in
-                        global_properties[basket][object_]]
+            answer = [object_ for object_ in global_properties[basket] if property_ in
+                      global_properties[basket][object_]]
             return " ".join(answer),
-        self.do_test_battery(
-            objects_properties.ListObjectsWithACertainPropertyTask,
-            get_correct_answer)
+        self.do_test_battery(objects_properties.ListObjectsWithACertainPropertyTask, get_correct_answer)
 
     def testNameAnObjectWithAProperty(self):
         """
@@ -311,17 +292,12 @@ class TestObjectsProperties(unittest.TestCase):
             """
             property_, basket = m.search_last_message(r"is (\w+) in (\w+)'s")
             self.assertIn(basket, global_properties)
-            all_answers = [object_ for object_ in
-                            global_properties[basket]
-                            if property_ in
-                            global_properties[basket][object_]]
+            all_answers = [object_ for object_ in global_properties[basket] if property_ in
+                           global_properties[basket][object_]]
             answer = random.choice(all_answers)
-            self.assertTrue(all_answers, "There are no objects {0} "
-                            "in {1}'s basket".format(property_, basket))
+            self.assertTrue(all_answers, "There are no objects {0} " "in {1}'s basket".format(property_, basket))
             return answer, all_answers
-        self.do_test_battery(
-            objects_properties.NameAnObjectWithAPropertyTask,
-            get_correct_answer)
+        self.do_test_battery(objects_properties.NameAnObjectWithAPropertyTask, get_correct_answer)
 
     def testHowManyObjectsHaveACertainProperty(self):
         """
@@ -334,23 +310,17 @@ class TestObjectsProperties(unittest.TestCase):
             :param m:
             :return:
             """
-            property_, basket = m.search_last_message(
-                r"objects are (\w+) in (\w+)'s")
+            property_, basket = m.search_last_message(r"objects are (\w+) in (\w+)'s")
             self.assertIn(basket, global_properties)
-            objects = [object_ for object_ in
-                            global_properties[basket]
-                            if property_ in
-                            global_properties[basket][object_]]
+            objects = [object_ for object_ in global_properties[basket] if property_ in
+                       global_properties[basket][object_]]
             num_objects = len(objects)
             all_answers = [str(num_objects)]
             if num_objects <= len(msg.numbers_in_words):
-                all_answers.append(
-                    msg.numbers_in_words[num_objects])
+                all_answers.append(msg.numbers_in_words[num_objects])
             answer = random.choice(all_answers)
             return answer, all_answers
-        self.do_test_battery(
-            objects_properties.HowManyObjectsHaveACertainPropertyTask,
-            get_correct_answer)
+        self.do_test_battery(objects_properties.HowManyObjectsHaveACertainPropertyTask, get_correct_answer)
 
     def testWhoHasACertainObjectWithACertainProperty(self):
         """
@@ -363,20 +333,15 @@ class TestObjectsProperties(unittest.TestCase):
             :param m:
             :return:
             """
-            property_, object_ = m.search_last_message(
-                r"(\w+) (\w+) in the")
-            baskets = [basket for basket, object_props in
-                        global_properties.items()
-                        if object_ in object_props and
-                        property_ in object_props[object_]]
+            property_, object_ = m.search_last_message(r"(\w+) (\w+) in the")
+            baskets = [basket for basket, object_props in global_properties.items() if object_ in object_props and
+                       property_ in object_props[object_]]
             if not baskets:
                 answer = "nobody"
             else:
                 answer = " ".join(baskets)
             return answer,
-        self.do_test_battery(
-            objects_properties.WhoHasACertainObjectWithACertainPropertyTask,
-            get_correct_answer)
+        self.do_test_battery(objects_properties.WhoHasACertainObjectWithACertainPropertyTask, get_correct_answer)
 
     def testListThePropertiesThatAnObjectHasInABasketOnly(self):
         """
@@ -389,13 +354,11 @@ class TestObjectsProperties(unittest.TestCase):
             :param m:
             :return:
             """
-            object_, basket = m.search_last_message(
-                r"(\w+) have in (\w+)'s")
+            object_, basket = m.search_last_message(r"(\w+) have in (\w+)'s")
             self.assertIn(basket, global_properties)
             self.assertIn(object_, global_properties[basket])
             properties = set(global_properties[basket][object_])
-            comp_baskets_props = set.union(
-                *[set(object_props[object_])
+            comp_baskets_props = set.union(*[set(object_props[object_])
                     for basket2, object_props in
                     global_properties.items() if basket2 != basket])
             properties_basket_only = properties - comp_baskets_props
@@ -404,9 +367,7 @@ class TestObjectsProperties(unittest.TestCase):
             else:
                 answer = "none"
             return answer,
-        self.do_test_battery(
-            objects_properties.ListThePropertiesThatAnObjectHasInABasketOnlyTask,
-            get_correct_answer)
+        self.do_test_battery(objects_properties.ListThePropertiesThatAnObjectHasInABasketOnlyTask, get_correct_answer)
 
         def testListThePropertiesThatAnObjectHasInAllBaskets(self):
             """
@@ -432,9 +393,8 @@ class TestObjectsProperties(unittest.TestCase):
                 else:
                     answer = "none"
                 return answer,
-            self.do_test_battery(
-                objects_properties.ListThePropertiesThatAnObjectHasInAllBasketsTask,
-                get_correct_answer)
+            self.do_test_battery(objects_properties.ListThePropertiesThatAnObjectHasInAllBasketsTask,
+                                 get_correct_answer)
 
 
 def main():
