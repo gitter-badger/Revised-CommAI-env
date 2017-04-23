@@ -80,8 +80,7 @@ class SampleMemorizingLearner(BaseLearner):
         """
         self.memory = ''
         self.teacher_stopped_talking = False
-        # the learner has the serialization hardcoded to
-        # detect spaces
+        # the learner has the serialization hardcoded to detect spaces
         self.serializer = StandardSerializer()
         self.silence_code = self.serializer.to_binary(' ')
         self.silence_i = 0
