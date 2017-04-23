@@ -176,8 +176,8 @@ tasks testing routines
             """
             # find the answer in the instructions
             property_, = m.search_last_message(r"basket is (\w+)")
-            return property_, self.do_test_battery(objects_properties.AssociateObjectWithPropertyTask,
-                                                   get_correct_answer)
+            return property_, self.do_test_battery(
+                    objects_properties.AssociateObjectWithPropertyTask, get_correct_answer)
 
     def testVerifyThatObjectHasProperty(self):
         """
@@ -274,8 +274,8 @@ tasks testing routines
             """
             property_, basket = m.search_last_message(r"objects are (\w+) in (\w+)'s")
             self.assertIn(basket, global_properties)
-            answer = [object_ for object_ in global_properties[basket] if property_ in
-                      global_properties[basket][object_]]
+            answer = [object_ for object_ in global_properties[basket] if property_
+                      in global_properties[basket][object_]]
             return " ".join(answer),
         self.do_test_battery(objects_properties.ListObjectsWithACertainPropertyTask, get_correct_answer)
 
@@ -292,8 +292,8 @@ tasks testing routines
             """
             property_, basket = m.search_last_message(r"is (\w+) in (\w+)'s")
             self.assertIn(basket, global_properties)
-            all_answers = [object_ for object_ in global_properties[basket] if property_ in
-                           global_properties[basket][object_]]
+            all_answers = [
+                object_ for object_ in global_properties[basket] if property_ in global_properties[basket][object_]]
             answer = random.choice(all_answers)
             self.assertTrue(all_answers, "There are no objects {0} " "in {1}'s basket".format(property_, basket))
             return answer, all_answers
@@ -312,8 +312,8 @@ tasks testing routines
             """
             property_, basket = m.search_last_message(r"objects are (\w+) in (\w+)'s")
             self.assertIn(basket, global_properties)
-            objects = [object_ for object_ in global_properties[basket] if property_ in
-                       global_properties[basket][object_]]
+            objects = [
+                object_ for object_ in global_properties[basket] if property_ in global_properties[basket][object_]]
             num_objects = len(objects)
             all_answers = [str(num_objects)]
             if num_objects <= len(msg.numbers_in_words):
@@ -334,8 +334,10 @@ tasks testing routines
             :return:
             """
             property_, object_ = m.search_last_message(r"(\w+) (\w+) in the")
-            baskets = [basket for basket, object_props in global_properties.items() if object_ in object_props and
-                       property_ in object_props[object_]]
+            baskets = [basket for basket, object_props
+                       in global_properties.items() if object_
+                       in object_props and property_
+                       in object_props[object_]]
             if not baskets:
                 answer = "nobody"
             else:
@@ -359,8 +361,7 @@ tasks testing routines
             self.assertIn(object_, global_properties[basket])
             properties = set(global_properties[basket][object_])
             comp_baskets_props = set.union(*[set(object_props[object_])
-                    for basket2, object_props in
-                    global_properties.items() if basket2 != basket])
+                    for basket2, object_props in global_properties.items() if basket2 != basket])
             properties_basket_only = properties - comp_baskets_props
             if properties_basket_only:
                 answer = " ".join(properties_basket_only)
@@ -393,8 +394,8 @@ tasks testing routines
                 else:
                     answer = "none"
                 return answer,
-            self.do_test_battery(objects_properties.ListThePropertiesThatAnObjectHasInAllBasketsTask,
-                                 get_correct_answer)
+            self.do_test_battery(
+                    objects_properties.ListThePropertiesThatAnObjectHasInAllBasketsTask, get_correct_answer)
 
 
 def main():
