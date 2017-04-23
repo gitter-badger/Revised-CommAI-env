@@ -37,7 +37,7 @@ class BaseLearner(object):
     def next(self, user_input):
         """ do super fancy computations return our guess
 
-        :param input:
+        :param user_input:
         :return:
         """
         return user_input
@@ -65,9 +65,8 @@ class RemoteLearner(BaseLearner):
         handshake_in = self.socket.recv()
         assert handshake_in == 'hello'  # handshake
 
-    # send to learner, and get response;
     def next(self, inp):
-        """
+        """ send to learner, and get response;
 
         :param inp:
         :return:
