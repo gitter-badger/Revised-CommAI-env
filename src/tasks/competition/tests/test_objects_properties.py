@@ -1,8 +1,12 @@
-# Copyright (c) 2016-present, Facebook, Inc.
-# All rights reserved.
+#!/usr/bin/env python3
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# Copyright (c) 2017-, Stephen B. Hope. All rights reserved.
+#
+# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
+#
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
+
 
 # TODO fix imports
 import unittest
@@ -121,20 +125,18 @@ class TestObjectsProperties(unittest.TestCase):
         self.check_negative_feedback(m, answer)
 
     def do_test_battery(self, task, get_correct_answer):
-        """
+        """ test for solving the task correctly. test for not solving it at all. test for not solving it at all
 
         :param task:
         :param get_correct_answer:
         :return:
         """
         with task_messenger(task) as m:
-            # test for solving the task correctly
             self.solve_correctly_test(m, get_correct_answer)
         with task_messenger(task) as m:
-            # test for not solving it at all
             self.timeout_test(m, get_correct_answer)
         with task_messenger(task) as m:
-            # test for not solving it at all
+            #
             self.solve_interrupting_teacher(m, get_correct_answer)
 
     separators = [" ", " and ", ", ", ", and "]
@@ -164,6 +166,7 @@ class TestObjectsProperties(unittest.TestCase):
 tasks testing routines
 """
     def testAssociateObjectWithProperty(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -179,12 +182,13 @@ tasks testing routines
                     objects_properties.AssociateObjectWithPropertyTask, get_correct_answer)
 
     def testVerifyThatObjectHasProperty(self):
+        # TODO function name lower case
         """
 
         :return:
         """
         def get_correct_answer(m):
-            """ find the answer in the instructions
+            """ find the answer in the instructions. send the answer with the termination marker
 
             :param m:
             :return:
@@ -192,7 +196,6 @@ tasks testing routines
             object_, property_, basket = m.search_last_message(r"(\w+) (\w+) in (\w+)'s")
             self.assertIn(basket, global_properties)
             self.assertIn(object_, global_properties[basket])
-            # send the answer with the termination marker
             if property_ in global_properties[basket][object_]:
                 answer = "yes"
             else:
@@ -200,6 +203,7 @@ tasks testing routines
             return answer, self.do_test_battery(objects_properties.VerifyThatObjectHasPropertyTask, get_correct_answer)
 
     def testListPropertiesOfAnObject(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -217,6 +221,7 @@ tasks testing routines
             return answer, self.do_test_battery(objects_properties.ListPropertiesOfAnObjectTask, get_correct_answer)
 
     def testNameAPropertyOfAnObject(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -236,6 +241,7 @@ tasks testing routines
         self.do_test_battery(objects_properties.NameAPropertyOfAnObjectTask, get_correct_answer)
 
     def testHowManyPropertiesDoesAnObjectHave(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -260,6 +266,7 @@ tasks testing routines
         self.do_test_battery(objects_properties.HowManyPropertiesDoesAnObjectHaveTask, get_correct_answer)
 
     def testListObjectsWithACertainProperty(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -278,6 +285,7 @@ tasks testing routines
         self.do_test_battery(objects_properties.ListObjectsWithACertainPropertyTask, get_correct_answer)
 
     def testNameAnObjectWithAProperty(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -290,14 +298,15 @@ tasks testing routines
             """
             property_, basket = m.search_last_message(r"is (\w+) in (\w+)'s")
             self.assertIn(basket, global_properties)
-            all_answers = [
-                object_ for object_ in global_properties[basket] if property_ in global_properties[basket][object_]]
+            all_answers = [object_ for object_ in global_properties[basket] if property_ in
+                           global_properties[basket][object_]]
             answer = random.choice(all_answers)
             self.assertTrue(all_answers, "There are no objects {0} " "in {1}'s basket".format(property_, basket))
             return answer, all_answers
         self.do_test_battery(objects_properties.NameAnObjectWithAPropertyTask, get_correct_answer)
 
     def testHowManyObjectsHaveACertainProperty(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -321,6 +330,7 @@ tasks testing routines
         self.do_test_battery(objects_properties.HowManyObjectsHaveACertainPropertyTask, get_correct_answer)
 
     def testWhoHasACertainObjectWithACertainProperty(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -332,10 +342,8 @@ tasks testing routines
             :return:
             """
             property_, object_ = m.search_last_message(r"(\w+) (\w+) in the")
-            baskets = [basket for basket, object_props
-                       in global_properties.items() if object_
-                       in object_props and property_
-                       in object_props[object_]]
+            baskets = [basket for basket, object_props in global_properties.items() if object_ in object_props
+                       and property_ in object_props[object_]]
             if not baskets:
                 answer = "nobody"
             else:
@@ -344,6 +352,7 @@ tasks testing routines
         self.do_test_battery(objects_properties.WhoHasACertainObjectWithACertainPropertyTask, get_correct_answer)
 
     def testListThePropertiesThatAnObjectHasInABasketOnly(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -369,12 +378,14 @@ tasks testing routines
         self.do_test_battery(objects_properties.ListThePropertiesThatAnObjectHasInABasketOnlyTask, get_correct_answer)
 
         def testListThePropertiesThatAnObjectHasInAllBaskets(self):
+            # TODO function name lower case
             """
 
             :param self:
             :return:
             """
             def get_correct_answer(m):
+                # TODO shodows name outer scope
                 """ find the answer in the instructions
 
                 :param m:
@@ -391,6 +402,8 @@ tasks testing routines
                     answer = "none"
                 return answer, self.do_test_battery(
                         objects_properties.ListThePropertiesThatAnObjectHasInAllBasketsTask, get_correct_answer)
+            # TODO expected statement
+
 
 
 def main():
