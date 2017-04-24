@@ -287,7 +287,7 @@ Tasks testing routines
         :return:
         """
         def solve(m):
-            """ I don't have anything in the beginning. The teacher just gave me somthing Give the object back to the
+            """ I don't have anything in the beginning. The teacher just gave me something Give the object back to the
             teacher. I don't have anything anymore
 
             :param m:
