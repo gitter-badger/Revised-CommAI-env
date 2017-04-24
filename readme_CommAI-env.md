@@ -1,6 +1,9 @@
 _This is the readme of the original CommAI-env repository._
 
-# CommAI-env
+## This information is not current, provided for background information only.
+##New documents will be created when the code base has been stabilised
+
+## CommAI-env
 
 CommAI-env (Environment for Communication-based AI) is a platform for training and evaluating AI systems as described in [A Roadmap towards Machine Intelligence](http://arxiv.org/abs/1511.08130).
 
