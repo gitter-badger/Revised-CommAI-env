@@ -6,19 +6,14 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 from core.task import on_start, on_message, on_timeout, on_output_message, Task
 
-"""
-The following tasks us the following bit-based vocabulary:
-    stay_quiet 01
-    space 00
-    period 10
-    say 11
+""" The following tasks us the following bit-based vocabulary:
+        stay_quiet 01, space 00. period 10,  say 11
 """
 default_patient = False
 
@@ -188,8 +183,7 @@ class Task11(NanoTask):
 
         :param patient:
         """
-        super(Task11, self).__init__(
-            max_time=10, patient=patient)
+        super(Task11, self).__init__(max_time=10, patient=patient)
 
     @on_start()
     def give_instructions(self, event):
@@ -240,8 +234,7 @@ class Task10(NanoTask):
 
         :param patient:
         """
-        super(Task10, self).__init__(
-            max_time=10, patient=patient)
+        super(Task10, self).__init__(max_time=10, patient=patient)
 
     @on_start()
     def give_instructions(self, event):
