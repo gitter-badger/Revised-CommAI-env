@@ -6,9 +6,9 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
+
 # TODO ix imports
 from core.serializer import StandardSerializer, IdentitySerializer
 from learners.base import BaseLearner
@@ -80,8 +80,7 @@ class SampleMemorizingLearner(BaseLearner):
         """
         self.memory = ''
         self.teacher_stopped_talking = False
-        # the learner has the serialization hardcoded to detect spaces
-        self.serializer = StandardSerializer()
+        self.serializer = StandardSerializer()  # Learner has serialized 'hardcoded' to detct spaces
         self.silence_code = self.serializer.to_binary(' ')
         self.silence_i = 0
 
@@ -106,13 +105,10 @@ class SampleMemorizingLearner(BaseLearner):
         text_input = self.serializer.to_text(self.memory)
         if text_input and text_input[-2:] == '  ':
             self.teacher_stopped_talking = True
-
         if self.teacher_stopped_talking:
-            # send the memorized sequence
-            output, self.memory = self.memory[0], self.memory[1:]
+            output, self.memory = self.memory[0], self.memory[1:]  # send the memorized sequence
         else:
             output = self.silence_code[self.silence_i]
             self.silence_i = (self.silence_i + 1) % len(self.silence_code)
-        # memorize what the teacher said
-        self.memory += input
+        self.memory += input  # Memorize what the teacher said
         return output

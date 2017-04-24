@@ -6,9 +6,8 @@
 # CommAi-env Source code Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 """
 import all learners in the current directory
@@ -17,6 +16,7 @@ import glob
 
 modules = glob.glob('./*.py')
 for each_module in modules:
+    # TODO unresloved reference m
     __import__('learner' + m)
 
 """
@@ -24,5 +24,3 @@ Sets the user interface to get the user input
 """
 # TODO unresovled reference
 self._view = view
-
-

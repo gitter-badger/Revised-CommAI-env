@@ -6,9 +6,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO resovle imports
 from core.channels import InputChannel, OutputChannel
@@ -48,13 +47,9 @@ class HumanLearner(BaseLearner):
         """
         if self._output_channel.is_empty():
             self.logger.debug("Output buffer is empty, filling with silence")
-            # Add one silence token to the buffer
-            self._output_channel.set_message(self._serializer.SILENCE_TOKEN)
-
-        # Get the bit to return
-        output = self._output_channel.consume_bit()
-        # Interpret the bit from the learner
-        self._input_channel.consume_bit(user_input)
+            self._output_channel.set_message(self._serializer.SILENCE_TOKEN)  # Add 1 silence token to buffer
+        output = self._output_channel.consume_bit()  # Get the bit to return
+        self._input_channel.consume_bit(user_input)  # Interpret the bit from the learner
         return output
 
     def on_message(self, message):
@@ -66,8 +61,7 @@ class HumanLearner(BaseLearner):
         if message[-2:] == self._serializer.SILENCE_TOKEN * 2 and self._output_channel.is_empty() and not self.speaking:
             self.ask_for_input()
         elif self._output_channel.is_empty():
-            # If we were speaking, we are not speaking anymore
-            self.speaking = False
+            self.speaking = False # If speaking, changes to speaking off
 
     def ask_for_input(self):
         """
