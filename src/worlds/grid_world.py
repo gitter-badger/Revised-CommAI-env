@@ -6,9 +6,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 
 # TODO fix imports
@@ -102,15 +101,10 @@ class GridWorld(World):
     This is an infinite grid world where there can be objects layed around (pickable or not, traversable or not).
 
     Learner primitives:
-
         I move forward.
-
         I turn left/right.
-
         I look.
-
         I pick up the X.
-
         I give you a[n] X.
 
     Attributes:
@@ -121,15 +115,10 @@ class GridWorld(World):
     State variables:
 
         learner_pos: current position of the learner.
-
         learner_direction: current direction the learner is facing to.
-
         entities: contains the objects in the world (better if accessed with the get_entity primitive).
-
         learner_inventory: a mapping acting as a multiset of the objects that the learner has.
-
         teacher_inventory: a mapping acting as a multiset of the objects that the teacher has.
-
         teacher_accepts: a set of objects that the teacher is willing to accept if the learner wants to give one to
         the teacher.
     """
@@ -312,17 +301,13 @@ class GridWorld(World):
         :return:
         """
         if self.state.learner_direction == 'east':
-            dx = dz
-            dy = 0
+            dx = dz, dy = 0
         elif self.state.learner_direction == 'west':
-            dx = -dz
-            dy = 0
+            dx = -dz, dy = 0
         elif self.state.learner_direction == 'north':
-            dx = 0
-            dy = -dz
+            dx = 0, dy = -dz
         elif self.state.learner_direction == 'south':
-            dx = 0
-            dy = dz
+            dx = 0, dy = dz
         new_pos = self.state.learner_pos + Span(dx, dy)
         if self.can_move_to(new_pos):
             self.state.learner_pos = new_pos

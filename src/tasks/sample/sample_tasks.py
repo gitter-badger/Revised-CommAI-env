@@ -7,9 +7,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 from core.task import Task, on_start, on_message, on_sequence, on_state_changed, on_timeout, on_output_message, on_ended
@@ -74,14 +73,13 @@ class YesNoTask(Task):
         random_prop = ''.join(chr(ord('a') + random.randint(0, 26))
                               for i in range(5))
         self.coin_toss = random.randint(0, 1)
-        self.set_message("{0} is {1}. Is {0} {2}?".format(random_obj,
-                                                          random_prop if self.coin_toss else "not " +
-                                                                                             random_prop,random_prop))
+        self.set_message(
+                "{0} is {1}. Is {0} {2}?".format(
+                        random_obj,random_prop if self.coin_toss else "not " + random_prop, random_prop))
 
-    # on non-silent character
     @on_message("yes|no")
     def on_message(self, event):
-        """
+        """ on non-silent character
 
         :param event:
         :return:
@@ -159,10 +157,9 @@ class RepeatingPhraseTask(Task):
         # Don't hear the input coming from the learner until the instructions are over.
         self.instructions_completed = False
 
-    # This handler gets executed when the sample state changes to 2
     @on_state_changed(lambda s: s.sample_state == 2)
     def on_state_changed(self, event):
-        """
+        """ This handler gets executed when the sample state changes to 2
 
         :param event:
         :return:
@@ -190,7 +187,7 @@ class RepeatingPhraseTask(Task):
 
     @on_message(r"I am not Mr Robot$")
     def on_correct_message(self, event):
-        """ This handler gets exeuted whenever the learner says anything containing the string "I am not a Robot"
+        """ This handler gets executed whenever the learner says anything containing the string "I am not a Robot"
         (credit) thus, a mimicking learner will be given
 
         :param event:
@@ -200,10 +197,9 @@ class RepeatingPhraseTask(Task):
         if self.instructions_completed:
             self.set_reward(1, "Correct")
 
-    # This handler gets executed if the learner didn't solve the task in 10000 steps
     @on_timeout()
     def on_timeout(self, event):
-        """
+        """ This handler gets executed if the learner didn't solve the task in 10000 steps
 
         :param event:
         :return:
@@ -244,13 +240,12 @@ class SampleConflictingMessagesTask(Task):
 
     @on_message(r"my name$")
     def on_some_message(self, event):
-        """
+        """ Send a low priority message that will be blocked
 
         :param event:
         :return:
         """
         # TODO event not used
-        # Send a low priority message that will be blocked
         self.set_message("Are you repeating everything I say?", 1)
 
     @on_message(r"Heisenberg$")
@@ -434,20 +429,16 @@ class PickAnApple(Task):
         self.state.starting_apples = \
             self.get_world().state.learner_inventory['apple']
         # drop an apple
-        self.apple_pos = self.get_world().state.learner_pos + Span(
-            random.randint(-d, d), random.randint(-d, d))
+        self.apple_pos = self.get_world().state.learner_pos + Span(random.randint(-d, d), random.randint(-d, d))
         self.get_world().put_entity(self.apple_pos, 'apple', True, True)
-        # drop an untraversable block
-        # drop an apple
-        self.block_pos = self.get_world().state.learner_pos + Span(
-            random.randint(-d, d), random.randint(-d, d))
+        # drop an untraversable block drop an apple
+        self.block_pos = self.get_world().state.learner_pos + Span(random.randint(-d, d), random.randint(-d, d))
         if self.block_pos == self.apple_pos:
             self.block_pos = self.block_pos + Span(0, 1)
         self.get_world().put_entity(self.block_pos, 'block', False, False)
         self.set_message("Pick up an apple.")
 
-    @on_state_changed(lambda ws, ts: ws.learner_inventory['apple'] >
-                      ts.starting_apples)
+    @on_state_changed(lambda ws, ts: ws.learner_inventory['apple'] > ts.starting_apples)
     def on_apple_picked(self, event):
         """
 
@@ -478,10 +469,9 @@ class UnicodeTask(Task):
         # TODO event not used
         self.set_message('a in Hebrew is א. How do you say a in Hebrew?')
 
-    # on non-silent character
     @on_message(u"א$")
     def on_message(self, event):
-        """
+        """ on non-silent character
 
         :param event:
         :return:

@@ -6,9 +6,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 import curses
@@ -35,12 +34,10 @@ class BaseView(object):
         # TODO: Move environment and session outside of the class
         self._env = env
         self._session = session
-
         # observe basic high level information about the session and environment
         env.task_updated.register(self.on_task_updated)
         session.total_reward_updated.register(self.on_total_reward_updated)
         session.total_time_updated.register(self.on_total_time_updated)
-
         self.logger = logging.getLogger(__name__)
         # we save information for display later
         self.info = {'reward': 0, 'time': 0, 'current_task': 'None'}
@@ -288,16 +285,13 @@ class ConsoleView(BaseView):
         self._user_input_label_win.addstr(0, 0, 'input:')
         self._user_input_label_win.refresh()
         curses.echo()
-        inputstr = self._user_input_win.getstr(
-            0,
-            0,
-            self.width - self._user_input_win_x).decode(code)
+        user_input = self._user_input_win.getstr(0, 0, self.width - self._user_input_win_x).decode(code)
         curses.noecho()
         self._user_input_win.clear()
-        if inputstr == self.panic:
-            inputstr = ''
+        if user_input == self.panic:
+            user_input = ''
             self._env._task_time = float('inf')
-        return inputstr
+        return user_input
 
     def channel_to_str(self, text, bits):
         """
@@ -307,8 +301,7 @@ class ConsoleView(BaseView):
         :return:
         """
         length = self._scroll_msg_length - 10
-        return "{0:_>{length}}[{1: <8}]".format(
-            text[-length:], bits[-7:], length=length)
+        return "{0:_>{length}}[{1: <8}]".format(text[-length:], bits[-7:], length=length)
 
 class PlainView(object):
     """
@@ -324,14 +317,10 @@ class PlainView(object):
         # TODO: Move environment and session outside of the class
         self._env = env
         self._session = session
-
         # observe basic high level information about the session and environment
-        env.task_updated.register(
-            self.on_task_updated)
-        session.total_reward_updated.register(
-            self.on_total_reward_updated)
-        session.total_time_updated.register(
-            self.on_total_time_updated)
+        env.task_updated.register(self.on_task_updated)
+        session.total_reward_updated.register(self.on_total_reward_updated)
+        session.total_time_updated.register(self.on_total_time_updated)
 
         self.logger = logging.getLogger(__name__)
         # we save information for display later

@@ -6,9 +6,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in theLICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 from core.task import Task, on_start, on_message, on_timeout, on_output_message
@@ -16,13 +15,9 @@ from tasks.competition.base import BaseTask
 import logging
 import random
 
-"""
-the small composition task use the following vocabulary:
-    V reverse function
-    P repeat function
-    O rotate function
-    C concatenate function
-    0/1 alphabet for argument strings
+""" the small composition task use the following vocabulary:
+
+    V reverse function, P repeat function, O rotate function, C concatenate function, 0/1 alphabet for argument strings
 
 constant to keep same input string length across tasks max_string_length = 5
 """
@@ -33,7 +28,7 @@ def return_random_01_sequence(L):
     :param L:
     :return:
     """
-    maxL=random.randint(1,L)
+    maxL=random.randint(1, L)
     random_string = ""
     for i in range(maxL):
         random_string += str(random.randrange(2))
@@ -59,7 +54,7 @@ def reverse_sequence(sequence):
     """
     return sequence[::-1]
 
-def rotate_sequence(steps,sequence):
+def rotate_sequence(steps, sequence):
     """
 
     :param steps:
@@ -67,13 +62,14 @@ def rotate_sequence(steps,sequence):
     :return:
     """
     string_length = len(sequence)
-    if (steps>=string_length):
-        steps=steps%string_length
-    if (steps<0):
+    if steps >= string_length):
+        steps = steps%string_length
+    if steps < 0:
         raise ValueError('rotation step count (' + str(steps) + ') must be non-negative')
+    # TODO unreachable
     rotated_sequence = ""
     for i in range(string_length):
-        if (i>=steps):
+        if i>=steps:
             rotated_sequence += sequence[i-steps]
         else:
             rotated_sequence += sequence[i-steps+string_length]
@@ -108,12 +104,12 @@ class ReverseXTask(Task):
 
     @on_output_message(r'\.$')
     def set_response_check(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.response_check = True
         self.response_counter = 0
 
@@ -124,20 +120,20 @@ class ReverseXTask(Task):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
             # self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
          self.set_reward(-1)
-"""
+
 
 class RepeatNXTask(BaseTask):
     def __init__(self, world=None):
@@ -157,7 +153,7 @@ class RepeatNXTask(BaseTask):
         # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
-        repetitions = random.randint(1,4)
+        repetitions = random.randint(1, 4)
         message = "P" + str(repetitions) + "," + proposed_string + "."
         self.set_message(message)
         self.response_string = repeat_sequence(repetitions, proposed_string)
@@ -181,25 +177,24 @@ class RepeatNXTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
             # self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
-                    self.set_reward(1)
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
+                     self.set_reward(1)
                 else:
-                    self.response_counter = self.response_counter + 1
+                     self.response_counter = self.response_counter + 1
             else:
-                self.set_reward(-1)
-"""
+                 self.set_reward(-1)
+
      @on_timeout()
-     def punish_slow_learner(self, event):
+    def punish_slow_learner(self, event):
          self.set_reward(-1)
-"""
+
 
 class RotateRXTask(BaseTask):
     def __init__(self, world=None):
-        """ NB: max_time will be dynamically adjusted below
-                self.logger = logging.getLogger(__name__)
+        """ NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
 
         :param world:
         """
@@ -215,10 +210,10 @@ class RotateRXTask(BaseTask):
         # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
-        steps = random.randint(1,len(proposed_string))
+        steps = random.randint(1, len(proposed_string))
         message = "O" + str(steps) + "," + proposed_string + "."
         self.set_message(message)
-        self.response_string = rotate_sequence(steps,proposed_string)
+        self.response_string = rotate_sequence(steps, proposed_string)
         self._max_time = (8*len(message)) + (8*len(self.response_string)) - 8
 
     @on_output_message(r'\.$')
@@ -239,28 +234,33 @@ class RotateRXTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
             # self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 
 class ConcatenateXYTask(BaseTask):
     """
 
     """
     def __init__(self, world=None):
-        """ NB: max_time will be dynamically adjusted below
-                self.logger = logging.getLogger(__name__)
+        """ NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
         :param world:
         """
         super(ConcatenateXYTask, self).__init__(world=world, max_time=0)
@@ -299,46 +299,52 @@ class ConcatenateXYTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
-#            self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+        if self.response_check:
+            # self.logger.info("current counter:" + str(self.response_counter))
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 
 class ReverseRepeatNXTask(BaseTask):
     """
     composed tasks from here
     """
     def __init__(self, world=None):
-        """ NB: max_time will be dynamically adjusted below
-                self.logger = logging.getLogger(__name__)
+        """ NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
         :param world:
         """
         super(ReverseRepeatNXTask, self).__init__(world=world, max_time=0)
 
     @on_start()
     def give_instructions(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
+
         self.response_check = False
         repetitions = random.randint(1,4)
         proposed_string = return_random_01_sequence(max_string_length)
         message = "VP" + str(repetitions) + "," + proposed_string + "."
         self.set_message(message)
-        self.response_string = reverse_sequence(repeat_sequence(repetitions,proposed_string))
+        self.response_string = reverse_sequence(repeat_sequence(repetitions, proposed_string))
         self._max_time = (8*len(message)) + (8*len(self.response_string)) - 8
 
     @on_output_message(r'\.$')
@@ -359,25 +365,34 @@ class ReverseRepeatNXTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
             # self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 
 class ReverseRotateRXTask(BaseTask):
+    """
+
+    """
     def __init__(self, world=None):
-        """ NB: max_time will be dynamically adjusted below
-                self.logger = logging.getLogger(__name__)
+        """ NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
+
         :param world:
         """
         super(ReverseRotateRXTask, self).__init__(world=world, max_time=0)
@@ -416,26 +431,31 @@ class ReverseRotateRXTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
             # self.logger.info("current counter:" + str(self.response_counter))
             if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 
 
 class ReverseConcatenateXYTask(BaseTask):
     def __init__(self, world=None):
-        """ NB: max_time will be dynamically adjusted below
-                self.logger = logging.getLogger(__name__)
+        """ NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
         :param world:
         """
         super(ReverseConcatenateXYTask, self).__init__(world=world, max_time=0)
@@ -475,25 +495,31 @@ class ReverseConcatenateXYTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
             # self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 
 class RepeatNReverseXTask(BaseTask):
     def __init__(self, world=None):
-        """ NB: max_time will be dynamically adjusted below
-                self.logger = logging.getLogger(__name__)
+        """ NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
+
         :param world:
         """
         super(RepeatNReverseXTask, self).__init__(world=world, max_time=0)
@@ -534,23 +560,29 @@ class RepeatNReverseXTask(BaseTask):
         """
         if (self.response_check):
             # self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 
 class RepeatNRotateRXTask(BaseTask):
     def __init__(self, world=None):
-        """ NB: max_time will be dynamically adjusted below
-                self.logger = logging.getLogger(__name__)
+        """ NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
+
         :param world:
         """
         super(RepeatNRotateRXTask, self).__init__(world=world, max_time=0)
@@ -591,33 +623,37 @@ class RepeatNRotateRXTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
-#            self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+        if self.response_check:
+            # self.logger.info("current counter:" + str(self.response_counter))
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 
 class RepeatNConcatenateXYTask(BaseTask):
     """
 
     """
     def __init__(self, world=None):
-        """
+        """ NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
 
         :param world:
         """
         super(RepeatNConcatenateXYTask, self).__init__(world=world, max_time=0)
-        # NB: max_time will be dynamically adjusted below
-#        self.logger = logging.getLogger(__name__)
 
     @on_start()
     def give_instructions(self, event):
@@ -655,27 +691,32 @@ class RepeatNConcatenateXYTask(BaseTask):
         :return:
         """
         if (self.response_check):
-#            self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            # self.logger.info("current counter:" + str(self.response_counter))
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 
 class RotateRReverseXTask(BaseTask):
     """
 
     """
     def __init__(self, world=None):
-        """ NB: max_time will be dynamically adjusted below
-                self.logger = logging.getLogger(__name__)
+        """ NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
 
         :param world:
         """
@@ -715,20 +756,26 @@ class RotateRReverseXTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
 #            self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 class RotateRRepeatNXTask(BaseTask):
     def __init__(self, world=None):
         """ NB: max_time will be dynamically adjusted below
@@ -748,8 +795,8 @@ class RotateRRepeatNXTask(BaseTask):
         # TODO event not used
         self.response_check = False
         proposed_string = return_random_01_sequence(max_string_length)
-        repetitions = random.randint(1,4)
-        steps = random.randint(1,len(proposed_string)*repetitions)
+        repetitions = random.randint(1, 4)
+        steps = random.randint(1, len(proposed_string)*repetitions)
         message = "O" + str(steps) + ",P" + str(repetitions) + "," + proposed_string + "."
         self.set_message(message)
         self.response_string = rotate_sequence(steps,repeat_sequence(repetitions,proposed_string))
@@ -773,24 +820,29 @@ class RotateRRepeatNXTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
              # self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 class RotateRConcatenateXYTask(BaseTask):
     def __init__(self, world=None):
-        """ NB: max_time will be dynamically adjusted below
-                self.logger = logging.getLogger(__name__)
+        """ NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
 
         :param world:
         """
@@ -826,24 +878,29 @@ class RotateRConcatenateXYTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
             # self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+
 class ConcatenateReverseXReverseYTask(BaseTask):
     def __init__(self, world=None):
-        """  NB: max_time will be dynamically adjusted below
-                 self.logger = logging.getLogger(__name__)
+        """  NB: max_time will be dynamically adjusted below self.logger = logging.getLogger(__name__)
 
         :param world:
         """
@@ -884,20 +941,26 @@ class ConcatenateReverseXReverseYTask(BaseTask):
         :return:
         """
         # TODO event not used
-        if (self.response_check):
+        if self.response_check:
             # self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        """
+
+        :param event:
+        :return:
+        """
+        # TODO event not used
          self.set_reward(-1)
-"""
+
 class ConcatenateRepeatNXRepeatMYTask(BaseTask):
     """
 
@@ -922,8 +985,8 @@ class ConcatenateRepeatNXRepeatMYTask(BaseTask):
         repetitions_1 = random.randint(1,4)
         proposed_string_2 = return_random_01_sequence(max_string_length)
         repetitions_2 = random.randint(1,4)
-        message = "CP" + str(repetitions_1) + "," + proposed_string_1 + ",P" + str(repetitions_2) + ","\
-                   + proposed_string_2 + "."
+        message = "CP" + str(
+                repetitions_1) + "," + proposed_string_1 + ",P" + str(repetitions_2) + "," + proposed_string_2 + "."
         self.set_message(message)
         self.response_string = repeat_sequence(repetitions_1, proposed_string_1) + repeat_sequence(repetitions_2,
                                                                                                    proposed_string_2)
@@ -947,10 +1010,10 @@ class ConcatenateRepeatNXRepeatMYTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
 #            self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
@@ -1009,17 +1072,23 @@ class ConcatenateRotateRXRotateSYTask(BaseTask):
         :param event:
         :return:
         """
-        if (self.response_check):
+        if self.response_check:
             # self.logger.info("current counter:" + str(self.response_counter))
-            if (event.is_message(self.response_string[self.response_counter])):
-                if (self.response_counter==(len(self.response_string)-1)):
+            if event.is_message(self.response_string[self.response_counter]):
+                if self.response_counter==(len(self.response_string)-1):
                     self.set_reward(1)
                 else:
                     self.response_counter = self.response_counter + 1
             else:
                 self.set_reward(-1)
-"""
+
      @on_timeout()
      def punish_slow_learner(self, event):
+        # TODO event not used
+        """
+
+        :param event:
+        :return:
+        """
          self.set_reward(-1)
-"""
+

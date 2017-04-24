@@ -6,9 +6,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 import os
@@ -23,27 +22,28 @@ from view.console import ConsoleView
 
 
 def main():
+    """
+
+    :return:
+    """
     setup_logging()
-    op = OptionParser("Usage: %prog [options] "
-                      "(tasks_config.json | tasks_config.py)")
+    op = OptionParser("Usage: %prog [options] " "(tasks_config.json | tasks_config.py)")
     op.add_option('-o', '--output', default='results.out', help='File where the simulation results are saved.')
     op.add_option('--scramble', action='store_true', default=False,
-                  help='Randomly scramble the words in the tasks for '
-                  'a human player.')
+                  help='Randomly scramble the words in the tasks for ' 'a human player.')
     op.add_option('-w', '--show-world', action='store_true', default=False,
-                  help='shows a visualization of the world in the console '
-                  '(mainly for debugging)')
-    op.add_option('-d', '--time-delay', default=0, type=float, help='adds some delay between each timestep for easier'
-                  ' visualization.')
-    op.add_option('-l', '--learner', default='learners.human_learner.HumanLearner', help='Defines the type of learner.')
+                  help='shows a visualization of the world in the console ' '(mainly for debugging)')
+    op.add_option('-d', '--time-delay', default=0, type=float,
+                  help='adds some delay between each timestep for easier' ' visualization.')
+    op.add_option('-l', '--learner', default='learners.human_learner.HumanLearner',
+                  help='Defines the type of learner.')
     op.add_option('-v', '--view', default='BaseView', help='Viewing mode.')
     op.add_option('-s', '--serializer', default='core.serializer.StandardSerializer',
                   help='Sets the encoding of characters into bits')
     op.add_option('--learner-cmd', help='The cmd to run to launch RemoteLearner.')
     op.add_option('--learner-port', default=5556, help='Port on which to accept remote learner.')
     op.add_option('--max-reward-per-task', default=10, type=int,
-                  help='Maximum reward that we can give to a learner for'
-                  ' a given task.')
+                  help='Maximum reward that we can give to a learner for' ' a given task.')
     opt, args = op.parse_args()
     if len(args) == 0:
         op.error("Tasks schedule configuration file required.")
@@ -148,10 +148,8 @@ def create_serializer(serializer_type):
 
 
 def create_tasks_from_config(tasks_config_file):
-    """ Returns a TaskScheduler based on either:
-        - a json configuration file.
-        - a python module with a function create_tasks that does the job
-    of returning the task scheduler.
+    """ Returns a TaskScheduler based on either: a json configuration file or a python module with a function
+    create_tasks, that does the job of returning the task scheduler.
 
     :param tasks_config_file:
     :return:
@@ -162,9 +160,9 @@ def create_tasks_from_config(tasks_config_file):
     elif fformat == 'py':
         config_loader = PythonConfigLoader()
     else:
-        raise RuntimeError("Unknown configuration file format '.{fformat}' of"
-                           " {filename}"
-                           .format(fformat=fformat, filename=tasks_config_file))
+        raise RuntimeError(
+                "Unknown configuration file format '.{fformat}' of" " {filename}".format(
+                        fformat=fformat, filename=tasks_config_file))
     return config_loader.create_tasks(tasks_config_file)
 
 
