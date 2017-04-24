@@ -166,6 +166,7 @@ class EnvironmentMessenger:
 
         :return:
         """
+        # TODO access protected member
         return self._env._task_time
 
 
