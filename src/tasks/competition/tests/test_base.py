@@ -1,7 +1,9 @@
-# Copyright (c) 2016-present, Facebook, Inc.
-# All rights reserved.
+#!/usr/bin/env python3
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# Copyright (c) 2017-, Stephen B. Hope. All rights reserved.
+# Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
+#
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
@@ -42,12 +44,22 @@ class TestBase(unittest.TestCase):
 
             @on_message(r"Interrupt.$")
             def on_interrupt(self, event):
+                """
+
+                :param event:
+                :return:
+                """
                 # TODO event not used
                 self.set_message("Interrupted.")
 
             @on_message(r"Respectful.$")
             # TODO event not used
             def on_respect(self, event):
+                """
+
+                :param event:
+                :return:
+                """
                 self.set_message("Good.")
 
         with task_messenger(TestTask) as m:
