@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 #
-# Copyright (c) 2017-, Stephen B. Hope
-# All rights reserved.
+# Copyright (c) 2017-, Stephen B. Hope. All rights reserved.
 #
-# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
-# All rights reserved.
+# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
@@ -20,7 +18,9 @@ micro_congratulations = ['correct.']
 # a list of congratulations messages to be issued when the learner fails a task
 micro_failed = ['wrong: ']
 
-def return_random_string(V,L):
+
+def return_random_string(V, L):
+    # TODO lower case argument name
     """ a function that takes two positive integers as input:
            1) the alphabet vocabulary size V (<=26)
            2) maximum string length L
@@ -30,35 +30,34 @@ def return_random_string(V,L):
     :param L:
     :return:
     """
-    if (V>26 or V<1):
+    if V > 26 or V < 1:
         raise ValueError(str(V) + ' is outside legal vocabulary range (1-26)')
-    if (L<1):
+    if L < 1:
         raise ValueError(str(L) + ' is not a possible string length')
-    V = V-1
+    V -= 1
+    # TODO lower case var
     maxL = random.randint(1, L)
     random_string = ""
     for i in range(maxL):
         random_string += chr(ord('A') + random.randint(0, V))
     return random_string
 
+
 class Repeat1V1L(BaseTask):
     """
 
     """
     def __init__(self, world=None):
-        """
+        """ NB: we use a formula for max_time, in the hope to remember to adjust it from task to task: the only variable
+        should be the value equal to L
 
         :param world:
         """
         super(Repeat1V1L, self).__init__(world=world, max_time=(64+((8*1)+8)*3))
-        """
-        NB: we use a formula for max_time, in the hope to remember to adjust it from task to task: the only variable
-        should be the value equal to L
-        """
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used
+        # TODO event not used, def outside __inti__
         """
 
         :param event:
@@ -114,7 +113,7 @@ class Repeat3V1L(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used
+        # TODO event not used, def outside __inti__
         """
 
         :param event:
@@ -143,7 +142,6 @@ class Repeat3V1L(BaseTask):
         :param event:
         :return:
         """
-        # TODO event not used
         self.fail_learner()
 
     def fail_learner(self):
@@ -170,7 +168,7 @@ class Repeat3V2L(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used
+        # TODO event not used, def outside __inti__
         """
 
         :param event:
