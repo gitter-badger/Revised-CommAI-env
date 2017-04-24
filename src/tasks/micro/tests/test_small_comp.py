@@ -31,8 +31,8 @@ class TestSmallCompTasks(unittest.TestCase):
         sign = answer_correct and 1 or -1
         with task_messenger(Task, serializer=IdentitySerializer()) as m:
             # we will solve the task N times (to check for sync issues)
-            N = m._env._max_reward_per_task
-            for i in range(N):
+            n = m._env._max_reward_per_task
+            for i in range(n):
                 # wait for the instructions
                 instructions_blen = m.read()
                 # there are some instructions
