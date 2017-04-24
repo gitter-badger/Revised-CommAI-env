@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
 #
-# Copyright (c) 2017-, Stephen B. Hope
-# All rights reserved.
+# Copyright (c) 2017-, Stephen B. Hope. All rights reserved.
 #
-# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
-# All rights reserved.
+# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 from core.task import on_start, on_message, on_timeout, on_output_message, Task
 
-""" The following tasks us the following bit-based vocabulary:
-        stay_quiet 01, space 00. period 10,  say 11
+""" The following tasks us the following bit-based vocabulary: stay_quiet 01, space 00. period 10,  say 11
 """
 default_patient = False
 
@@ -36,6 +33,7 @@ class NanoTask(Task):
 
         :return:
         """
+        # TODO  def outside __init__
         self.task_separator_issued = True
         return '0'
 
@@ -54,6 +52,7 @@ class NanoTask(Task):
         :param event:
         :return:
         """
+        # TODO event not used, def outside __init__
         self.task_separator_issued = False
         self.received_reward = False
 
@@ -63,6 +62,7 @@ class NanoTask(Task):
         :param reward:
         :return:
         """
+        # TODO def outside __init__
         if self.patient:
             if not self.received_reward:
                 self.received_reward = reward
@@ -72,14 +72,14 @@ class NanoTask(Task):
     @on_timeout()
     def on_timeout(self, timeout):
         # TODO timeout not used
-        """
+        """ import pdb; pdb.set_trace()
 
         :param timeout:
         :return:
         """
         if self.patient:
             assert self.received_reward
-            # import pdb; pdb.set_trace()
+            # TODO unresolved attrib ref set_reward super
             super(Task, self).set_reward(self.received_reward)
 
 
@@ -111,7 +111,7 @@ class Task0(NanoTask):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO event not used, def outside __init__
         self.finished_talking = True
         self.set_reward(1)
 
@@ -144,7 +144,7 @@ class Task1(NanoTask):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO event not used, def outside __init__
         self.finished_talking = False
         self.set_message('1111000')
 
@@ -155,7 +155,7 @@ class Task1(NanoTask):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO event not used, def outside __init__
         self.finished_talking = True
 
     @on_message(r'.')
@@ -166,7 +166,7 @@ class Task1(NanoTask):
         :return:
         """
         if event.is_message('1'):
-            if (self.finished_talking):
+            if self.finished_talking:
                 self.set_reward(1)
             else:
                 self.set_reward(-1)
@@ -192,6 +192,7 @@ class Task11(NanoTask):
         :param event:
         :return:
         """
+        # TODO event not used, def outside __init__
         self.finished_talking = False
         self.learner_turn_counter = 0
         self.set_message('11111000')
@@ -203,7 +204,7 @@ class Task11(NanoTask):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO event not used, def outside __init__
         self.finished_talking = True
 
     @on_message(r'.')
@@ -214,14 +215,14 @@ class Task11(NanoTask):
         :return:
         """
         if event.is_message('1'):
-            if (self.finished_talking):
-                if (self.learner_turn_counter == 0):
+            if self.finished_talking:
+                if self.learner_turn_counter == 0:
                     self.learner_turn_counter += 1
                 else:
                     self.set_reward(1)
             else:
                 self.set_reward(-1)
-        elif (self.finished_talking):
+        elif self.finished_talking:
             self.set_reward(-1)
 
 
@@ -243,7 +244,7 @@ class Task10(NanoTask):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO event not used, def outside __init__
         self.finished_talking = False
         self.learner_turn_counter = 0
         self.set_message('11101000')
@@ -255,7 +256,7 @@ class Task10(NanoTask):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO event not used, def outside __init__
         self.finished_talking = True
 
     @on_message(r'.')
@@ -266,12 +267,12 @@ class Task10(NanoTask):
         :return:
         """
         if event.is_message('1'):
-            if (self.finished_talking and self.learner_turn_counter == 0):
+            if self.finished_talking and self.learner_turn_counter == 0:
                     self.learner_turn_counter += 1
             else:
                 self.set_reward(-1)
-        elif (self.finished_talking):
-            if (self.learner_turn_counter > 0):
+        elif self.finished_talking:
+            if self.learner_turn_counter > 0:
                 self.set_reward(1)
             else:
                 self.set_reward(-1)

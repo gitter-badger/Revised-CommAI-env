@@ -7,7 +7,7 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
@@ -75,7 +75,7 @@ class YesNoTask(Task):
         self.coin_toss = random.randint(0, 1)
         self.set_message(
                 "{0} is {1}. Is {0} {2}?".format(
-                        random_obj,random_prop if self.coin_toss else "not " + random_prop, random_prop))
+                        random_obj, random_prop if self.coin_toss else "not " + random_prop, random_prop))
 
     @on_message("yes|no")
     def on_message(self, event):
@@ -148,13 +148,12 @@ class RepeatingPhraseTask(Task):
     def on_start(self, event):
         # TODO event not used
         """ For illustrative purposes only, we defer the instructions to a script that is executed when this variable
-        takes the value 2
+        takes the value 2 Don't hear the input coming from the learner until the instructions are over.
 
         :param event:
         :return:
         """
         self.state.sample_state = 2
-        # Don't hear the input coming from the learner until the instructions are over.
         self.instructions_completed = False
 
     @on_state_changed(lambda s: s.sample_state == 2)
@@ -170,19 +169,23 @@ class RepeatingPhraseTask(Task):
 
     @on_output_message(r"\.")
     def on_finished_instructions(self, event):
-        # TODO event not used
-        self.instructions_completed = True
-
-    @on_message()
-    def on_any_message(self, event):
         """
 
         :param event:
         :return:
         """
         # TODO event not used
+        self.instructions_completed = True
+
+    @on_message()
+    def on_any_message(self, event):
+        """ we forget the input if the instructions are not completed yet
+
+        :param event:
+        :return:
+        """
+        # TODO event not used
         if not self.instructions_completed:
-            # we forget the input if the instructions are not completed yet
             self.ignore_last_char()
 
     @on_message(r"I am not Mr Robot$")
@@ -279,10 +282,8 @@ class MovingTask(Task):
         """
         # TODO event not used
         self.state.initial_pos = self.get_world().state.learner_pos
-        dp = self.get_world().valid_directions[
-            self.get_world().state.learner_direction]
+        dp = self.get_world().valid_directions[self.get_world().state.learner_direction]
         self.state.dest_pos = self.state.initial_pos + dp
-
         self.set_message("Say 'I move forward.'")
 
     @on_state_changed(lambda ws, ts: ws.learner_pos == ts.dest_pos)
@@ -419,19 +420,16 @@ class PickAnApple(Task):
 
     @on_start()
     def on_start(self, event):
-        """
+        """ drop an apple,  drop an untraversable block drop an apple,
 
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO event not used, difined outside __init__
         d = 2
-        self.state.starting_apples = \
-            self.get_world().state.learner_inventory['apple']
-        # drop an apple
+        self.state.starting_apples = self.get_world().state.learner_inventory['apple']
         self.apple_pos = self.get_world().state.learner_pos + Span(random.randint(-d, d), random.randint(-d, d))
         self.get_world().put_entity(self.apple_pos, 'apple', True, True)
-        # drop an untraversable block drop an apple
         self.block_pos = self.get_world().state.learner_pos + Span(random.randint(-d, d), random.randint(-d, d))
         if self.block_pos == self.apple_pos:
             self.block_pos = self.block_pos + Span(0, 1)

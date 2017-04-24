@@ -1,21 +1,26 @@
 # Revised-CommAI-env Under Development
 A standard environment for machine learning and general AI research
- <a href="https://www.patreon.com/bePatron?u=5636094" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
+ <a href="https://www.patreon.com/bePatron?u=5636094"
+ data-patreon-widget-type="become-patron-button">Become a Patron!</a>
 
 #### The Revised-CommAI-env, Pre-Release Ver. 0.1
 Copyright (c) 2017, Stephen B. Hope, All rights reserved, see LICENSE.md for details.
 
-The facebookresearch Team began the implementation if the CommAI-env as detailed by Marco Baroni et al. The abstract is
+The facebookresearch Team began the implementation of the CommAI-env as detailed by Marco Baroni et al. The abstract is
 available in /docs/CommAI_PDF_1701.08954.pdf.
 
-After a line-by-line examination of the complete repository, I determined an overhaul of the CommAI-env is required
+After a line-by-line examination of the repository, I determined an overhaul of the CommAI-env is required
 from the ground up, rebuilding it in pure Python >=3.5.
 
-I am seeking contributions in any form. You may open a discussion by clicking the issue tab at the top of the page,
-New Issue. Pull Requests are welcome at any time, before coding please check in as the code is being updated several
-times a day and may diverge from your work.
+I am seeking contributions in any form.
 
-Service access, financial donations, or any form of sponsorship would be very welcome.   <a href="https://www.patreon.com/bePatron?u=5636094" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
+You may open a discussion by clicking the issue tab at the top of the page, New Issue.
+
+Pull Requests are welcome at any time! Before doing any coding, please check in as the code is being updated daily and
+may diverge from your work.
+
+Service access, financial donations, or any form of sponsorship would be very welcome.
+<a href="https://www.patreon.com/bePatron?u=5636094">Become a Patron!</a>
 
 #### Stephen Hope
 Ottawa, Canada
@@ -23,18 +28,12 @@ stephenbhope@gmail.com
 Tel [00] 1-613-594-4727
 
  - CommAI-env, https://arxiv.org/abs/1511.08130  The Github repository, https://github.com/facebookresearch/CommAI-env
- seems to have gone dormant, as there is an approved but unmerged sitting since Sept 28, 2016. Will update if the
- status changes.
+ ceased active development after the initial beta-testing release.
 
-First Milestone:
-
-
-
-WIP - The facebbokreseach/CommAI-env development ceased at beta-testing stage, the Revised-CommAI-env will refactor
+### WIP - The facebookresearch/CommAI-env development ceased at beta-testing stage, the Revised-CommAI-env will refactor
 all source code to pure Python >=3.5
 
 WIP - Repackage CommAI-env for standard deployments via Docker, Snap, and Virtualbox images.
-
 
 #### On the environment, CommAI: Evaluating the first steps towards a useful general AI
 Marco Baroni, Armand Joulin, Allan Jabri, Germàn Kruszewski, Angeliki Lazaridou, Klemen Simonic, Tomas Mikolov

@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 #
-# Copyright (c) 2017-, Stephen B. Hope
-# All rights reserved.
+# Copyright (c) 2017-, Stephen B. Hope. All rights reserved.
 #
-# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
-# All rights reserved.
+# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
@@ -21,7 +19,10 @@ class TestSmallCompTasks(unittest.TestCase):
     helper methods
     """
     def _test_solution(self, Task, get_answer, answer_correct=True):
-        """
+        # TODO agr case to lower
+        """ we will solve the task N times (to check for sync issues), wait for the instructions there are some
+        instructions we should have received the reward from the previous iteration extract the correct answer get
+        the next task going
 
         :param Task:
         :param get_answer:
@@ -30,19 +31,13 @@ class TestSmallCompTasks(unittest.TestCase):
         """
         sign = answer_correct and 1 or -1
         with task_messenger(Task, serializer=IdentitySerializer()) as m:
-            # we will solve the task N times (to check for sync issues)
             n = m._env._max_reward_per_task
             for i in range(n):
-                # wait for the instructions
                 instructions_blen = m.read()
-                # there are some instructions
                 self.assertGreater(instructions_blen, 0, "No instructions!")
-                # we should have received the reward from the previous iteration
                 self.assertEqual(m.get_cumulative_reward(), sign * i)
-                # extract the correct answer
                 answer = get_answer(m)
                 m.send(answer)
-                # get the next task going
                 m.send()
 """
 unit tests
@@ -62,9 +57,9 @@ unit tests
             answer, = m.search_full_message(r"V([01]*)\.$")
             return answer[::-1]
 
-        # function that reads the instructions and produces an incorrect answer
         def get_incorrect_answer_impatient(m):
-            """
+            """ function that reads the instructions and produces an incorrect answer try to solve correctly try to
+            solve incorrectly with an impatient teacher
 
             :param m:
             :return:
@@ -72,9 +67,8 @@ unit tests
             answer, = m.search_full_message(r"V([01]*)\.$")
             return "1" if answer[-1] == "0" else "0"
 
-        # try to solve correctly
         self._test_solution(small_comp.ReverseXTask, get_correct_answer, True)
-        # try to solve incorrectly with an impatient teacher
+        # TODO staement expected
         self._test_solution(small_comp.ReverseXTask, get_incorrect_answer_impatient, False)
 
 

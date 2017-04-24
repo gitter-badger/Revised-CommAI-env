@@ -6,13 +6,12 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 
 # TODO fix imports
-from core.task import World, on_world_start, on_message, on_sequence,\
-    on_state_changed, on_timeout, on_output_message
+from core.task import World, on_world_start, on_message, on_sequence, on_state_changed, on_timeout, on_output_message
 from collections import namedtuple, defaultdict
 import logging
 import tasks.competition.messages as msg
@@ -101,11 +100,7 @@ class GridWorld(World):
     This is an infinite grid world where there can be objects layed around (pickable or not, traversable or not).
 
     Learner primitives:
-        I move forward.
-        I turn left/right.
-        I look.
-        I pick up the X.
-        I give you a[n] X.
+        I move forward, I turn left/right, I look, I pick up the X, I give you a[n] X.
 
     Attributes:
 
@@ -147,7 +142,7 @@ class GridWorld(World):
         :return:
         """
         self.state.entities[position] = GWEntity(name, pickable, traversable)
-        self.logger.info('Droped an entity {0} at position {1}'.format(name, position))
+        self.logger.info('Dropped an entity {0} at position {1}'.format(name, position))
 
     def remove_entity(self, position):
         """ returns the entity at the given position.
@@ -160,8 +155,7 @@ class GridWorld(World):
             del(self.state.entities[position])
             self.logger.info('Removed an entity {0} at position {1}'.format(entity_name, position))
         else:
-            self.logger.warn("Asked to remove a non-existent entity "
-                             "at position {0}".format(position))
+            self.logger.warn("Asked to remove a non-existent entity " "at position {0}".format(position))
 
     def get_entity(self, position):
         """
@@ -183,16 +177,11 @@ class GridWorld(World):
         :return:
         """
         self.state.learner_pos = Point(*self._init_pos)
-        # the agent also faces one direction
-        self.state.learner_direction = self._init_direction
-        # dictionary of entities in the world
-        self.state.entities = {}
-        # inventory of the learner (a multiset)
-        self.state.learner_inventory = defaultdict(int)
-        # inventory of the teacher (a multiset)
-        self.state.teacher_inventory = defaultdict(int)
-        # set of objects the teacher is willing to receive
-        self.state.teacher_accepts = set()
+        self.state.learner_direction = self._init_direction  $ Agent faces one direction
+        self.state.entities = {}  # Dictionary of entities in world
+        self.state.learner_inventory = defaultdict(int)  # Learner inventory (multiset)
+        self.state.teacher_inventory = defaultdict(int)  # Teacher (a multiset)
+        self.state.teacher_accepts = set()  # Object set the teacher is willing to recieve
 
     @on_message(r"I turn left\.$")
     def on_turn_left(self, event):
@@ -308,6 +297,7 @@ class GridWorld(World):
             dx = 0, dy = -dz
         elif self.state.learner_direction == 'south':
             dx = 0, dy = dz
+            # TODO dx, dy ref before assignment
         new_pos = self.state.learner_pos + Span(dx, dy)
         if self.can_move_to(new_pos):
             self.state.learner_pos = new_pos
@@ -328,10 +318,10 @@ class GridWorld(World):
 
         :return:
         """
+        # TODO convert to python 3.5, fix function complexity
         grid_h = 5
         grid_w = 5
-        # there should be cell in the center to show the learner
-        assert grid_w % 2 == 1 and grid_h % 2 == 1
+        assert grid_w % 2 == 1 and grid_h % 2 == 1  # Should be cell in center to show the learner
         cell_h = 2
         cell_w = 3
         lines = []
