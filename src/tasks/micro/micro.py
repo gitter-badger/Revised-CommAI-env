@@ -6,9 +6,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 from core.task import on_start, on_message, on_timeout
@@ -35,8 +34,8 @@ def return_random_string(V,L):
         raise ValueError(str(V) + ' is outside legal vocabulary range (1-26)')
     if (L<1):
         raise ValueError(str(L) + ' is not a possible string length')
-    V=V-1
-    maxL=random.randint(1,L)
+    V = V-1
+    maxL = random.randint(1, L)
     random_string = ""
     for i in range(maxL):
         random_string += chr(ord('A') + random.randint(0, V))
@@ -65,7 +64,7 @@ class Repeat1V1L(BaseTask):
         :param event:
         :return:
         """
-        self.target_string = return_random_string(1,1)
+        self.target_string = return_random_string(1, 1)
         self.set_message("repeat: " + self.target_string + ".")
 
     @on_message(r"\.")
@@ -121,7 +120,7 @@ class Repeat3V1L(BaseTask):
         :param event:
         :return:
         """
-        self.target_string = return_random_string(3,1)
+        self.target_string = return_random_string(3, 1)
         self.set_message("repeat: " + self.target_string + ".")
 
     @on_message(r"\.")
@@ -177,7 +176,7 @@ class Repeat3V2L(BaseTask):
         :param event:
         :return:
         """
-        self.target_string = return_random_string(3,2)
+        self.target_string = return_random_string(3, 2)
         self.set_message("repeat: " + self.target_string + ".")
 
     @on_message(r"\.")
