@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 #
-# Copyright (c) 2017-, Stephen B. Hope
-# All rights reserved.
+# Copyright (c) 2017-, Stephen B. Hope All rights reserved.
 #
-# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
-# All rights reserved.
+# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
@@ -74,31 +72,27 @@ class ItalianHowManyPropertiesDoesAnObjectHaveTask(Task):
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used
-        """
+        # TODO event not used, def outside __inti__, shadowing basket, 'OBJECT' LOL.....
+        """ counting properties of selected object. translating the object.  alphabetic conversion only supported up
+        to ten
 
         :param event:
         :return:
         """
-        italian_object_translations = {'apple': 'mela', 'asparagus': 'asparago', 'avocado': 'avocado',
-                                       'banana': 'banana', 'beet': 'rapa', 'carrot': 'carota', 'cucumber': 'cetriolo',
-                                       'onion': 'cipolla', 'pear': 'pera', 'pineapple': 'ananas', 'potato': 'patata',
-                                       'tomato': 'pomodoro', 'mango': 'mango'}
-        italian_numbers_in_words=['zero', 'uno', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove',
-                                  'dieci']
-
+        italian_object_translations = {
+            'apple': 'mela', 'asparagus': 'asparago', 'avocado': 'avocado', 'banana': 'banana', 'beet': 'rapa',
+            'carrot': 'carota', 'cucumber': 'cetriolo', 'onion': 'cipolla', 'pear': 'pera', 'pineapple': 'ananas',
+            'potato': 'patata', 'tomato': 'pomodoro', 'mango': 'mango'}
+        italian_numbers_in_words=[
+            'zero', 'uno', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove', 'dieci']
         basket = random.choice(global_properties.keys())
         object=random.choice(global_properties[basket].keys())
-        # counting properties of selected object
         self.property_count= len(global_properties[basket][object])
-        # translating the object
         object=italian_object_translations[object]
-        # alphabetic conversion only supported up to ten
         if (self.property_count<=10):
             self.alphabetic_property_count=italian_numbers_in_words[self.property_count]
         else:
             self.alphabetic_property_count=''
-
         message_string = "quante proprieta' ha " + object + " nel cestino di " + basket + "?"
         self.set_message(message_string)
         self.instructions_completed = False
@@ -110,7 +104,7 @@ class ItalianHowManyPropertiesDoesAnObjectHaveTask(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -122,29 +116,26 @@ class ItalianHowManyPropertiesDoesAnObjectHaveTask(Task):
         """
         if not self.instructions_completed:
             self.ignore_last_char()
-        elif ((event.message[-(len(str(self.property_count))+1):] == (str(self.property_count)+'.')
-                     ) or (len(self.alphabetic_property_count)>0 and (
-                            event.message[-(len(self.alphabetic_property_count)+1):] == (
-                                    self.alphabetic_property_count+'.')))):
+        elif ((event.message[
+               -(len(str(self.property_count))+1):] == (str(self.property_count)+'.')
+               ) or (len(self.alphabetic_property_count)>0 and (event.message[-(len(self.alphabetic_property_count)+1):
+                                                                ] == (self.alphabetic_property_count+'.')))):
 
             italian_msg_congratulations=['ottimo lavoro.', 'bravo.', 'congratulazioni.', 'giusto.', 'corretto.']
-
-            self.set_reward(1,random.choice(italian_msg_congratulations))
+            self.set_reward(1, random.choice(italian_msg_congratulations))
 
     @on_timeout()
-    def give_away_answer(self,event):
-        """
+    def give_away_answer(self, event):
+        """ randomly pick digit or string version.  no choice if there is no alphabetic version, else flip a coin to
+        decide whether to return digit or string
+        version
 
         :param event:
         :return:
         """
         # TODO event not used
-        # randomly pick digit or string version
         formatted_count = str(self.property_count)
-        """ no choice if there is no alphabetic version, else flip a coin to decide whether to return digit or string
-        version
-        """
-        if (len(self.alphabetic_property_count)>0 and random.randint(0, 1) == 1):
+        if len(self.alphabetic_property_count) > 0 and random.randint(0, 1) == 1:
             formatted_count=self.alphabetic_property_count
         self.set_message("la risposta corretta e': " + formatted_count + ".")
 
@@ -161,26 +152,22 @@ class GuessTheNumberAskingQuestionsExplicitModelTask(Task):
 
     @on_start()
     def give_instructions(self, event):
-        """ picking a random nuber of digits between 1 and 5
+        """ picking a random number of digits between 1 and 5 generating a random number with that number of digits #
+        TODO def outside __init__ event not used.  first value shouldn't be 0, although this doesn't really matter
+        for our current purposes this relies on weird limit properties of Python's range preparing a regexp to capture
+        requests for help we need to escape the periods and question marks in number_questions preparing the message
 
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used, rewrite 'weird python', local var i not used
         self.digits = random.randint(1, 5)
-        # generating a random number with that number of digits
         self.target_number=str(random.randint(1, 9))
-        # first value shouldn't be 0, although this doesn't really matter for our current purposes
         self.target_number+=''.join(["%s" % random.randint(0, 9) for i in range(1, self.digits)])
-        # TODO rewrite another 'weird' Python reference
-        """ this relies on weird limit properties of Python's range preparing a regexp to capture requests for help
-        we need to escape the periods and question marks in number_questions
-        """
-        escaped_number_questions=[]
+       escaped_number_questions=[]
         for question in number_questions:
             escaped_number_questions.append(re.sub(r'([\.\?])',r'\\\1',question))
         self.re_query = re.compile(r".*(" + "|".join(escaped_number_questions) + ")$")
-        # preparing the message
         message_string = "guess the " + str(
                 self.digits) + "-digit number I am thinking of; you can ask me: " + random.choice(number_questions)
         self.set_message(message_string)
@@ -200,6 +187,7 @@ class GuessTheNumberAskingQuestionsExplicitModelTask(Task):
     def check_response(self, event):
         """
 
+        :param self:
         :param event:
         :return:
         """
@@ -217,9 +205,10 @@ class GuessTheNumberAskingQuestionsExplicitModelTask(Task):
         :param event:
         :return:
         """
-        # TODO event not used
-        self.set_message('if you asked: ' + random.choice(number_questions) + ', I would have said: ' +
-                         self.target_number + '.')
+        # TODO event not used, fix only line
+        self.set_message(
+                'if you asked: ' + random.choice(number_questions
+                                                 ) + ', I would have said: ' + self.target_number + '.')
 
 
 class GuessTheNumberAskingQuestionsTask(Task):
@@ -234,28 +223,24 @@ class GuessTheNumberAskingQuestionsTask(Task):
 
     @on_start()
     def give_instructions(self, event):
-        """ picking a random nuber of digits between 1 and 5
+        """ picking a random nuber of digits between 1 and 5. generating a random number with that number of digits.
+        first value shouldn't be 0, although this doesn't really matter for our current purposes. this relies on weird
+        limit properties of Python's range preparing a regexp to capture requests for help
+        we need to escape the periods and question marks in number_questions.  preparing the message
 
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used, rewrite 'weird python'
         self.digits = random.randint(1, 5)
-        # generating a random number with that number of digits
         self.target_number=str(random.randint(1, 9))
-        # first value shouldn't be 0, although this doesn't really matter for our current purposes
         self.target_number+=''.join(["%s" % random.randint(0, 9) for i in range(1, self.digits)])
-        # TODO rewrite another 'weird' Python reference
-        """  this relies on weird limit properties of Python's range preparing a regexp to capture requests for help
-        we need to escape the periods and question marks in number_questions
-        """
         escaped_number_questions=[]
         for question in number_questions:
             escaped_number_questions.append(re.sub(r'([\.\?])',r'\\\1',question))
         self.re_query = re.compile(r".*(" + "|".join(escaped_number_questions) + ")$")
-        # preparing the message
-        message_string = "guess the " + str(self.digits) + \
-                         "-digit number I am thinking of; you can ask me for the number."
+        message_string = "guess the " + str(
+                self.digits) + "-digit number I am thinking of; you can ask me for the number."
         self.set_message(message_string)
         self.instructions_completed = False
 
@@ -266,7 +251,7 @@ class GuessTheNumberAskingQuestionsTask(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -308,34 +293,28 @@ class GuessTheNumberAskingForDigitsExplicitModelTask(Task):
     def give_instructions(self, event):
         """ we need to edit the number_questions list by replacing "number" with "next digit"; we will keep two
         versions of the resulting list: one with just the relevant string replaced, and one with escaped .? for the
-        regular expression
+        regular expression.  picking a random number of digits between 1 and 5.  generating a random number with that
+        number of digits. first value shouldn't be 0, although this doesn't really matter for our current purposes.
+        this relies on weird limit properties of Python's range preparing a regexp to capture requests for help.
+        also, we initialize a counter to keep track of the next digit.  preparing the message
 
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used, rewrite 'weird python', unresolved ref self
         self.digit_questions=[]
         escaped_digit_questions=[]
         for question in number_questions:
             digit_question=re.sub('number', 'next digit',question)
             self.digit_questions.append(digit_question)
             escaped_digit_questions.append(re.sub(r'([\.\?])',r'\\\1',digit_question))
-
-        # picking a random nuber of digits between 1 and 5
         self.digits = random.randint(1,5)
-        # generating a random number with that number of digits
         self.target_number = str(random.randint(1,9))
-        # first value shouldn't be 0, although this doesn't really matter for our current purposes
-        self.target_number += ''.join(["%s" % random.randint(0, 9) for i in range(1, self.digits)])
-        # TODO rewrite another 'weird' Python reference
-        """ this relies on weird limit properties of Python's range preparing a regexp to capture requests for help
-        """
+       self.target_number += ''.join(["%s" % random.randint(0, 9) for i in range(1, self.digits)])
         self.re_query = re.compile(r".*(" + "|".join(escaped_digit_questions) + ")$")
-        # also, we initialize a counter to keep track of the next digit
         self.next_digit=0
-        # preparing the message
-        message_string = "guess the " + str(self.digits) + "-digit number I am thinking of; you can ask me: " + \
-                         random.choice(self.digit_questions)
+        message_string = "guess the " + str(
+                self.digits) + "-digit number I am thinking of; you can ask me: " + random.choice(self.digit_questions)
         self.set_message(message_string)
         self.instructions_completed = False
 
@@ -353,13 +332,14 @@ class GuessTheNumberAskingForDigitsExplicitModelTask(Task):
     def check_response(self, event):
         """
 
+        :param self:
         :param event:
         :return:
         """
         if not self.instructions_completed:
             self.ignore_last_char()
         elif self.re_query.match(event.message):
-            if (self.next_digit<self.digits):
+            if self.next_digit<self.digits:
                 self.set_message(self.target_number[self.next_digit] + '.')
                 self.next_digit+=1
             else:
@@ -376,9 +356,9 @@ class GuessTheNumberAskingForDigitsExplicitModelTask(Task):
         """
         # TODO event not used
         give_away_message = ''
-        if (self.next_digit<(self.digits)):
-            give_away_message += 'if you asked: ' + random.choice(self.digit_questions) + \
-                                 ', I would have said: ' + self.target_number[self.next_digit] + '. '
+        if self.next_digit < self.digits:
+            give_away_message += 'if you asked: ' + random.choice(
+                    self.digit_questions) + ', I would have said: ' + self.target_number[self.next_digit] + '. '
         give_away_message += 'the number is ' + self.target_number + '.'
         self.set_message(give_away_message)
 
@@ -466,51 +446,49 @@ class GuessTheNumberAskingForDigitsTask(Task):
         give_away_message += 'the number is ' + self.target_number + '.'
         self.set_message(give_away_message)
 
+
+# TODO rewrite another 'weird' Python references (3)
 """ OLD STUFF FROM HERE
 
 here, I define a global character-by-character association list that can be used by the tasks below that rely on the
 same association scheme (here and below, global means: accessible by all tasks in this file; local means: accessible
 within one task only) we select a subset of characters as primes, so we can also define tasks with disjoint primes
 from within and without this list the following global variable tells us the size of this subset:
+
+ weirdly, left value is inclusive, right value is exclusive.  conversion to tuple for compatibility with local
+ tables, that HAVE to be tuples usual python weirdness. usual python weirdness the following function returns instead
+ matching primes and targets tuples, generating them each time it is called: it will be used by "local" tasks to
+ generate their own mapping tables (note that objects returned are two TUPLES, as needed by the task classes):
 """
 global_prime_cardinality=5
-# TODO rewrite another 'weird' Python reference
-alphabet_integers=list(range(0,26)) # weirdly, left value is inclusive, right value is exclusive
+alphabet_integers=list(range(0,26))
 random.shuffle(alphabet_integers)
-# conversion to tuple for compatibility with local tables, that HAVE to be tuples
-# TODO rewrite another 'weird' Python reference
-global_primes=tuple(alphabet_integers[0:global_prime_cardinality]) # usual python weirdness
+global_primes=tuple(alphabet_integers[0:global_prime_cardinality])
 random.shuffle(alphabet_integers)
 global_targets=tuple(alphabet_integers[0:global_prime_cardinality])
-# TODO rewrite another 'weird' Python reference
-""" usual python weirdness the following function returns instead matching primes and targets tuples, generating
-them each time it is called: it will be used by "local" tasks to generate their own mapping tables (note that
-objects returned are two TUPLES, as needed by the task classes):
-"""
+
 
 def generate_local_prime_and_target_mappings(prime_cardinality):
-    # TODO rewrite another 'weird' Python reference
-    """weirdly, left value is inclusive, right value is exclusive
+    # TODO rewrite 'weird' Python reference ( 3+), 'python silliness'
+    """ weirdly, left value is inclusive, right value is exclusive python silliness: this will range from 0 to
+    prime_cardinality-1. we must fix to tuple, or else class will break down usual python weirdness.  we must fix to
+    tuple, or else class will break down also deleting alphabet_integers
 
     :param prime_cardinality:
     :return:
     """
-    alphabet_integers = list(range(0,26)) #
+    # TODO shadows outerscope alphabet_intergers
+    alphabet_integers = list(range(0,26))
     random.shuffle(alphabet_integers)
-    primes=alphabet_integers[0:prime_cardinality] # usual
-    # TODO rewrite 'python silliness' reference
-    # python silliness: this will range from 0 to prime_cardinality-1
-    primes = tuple(primes) # we must fix to tuple, or else class will break down
+    primes=alphabet_integers[0:prime_cardinality]
+    primes = tuple(primes)
     random.shuffle(alphabet_integers)
     targets = alphabet_integers[0:prime_cardinality]
-    # TODO rewrite another 'weird' Python reference
-    # usual python weirdness
     targets = tuple(targets)
-    # we must fix to tuple, or else class will break down also deleting alphabet_integers
-    del(alphabet_integers)
-    return([primes,targets])
+    del alphabet_integers
+    return [primes, targets]
 
-def generate_prime_and_target(primes,targets,string_length,prime_cardinality):
+def generate_prime_and_target(primes, targets, string_length, prime_cardinality):
     """ the following function generates prime and target strings, according to the tables passed as arguments
 
     :param primes:
@@ -522,7 +500,7 @@ def generate_prime_and_target(primes,targets,string_length,prime_cardinality):
     raw_prime = [random.randint(0, (prime_cardinality - 1)) for i in range(string_length)]
     prime = ''.join(chr(ord('a') + primes[x]) for x in raw_prime)
     target = ''.join(chr(ord('a') + targets[x]) for x in raw_prime)
-    return([prime,target])
+    return [prime, target]
 
 
 class RepeatCharacter(Task):
@@ -542,7 +520,7 @@ class RepeatCharacter(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.prime = chr(ord('a') + random.randint(0, 25))
         self.prime += "."
         self.set_message(self.prime)
@@ -555,7 +533,7 @@ class RepeatCharacter(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -584,7 +562,7 @@ class RepeatStringMax4(Task):
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.string_length = random.randint(1, 4)
         self.prime = ""
         for i in range(self.string_length):
@@ -627,7 +605,7 @@ class RepeatStringMin5Max10(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.string_length = random.randint(5, 10)
         self.prime = ""
         for i in range(self.string_length):
@@ -675,9 +653,9 @@ class GlobalTwoAssociatedCharacters(Task):
         :param event:
         :return:
         """
-        # TODO event not used
-        self.prime,self.target=generate_prime_and_target(global_primes,global_targets,1,global_prime_cardinality)
-        self.set_message(self.prime+self.target+".")
+        # TODO def outside __init__ event not used
+        self.prime, self.target = generate_prime_and_target(global_primes, global_targets, 1 , global_prime_cardinality)
+        self.set_message(self.prime + self.target + ".")
         self.instructions_completed = False
 
     @on_output_message(r"\.$")
@@ -687,7 +665,7 @@ class GlobalTwoAssociatedCharacters(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -708,15 +686,15 @@ class GlobalCharacterPrimeTarget(Task):
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used
-        self.prime,self.target=generate_prime_and_target(global_primes,global_targets,1,global_prime_cardinality)
+        # TODO def outside __init__ event not used
+        self.prime, self.target=generate_prime_and_target(global_primes, global_targets, 1 ,global_prime_cardinality)
         self.target += "."
         self.set_message(self.prime + ".")
         self.instructions_completed = False
 
     @on_output_message(r"\.$")
     def check_ending(self, event):
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -755,7 +733,7 @@ class LocalCharacterPrimeTarget(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.prime,self.target = generate_prime_and_target(self.primes, self.targets, 1, global_prime_cardinality)
         self.target += "."
         self.set_message(self.prime + ".")
@@ -768,7 +746,7 @@ class LocalCharacterPrimeTarget(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -800,7 +778,7 @@ class GlobalTwoAssociatedDelimitedStringsMax4(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.string_length = random.randint(1, 4)
         self.prime, self.target=generate_prime_and_target(global_primes, global_targets, self.string_length,
                                                           global_prime_cardinality)
@@ -847,9 +825,9 @@ class GlobalTwoAssociatedStringsMax4(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.string_length = random.randint(1, 4)
-        self.prime, self.target=generate_prime_and_target(global_primes, global_targets, self.string_length,
+        self.prime, self.target = generate_prime_and_target(global_primes, global_targets, self.string_length,
                                                           global_prime_cardinality)
         self.set_message(self.prime + self.target + ".")
         self.instructions_completed = False
@@ -861,7 +839,7 @@ class GlobalTwoAssociatedStringsMax4(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -889,7 +867,7 @@ class LocalTwoAssociatedDelimitedStringsMax4(Task):
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used
+        # TODO def outside __init__ event not used
         """
 
         :param event:
@@ -908,7 +886,7 @@ class LocalTwoAssociatedDelimitedStringsMax4(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -940,9 +918,9 @@ class LocalTwoAssociatedStringsMax4(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.string_length = random.randint(1, 4)
-        self.prime, self.target=generate_prime_and_target(self.primes, self.targets, self.string_length,
+        self.prime, self.target = generate_prime_and_target(self.primes, self.targets, self.string_length,
                                                           global_prime_cardinality)
         self.set_message(self.prime + self.target + ".")
         self.instructions_completed = False
@@ -954,7 +932,7 @@ class LocalTwoAssociatedStringsMax4(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -984,7 +962,7 @@ class GlobalStringPrimeTargetMax4(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.string_length = random.randint(1, 4)
         self.prime, self.target=generate_prime_and_target(global_primes, global_targets, self.string_length,
                                                           global_prime_cardinality)
@@ -999,6 +977,7 @@ class GlobalStringPrimeTargetMax4(Task):
         :param event:
         :return:
         """
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -1027,14 +1006,14 @@ class LocalStringPrimeTargetMax4(Task):
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used
+        # TODO def outside __init__ event not used
         """
 
         :param event:
         :return:
         """
         self.string_length = random.randint(1, 4)
-        self.prime, self.target=generate_prime_and_target(
+        self.prime, self.target = generate_prime_and_target(
                 self.primes, self.targets, self.string_length, global_prime_cardinality)
         self.target += "."
         self.set_message(self.prime + ".")
@@ -1047,7 +1026,7 @@ class LocalStringPrimeTargetMax4(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
@@ -1082,7 +1061,7 @@ class GlobalStringPrimeTargetMin5Max10(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.string_length = random.randint(5, 10)
         self.prime, self.target=generate_prime_and_target(
                 global_primes,global_targets, self.string_length,global_prime_cardinality)
@@ -1097,7 +1076,7 @@ class GlobalStringPrimeTargetMin5Max10(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO def outside __init__ event not used
         self.instructions_completed = True
 
     @on_message()
