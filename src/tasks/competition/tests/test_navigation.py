@@ -87,6 +87,7 @@ class TestNavigation(unittest.TestCase):
 Tasks testing routines
 """
     def testVerbTask(self):
+        # TODO function name lower case
         """ this has been moved into repetition
 
         :return:
@@ -102,6 +103,7 @@ Tasks testing routines
         self.do_test_battery(repetition.VerbTask, solve)
 
     def testTurningTask(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -117,6 +119,7 @@ Tasks testing routines
         self.do_test_battery(navigation.TurningTask, solve)
 
     def testMoving(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -131,6 +134,7 @@ Tasks testing routines
         self.do_test_battery(navigation.MovingTask, solve)
 
     def testMovingRelative(self):
+        # TODO function name lower case
         """
 
         """
@@ -175,6 +179,7 @@ Tasks testing routines
         self.do_test_battery(navigation.MovingAbsoluteTask, solve)
 
     def testPickUp(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -190,6 +195,7 @@ Tasks testing routines
         self.do_test_battery(navigation.PickUpTask, solve)
 
     def testPickUpAround(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -218,6 +224,7 @@ Tasks testing routines
         self.do_test_battery(navigation.PickUpAroundTask, solve)
 
     def testPickUpInFront(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -237,6 +244,7 @@ Tasks testing routines
         self.do_test_battery(navigation.PickUpInFrontTask, solve)
 
     def testGiving(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -252,6 +260,7 @@ Tasks testing routines
         self.do_test_battery(navigation.GivingTask, solve)
 
     def testPickUpAroundAndGive(self):
+        # TODO function name lower case
         """
 
         :return:
@@ -282,6 +291,7 @@ Tasks testing routines
         self.do_test_battery(navigation.PickUpAroundAndGiveTask, solve)
 
     def testCountingInventoryGiving(self):
+        # TODO function name lower case
         """
 
         :return:
