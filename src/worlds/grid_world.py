@@ -11,8 +11,7 @@
 
 
 # TODO fix imports
-from core.task import World, on_world_start, on_message, on_sequence,\
-    on_state_changed, on_timeout, on_output_message
+from core.task import World, on_world_start, on_message, on_sequence, on_state_changed, on_timeout, on_output_message
 from collections import namedtuple, defaultdict
 import logging
 import tasks.competition.messages as msg
