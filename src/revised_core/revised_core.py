@@ -17,17 +17,11 @@ class InputChannel:
         :param serializer:
         """
         self.serializer = serializer
-        # remembers the input in binary format
-        self._binary_buffer = ''
-        # leftmost deserialization of the binary buffer
-        self._deserialized_buffer = ''
-        # remember the position until which we deserialized the binary buffer
-        self._deserialized_pos = 0
-
-        # event that gets fired for every new bit
-        self.sequence_updated = Observable()
-        # event that gets fired for every new character
-        self.message_updated = Observable()
+        self._binary_buffer = '' #  remembers the inout in binary fromat
+        self._deserialized_buffer = ''  # leftmost deserialization if the binary buffer
+        self._deserialized_pos = 0  # remember the position until which we deserialized the binary buffer
+        self.sequence_updated = Observable()  # event that gets fired for every new bit
+        self.message_updated = Observable()  # event that gets fired for every new character
 
     def consume_bit(self, input_bit):
         """ Takes a bit into the channel, for now we are storing the input as strings (let's change this later)
@@ -38,19 +32,12 @@ class InputChannel:
         """
         if input_bit == 0 or input_bit == 1:
             input_bit = str(input_bit)
-        # store the bit in the binary input buffer
-        self._binary_buffer += input_bit
-        # notify the updated sequence
-        self.sequence_updated(self._binary_buffer)
-
-        # we check if we can deserialize the final part of the sequence
-        undeserialized_part = self.get_undeserialized()
+        self._binary_buffer += input_bit  # Store the but in the binary input buffer
+        self.sequence_updated(self._binary_buffer)  # Notify the updated sequence
+        undeserialized_part = self.get_undeserialized()  # check if we can deserialize the final part of sequence
         if self.serializer.can_deserialize(undeserialized_part):
-            # when we do, we deserialize the chunk
-            self._deserialized_buffer += self.serializer.to_text(undeserialized_part)
-            # we update the position
-            self._deserialized_pos += len(undeserialized_part)
-
+            self._deserialized_buffer += self.serializer.to_text(undeserialized_part)  # Deserialize the chunk
+            self._deserialized_pos += len(undeserialized_part)  # Update the position
             self.message_updated(self._deserialized_buffer)
 
     def clear(self):
@@ -127,10 +114,8 @@ class OutputChannel:
         :param serializer:
         """
         self.serializer = serializer
-        # remembers the data that has to be shipped out
-        self._binary_buffer = ''
-        # event that gets fired every time we change the output sequence
-        self.sequence_updated = Observable()
+        self._binary_buffer = ''  # Remembers the data to be shipped out
+        self.sequence_updated = Observable()  # Event fired every time output sequence changes
         self.logger = logging.getLogger(__name__)
 
     def set_message(self, message):
@@ -215,35 +200,14 @@ class JSONConfigLoader:
     """
     Loads a set of tasks and a schedule for them from a JSON file::
 
-        {
-          "tasks":
-          {
-            "<task_id>": {
-                "type": "<task_class>",
-            },
-            "<task_id>": {
-                "type": "<task_class>",
-                "world": "<world_id>"
-            }
-            "...": "..."
-          },
-          "worlds":
-          {
-            "<world_id>": {
-              "type": "<world_class>",
-            }
-          },
-          "scheduler":
-            {
-              "type": "<scheduler_class>",
-              "args": {
-                  "<scheduler_arg>": <scheduler_arg_value>,
-                }
-            }
-        }
+        {"tasks":{"<task_id>": {"type": "<task_class>", },
+        "<task_id>": "type": "<task_class>", "world": "<world_id>"} "...": "..."},
 
-    The scheduler scheduler_arg_value could be a container including
-    task ids, which will be replaced by the concrete tasks instances.
+        "worlds": {"<world_id>": {"type": "<world_class>", }},
+        "scheduler": {"type": "<scheduler_class>", "args": {"<scheduler_arg>": <scheduler_arg_value>, }}}
+
+    The scheduler scheduler_arg_value could be a container including task ids, which will be replaced by the concrete
+    tasks instances.
     """
     def create_tasks(self, tasks_config_file):
         """ Given a json configuration file, it returns a scheduler object set up as described in the file.
@@ -263,8 +227,7 @@ class JSONConfigLoader:
         # prepare the arguments to instantiate the scheduler
         scheduler_args = {}
         for arg_name, arg_value in config['scheduler']['args'].items():
-            """
-            all arguments that begin with the name tasks are taken as collections of ids that should be mapped to the
+            """ all arguments that begin with the name tasks are taken as collections of ids that should be mapped to the
             corresponding tasks object
             """
             if arg_name.startswith('tasks'):
@@ -305,8 +268,7 @@ class JSONConfigLoader:
 
 
 class PythonConfigLoader:
-    """
-    Loads a python file containing a stand-alone function called`create_tasks` that returns a TaskScheduler object.
+    """ Loads a python file containing a stand-alone function called`create_tasks` that returns a TaskScheduler object.
     """
     def create_tasks(self, tasks_config_file):
         """ make sure we have a relative path
@@ -318,6 +280,7 @@ class PythonConfigLoader:
         if tasks_config_file.startswith('..'):
             raise RuntimeError("The task configuration file must be in the "
                                "same directory as the competition source.")
+        # TODO fix
         # just in case, remove initial unneeded "./"
         if tasks_config_file.startswith('./'):
             tasks_config_file = tasks_config_file[2:]
@@ -347,15 +310,12 @@ def map_tasks(arg, tasks):
     :return:
     """
     try:
-        # if arg is a task, return the task object
-        return tasks[arg]
+        return tasks[arg]  # if arg is a task, return the task object
     except KeyError:
-        # arg is a hashable type, but we cannot map it to a task
-        raise RuntimeError("Coudln't find task id '{0}'.".format(arg))
-    # unhashable type
-    except TypeError:
-        # we treat arg as a collection that should be mapped
-        return list(map(lambda x: map_tasks(x, tasks), arg))
+        # TODO fix
+        raise RuntimeError("Coudln't find task id '{0}'.".format(arg))  # arg is hashable, type cannot map to task
+    except TypeError:  # Un-hashable type
+        return list(map(lambda x: map_tasks(x, tasks), arg))  # treat arg as a collection that should be mapped
 
 
 class Environment:
@@ -387,35 +347,22 @@ class Environment:
         changes) to handler functions in the tasks that tell the environment how to react
         """
         self.event_manager = EventManager()
-        # intialize member variables
-        self._current_task = None
+        self._current_task = None  # initialize member variables
         self._current_world = None
-        # we hear to our own output
-        self._output_channel_listener = InputChannel(serializer)
+        self._output_channel_listener = InputChannel(serializer)  # we hear to our own output
         if scramble:
             serializer = ScramblingSerializerWrapper(serializer)
-        # output channel
-        self._output_channel = OutputChannel(serializer)
-        # input channel
-        self._input_channel = InputChannel(serializer)
-        # priority of ongoing message
-        self._output_priority = 0
-        # reward that is to be given at the learner at the end of the task
-        self._reward = None
-        # Current task time
-        self._task_time = None
-        # Task deinitialized
-        self._current_task_deinitialized = False
-        # Internal logger
-        self.logger = logging.getLogger(__name__)
-
-        # signals
-        self.world_updated = Observable()
+        self._output_channel = OutputChannel(serializer)  # Output channel
+        self._input_channel = InputChannel(serializer)  # Input channel
+        self._output_priority = 0  # priority of ongoing message
+        self._reward = None  # Reward to be given to learner at end of task
+        self._task_time = None  # Current task time
+        self._current_task_deinitialized = False  # Task deintialize
+        self.logger = logging.getLogger(__name__)  # Internal logger
+        self.world_updated = Observable()  # signals
         self.task_updated = Observable()
         self.reward_given = Observable()
-
-        # Register channel observers
-        self._input_channel.sequence_updated.register(self._on_input_sequence_updated)
+        self._input_channel.sequence_updated.register(self._on_input_sequence_updated)  # Register channel observers
         self._input_channel.message_updated.register(self._on_input_message_updated)
         self._output_channel_listener.sequence_updated.register(self._on_output_sequence_updated)
         self._output_channel_listener.message_updated.register(self._on_output_message_updated)
@@ -427,60 +374,43 @@ class Environment:
         :param learner_input:
         :return:
         """
-        # Make sure we have a task
-        if not self._current_task:
+        if not self._current_task:  # Make sure we have a task
             self._switch_new_task()
-        # If the task has not reached the end by either Timeout or achieving the goal
-        if not self._current_task.has_ended():
-            # Check if a Timeout occurred
-            self._current_task.check_timeout(self._task_time)
-            # Process the input from the learner and raise events
-            if learner_input is not None:
-                # record the input from the learner and deserialize it
+        if not self._current_task.has_ended():  # Task not reached end by Timeout OR achieving goal
+            self._current_task.check_timeout(self._task_time)  # Check if timeout occurred
+            if learner_input is not None:  # Process the input from the learner and raise events
                 # TODO this bit is dropped otherwise on a timeout...
-                self._input_channel.consume_bit(learner_input)
-
-            # fill the output buffer if the task hasn't produced any output
-            if self._output_channel.is_empty():
-                # demand for some output from the task (usually, silence)
-                self._output_channel.set_message(self._current_task.get_default_output())
-            # We are in the middle of the task, so no rewards are given
-            reward = None
+                self._input_channel.consume_bit(learner_input)  # Record the input from the leaner and deserialize it
+            if self._output_channel.is_empty():  #  Fill ouput buffer, if task not produced any output
+                self._output_channel.set_message(self._current_task.get_default_output())  # Demand output from task
+            reward = None  # task in process, no reward given
         else:
             """ If the task has ended and there is nothing else to say, deinitialize the task and if there is still
             nothing more to say, move to the next task
             """
             if self._output_channel.is_empty() and not self._current_task_deinitialized:
-                # this triggers the Ended event on the task
-                self._current_task.deinit()
+                self._current_task.deinit()  # Triggers the Ended event on the task
                 self._current_task_deinitialized = True
-
             if self._output_channel.is_empty():
                 self._reward = self._reward if self._reward is not None else 0
                 reward = self._allowable_reward(self._reward)
-
                 self._task_scheduler.reward(reward)
                 self.reward_given(self._current_task, reward)
-
                 self._current_task_deinitialized = False
                 self._switch_new_task()
             else:
-                # Do Nothing until the output channel is empty
-                reward = None
+                reward = None  # Do nothing until output channel is empty
 
-        # Get one bit from the output buffer and ship it
-        output = self._output_channel.consume_bit()
-        """
-        we hear to ourselves (WARNING: this can still generate behavior in the task via the OutputMessageUpdated event)
+        output = self._output_channel.consume_bit()  # Get one bit from output buffer and ship it
+        """ we hear to ourselves (WARNING: this can still generate behavior in the task via the OutputMessageUpdated event)
         """
         self._output_channel_listener.consume_bit(output)
-        # advance time
-        self._task_time += 1
+        self._task_time += 1  # advance time
 
         return output, reward
 
     def get_reward_per_task(self):
-        """ Returns a dictonary that contains the cumulative reward for each
+        """ Returns a dictionary that contains the cumulative reward for each
         task.
 
         :return:
@@ -595,8 +525,7 @@ class Environment:
         :return:
         """
         if self._current_task and self._current_task.has_started():
-            # tasks that have a world should also take the world state as an argument
-            if self._current_world:
+            if self._current_world:  # Tasks with world should take world state as an argument
                 self.raise_event(StateChanged(self._current_world.state, self._current_task.state))
             else:
                 self.raise_event(StateChanged(self._current_task.state))
@@ -628,39 +557,29 @@ class Environment:
 
         """
         self._current_task = self._task_scheduler.get_next_task()
-        # register to the ending event
-        self._current_task.ended_updated.register(self._on_task_ended)
+        self._current_task.ended_updated.register(self._on_task_ended)  # Register to ending event
         try:
-            # This is to check whether the user didn't mess up in instantiating the class
-            self._current_task.get_world()
+            self._current_task.get_world()  # Check for user error initiating the class
         except TypeError:
-            raise RuntimeError("The task {0} is not correctly instantiated. "
-                               "Are you sure you are not forgetting to "
-                               "instantiate the class?".format(
-                    self._current_task))
+            raise RuntimeError(
+                    "The task {0} is not correctly instantiated.  "
+                    "Are you sure you are not forgetting to " "instantiate the class?".format(self._current_task))
         self.logger.debug("Starting new task: {0}".format(self._current_task))
-
-        # check if it has a world:
-        if self._current_task.get_world() != self._current_world:
-            # if we had an ongoing world, end it.
-            if self._current_world:
+        if self._current_task.get_world() != self._current_world:  # Check if task has world
+            if self._current_world:  # if we have an ongoing world end it
                 self._current_world.end()
                 self._deregister_task_triggers(self._current_world)
             self._current_world = self._current_task.get_world()
             if self._current_world:
-                # register new event handlers for the world
-                self._register_task_triggers(self._current_world)
-                # initialize the new world
-                self._current_world.start(self)
+                self._register_task_triggers(self._current_world)  # Register new event handlers for the world
+                self._current_world.start(self)  # Initialize the new world
             self.world_updated(self._current_world)
-        # reset state
-        self._task_time = 0
+        self._task_time = 0  # Reset state
         self._reward = None
         self._input_channel.clear()
         self._output_channel.clear()
         self._output_channel_listener.clear()
-        # register new event handlers
-        self._register_task_triggers(self._current_task)
+        self._register_task_triggers(self._current_task)  # Register new event handlers
         # start the task, sending the current environment so it can interact by sending back rewards and messages
         self._current_task.start(self)
         self.task_updated(self._current_task)
@@ -675,11 +594,9 @@ class Environment:
             try:
                 self.event_manager.deregister(task, trigger)
             except ValueError:
-                # if the trigger was not registered, we don't worry about it
-                pass
+                pass  # If the trigger was not registered, disregard it
             except KeyError:
-                # if the trigger was not registered, we don't worry about it
-                pass
+                pass  # If the trigger was not registered, discard it
         task.clean_dynamic_handlers()
 
     def _register_task_triggers(self, task):
@@ -718,9 +635,9 @@ class EventManager:
         self.logger = logging.getLogger(__name__)
 
     def register(self, observer, trigger):
-        """ Register a trigger (a tuple containing an ActivationCondition -a function/functor- and an EventHandler
-        - another function/functor-)
-        initialize a list for each type of event (it's just an optimization)
+        """ Register a trigger (a tuple containing an ActivationCondition -a function/functor- and an
+        EventHandler - another function/functor-) initialize a list for each type of event (it's just an optimization)
+
         :param observer:
         :param trigger:
 
@@ -731,8 +648,7 @@ class EventManager:
         self.logger.debug(
                 "Registering Trigger for {0} event with handler {1} of object of "
                 "type {2}".format(trigger.type.__name__, trigger.event_handler, observer.__class__.__name__))
-        # save the trigger
-        self.triggers[trigger.type].append((observer, trigger))
+        self.triggers[trigger.type].append((observer, trigger))  # Save the trigger
 
     def deregister(self, observer, trigger):
         """
@@ -757,25 +673,18 @@ class EventManager:
         :return:
         """
         handled = False
-        # check if we have any trigger at all of this type of event
-        if event.__class__ in self.triggers:
-            # for all the triggers registered for this type of event
-            for observer, trigger in self.triggers[event.__class__]:
-                # check if the filtering condition is a go
-                condition_outcome = trigger.condition(event)
+        if event.__class__ in self.triggers:  # Check for trigger for event type
+            for observer, trigger in self.triggers[event.__class__]:  # For all registered triggers for event type
+                condition_outcome = trigger.condition(event)  # check if filtering condition is a go
                 if condition_outcome:
-                    # save, if the event expects it, the outcome of the condition checking
-                    try:
+                    try:  # Save if event expects it, outcome of the condition checking
                         event.condition_outcome = condition_outcome
                     except AttributeError:
-                        self.logger.debug("Couldn't save condition outcome for "
-                                          "event {0}".format(event))
+                        self.logger.debug("Couldn't save condition outcome for " "event {0}".format(event))
                     self.logger.debug('{0} handled by {1}'.format(
                             event, trigger.event_handler))
-                    # call the event handler
-                    trigger.event_handler(observer, event)
-                    # remember we handled the event and keep on processing other events
-                    handled = True
+                    trigger.event_handler(observer, event)  # Call event handler
+                    handled = True  # Remember handling the event, proceed with processing events
         return handled
 
 
@@ -870,9 +779,9 @@ class IncrementalTaskScheduler:
 
 # TODO: Create a BatchedScheduler that takes as an argument another
 class DependenciesTaskScheduler:
-    """ scheduler and just repeats the given tasks N times.
-    Takes a dependency graph between the tasks and randomly allocates between the ones that are at the root, or are
-    dependent on other tasks that have been solved (based on a threshold)
+    """ scheduler and just repeats the given tasks N times. Takes a dependency graph between the tasks and randomly
+    allocates between the ones that are at the root, or are dependent on other tasks that have been solved
+    (based on a threshold)
     """
     def __init__(self, tasks, tasks_dependencies, unlock_threshold=10):
         """
@@ -882,17 +791,13 @@ class DependenciesTaskScheduler:
         :param unlock_threshold: total cumulative reward needed for a task to be considered solved.
         """
         self.tasks = tasks
-        # a dictionary containing rewards per task
-        self.rewards = defaultdict(int)
-        # saves the last task that has been given to the learner
-        self.last_task = None
+        self.rewards = defaultdict(int)  # Dictionary containing rewards per task
+        self.last_task = None  # Saves the last task given to the learner
         self.unlock_threshold = unlock_threshold
         self.solved_tasks = set()
         self.tasks_dependencies = tasks_dependencies
-        # set of the tasks that are available to the learner
-        self.available_tasks = set()
-        # initially these are the tasks that have no dependencies on them
-        self.find_available_tasks()
+        self.available_tasks = set()  # Set of tasks available to learner
+        self.find_available_tasks()  # Initially these are tasks with no dependencies
 
     def get_next_task(self):
         """
@@ -912,8 +817,7 @@ class DependenciesTaskScheduler:
         self.rewards[task_name] += reward
         if self.rewards[task_name] >= self.unlock_threshold:
             self.solved_tasks.add(task_name)
-            # refresh the list of available tasks
-            self.find_available_tasks()
+            self.find_available_tasks()  # Refresh list of available tasks
 
     def get_task_id(self, task):
         """
@@ -1008,12 +912,10 @@ class ScramblingSerializerWrapper:
         """
         self._serializer = serializer
         self.SILENCE_TOKEN = serializer.SILENCE_TOKEN
-        # 'vowels' and 'consonants' (to be alternated if readable = true)
-        self.readable = readable
+        self.readable = readable  # 'vowels' and 'consonants' (to be alternated if readable = true
         self.V = 'aeiouy'
         self.C = ''.join([i for i in string.ascii_lowercase if i not in self.V])
-        # a mapping of real words to scrambled words an back
-        self.word_mapping = {}
+        self.word_mapping = {}  # Mapping real words to scrambled words and back
         self.inv_word_mapping = {}
         self.logger = logging.getLogger(__name__)
 
@@ -1024,14 +926,12 @@ class ScramblingSerializerWrapper:
         :return:
         """
         self.logger.debug("Tokenizing message '{0}'".format(message))
-        # get all the parts of the message without cutting the spaces out
-        tokens = self.tokenize(message)
+        tokens = self.tokenize(message)  # Get all parts of message without removing spaces
         self.logger.debug("Scrambling message '{0}'".format(tokens))
-        # transform each of the pieces (if needed) and merge them together
-        scrambled_message = ''.join(self.scramble(t) for t in tokens)
+        scrambled_message = ''.join(self.scramble(t) for t in tokens)  # Transfprm each peice (if needed) and merge
         self.logger.debug("Returning scrambled message '{0}'".format(scrambled_message))
-        # pass it on to the real serializer
-        return self._serializer.to_binary(scrambled_message)
+        return self._serializer.to_binary(scrambled_message)  # Return it to the real serializer
+
 
     def to_text(self, data):
         """ get the scrambled message back from the bits
@@ -1055,12 +955,9 @@ class ScramblingSerializerWrapper:
         """
         if not self._serializer.can_deserialize(data):
             return False
-        # get the scrambled message back from the bits
-        scrambled_message = self._serializer.to_text(data)
-        # split into tokens, including spaces and punctuation marks
-        tokens = self.tokenize(scrambled_message)
-        # to deserialize we have to be at the end of a word.
-        return tokens and tokens[-1][1] != 'WORD'
+        scrambled_message = self._serializer.to_text(data)  # Get scrambled message back from the bits
+        tokens = self.tokenize(scrambled_message)  # Split into tokens, including spaces and punctuation
+        return tokens and tokens[-1][1] != 'WORD'  # Deserialize, need to be at end of a word
 
     def scramble(self, token):
         """
@@ -1069,13 +966,11 @@ class ScramblingSerializerWrapper:
         :return:
         """
         word, pos = token
-        if pos == 'SILENCE' or pos == 'PUNCT':
-            # if this is a space or a punctuation sign, don't do anything
+        if pos == 'SILENCE' or pos == 'PUNCT':  # If is a space or a punctuation sign, don't do anything
             return word
         else:
             if word.lower() not in self.word_mapping:
-                # if we don't have a pseudo-word already assigned generate a new pseudo-word
-                pseudo_word = self.gen_pseudo_word(len(word))
+                pseudo_word = self.gen_pseudo_word(len(word))  # Generate psuedo word if needed
                 self.word_mapping[word.lower()] = pseudo_word
                 self.inv_word_mapping[pseudo_word] = word.lower()
             return self.capitalize(word, self.word_mapping[word.lower()])
@@ -1088,13 +983,11 @@ class ScramblingSerializerWrapper:
         :return:
         """
         if len(scrambled_word) == len(word):
-            # if the two words have the same length, we preverve capitalization
-            return ''.join(scrambled_word[i].upper()
+            return ''.join(scrambled_word[i].upper()  # Preserve capitalization in words with same length
                            if word[i] in string.ascii_uppercase
                            else scrambled_word[i] for i in range(len(word)))
         else:
-            # just capitalize the first letter
-            return (scrambled_word[0].upper()
+            return (scrambled_word[0].upper()  # Capitialize first letter
                     if word[0] in string.ascii_uppercase
                     else scrambled_word[0]) + scrambled_word[1:]
 
@@ -1105,25 +998,19 @@ class ScramblingSerializerWrapper:
         :return:
         """
         scrambled_word, pos = token
-        if pos == 'SILENCE' or pos == 'PUNCT':
-            # if this is a space or a punctuation sign, don't do anything
+        if pos == 'SILENCE' or pos == 'PUNCT': # Check if space or punctuation, if so no action
             return scrambled_word
         else:
-            # say that we have apple -> qwerty if the word is qwerty, we return apple
             if scrambled_word.lower() in self.inv_word_mapping:
-                return self.capitalize(scrambled_word,
-                                       self.inv_word_mapping[
-                                           scrambled_word.lower()])
-            """
-            conversely, if the word is apple, we return qwerty so we have a bijection between the scrambled and n
-            ormal words
+                return self.capitalize(scrambled_word, self.inv_word_mapping[scrambled_word.lower()])
+            """ say that we have apple -> qwerty if the word is qwerty, we return apple conversely, if the word is
+            apple, we return qwerty so we have a bijection between the scrambled and normal words
             """
             elif scrambled_word.lower() in self.word_mapping:
                 return self.capitalize(scrambled_word, self.word_mapping[
                     scrambled_word.lower()])
             else:
-                # otherwise we just return the word as is
-                return scrambled_word
+                return scrambled_word  # Return word as is
 
     def gen_pseudo_word(self, L=None):
         """
@@ -1159,11 +1046,9 @@ class ScramblingSerializerWrapper:
         tokenized_message = []
         tokens = re.split('(\W)', message)
         for t in tokens:
-            if not t:
-                # re.split can return empty strings between consecutive separators: ignore them.
+            if not t:  # re.split can return emprty strings between consecutive separators: ignore them
                 continue
-            # separate initial punctuation marks
-            if t in punct:
+            if t in punct:  # seperate initial punctuation marks
                 tokenized_message.append((t, 'PUNCT'))
             elif t == silence_token:
                 tokenized_message.append((t, 'SILENCE'))
@@ -1185,36 +1070,30 @@ class StandardSerializer:
         self.logger = logging.getLogger(__name__)
 
     def to_binary(self, message):
-        """ Given a text message, returns a binary string(still represented as a character string).
-        All spaces are encoded as null bytes:
+        """ Given a text message, returns a binary string(still represented as a character string). All spaces are
+        encoded as null bytes:
         :param message:
         :return:
         """
         message = message.replace(self.SILENCE_TOKEN, self.SILENCE_ENCODING)
-        # handle unicode
-        message = codecs.encode(message, 'utf-8')
+        message = codecs.encode(message, 'utf-8')  # handle unicode
         data = []
-        for c in message:
-            # get the numeric value of the character
+        # TODO fix
+        for c in message:  # Get numeric value of the character
             try:
                 c = ord(c)
             except TypeError:
-                # already an int (Python 3)
-                pass
-            # convert to binary
-            bin_c = bin(c)
-            # remove the '0b' prefix
-            bin_c = bin_c[2:]
-            # pad with zeros
-            bin_c = bin_c.zfill(8)
+                pass  # Already an int python3
+            bin_c = bin(c)  # convert to binary
+            bin_c = bin_c[2:]  # remove the '0b' prefix
+            bin_c = bin_c.zfill(8)  # pad with zeros
             data.append(bin_c)
         return ''.join(data)
 
     def to_text(self, data, strict=False):
-        """ Transforms a binary string into text.
-
-        Given a binary string, returns the UTF-8 encoded text. If the string cannot be deserialized, returns None.
-        It can also try to recover from meaningless data by skipping a few bytes in the beginning.
+        """ Transforms a binary string into text. Given a binary string, returns the UTF-8 encoded text. If the
+        string cannot be deserialized, returns None. It can also try to recover from meaningless data by skipping a
+        few bytes in the beginning. if we are not in strict mode, we can skip bytes to find a message
 
         :param data:  the binary string to deserialze.
         :param strict:  if False, the initial bytes can be skipped in order to find a valid character. This allows
@@ -1222,11 +1101,10 @@ class StandardSerializer:
 
         :return: A string with containing the decoded text.
         """
-        # if we are not in strict mode, we can skip bytes to find a message
+        # TODO replace
         for skip in range(int(len(data) / 8) if not strict else 1):
             try:
-                # convert data to a byte-stream
-                message = bytearray()
+                message = bytearray()  # convert data to a byte-stream
                 sub_data = data[skip * 8:]
                 for i in range(int(len(sub_data) / 8)):
                     b = sub_data[i * 8:(i + 1) * 8]
@@ -1234,9 +1112,7 @@ class StandardSerializer:
                 message = codecs.decode(message, 'utf-8')
                 message = message.replace(self.SILENCE_ENCODING, self.SILENCE_TOKEN)
                 if skip > 0:
-                    self.logger.debug("Skipping {0} bytes to find a valid "
-                                      "unicode character".format(skip))
-
+                    self.logger.debug("Skipping {0} bytes to find a valid " "unicode character".format(skip))
                 return message
             except UnicodeDecodeError:
                 pass
@@ -1256,7 +1132,7 @@ class StandardSerializer:
 
 class GeneralSerializer:
     """ Transforms text into bits and back using specified mapping. Expects an index to symbol mapping `i2s`.
-silence_idx is which index in mapping is silence, defaults to 0
+    silence_idx is which index in mapping is silence, defaults to 0
     """
     def __init__(self, i2s, silence_idx):
         """
@@ -1270,20 +1146,14 @@ silence_idx is which index in mapping is silence, defaults to 0
         self.s2i = {}
         for k, v in self.i2s.items:
             self.s2i[v] = k
-
         self.L = math.ceil(math.log(len(self.i2s), 2))
-
-        # pad end of dictionary with silence
-        for k in range(len(self.i2s), math.pow(2, self.L)):
+        for k in range(len(self.i2s), math.pow(2, self.L)):  # Pad end of dictionary with silence
             self.i2s[k] = self.SILENCE_TOKEN
 
         assert i2s[self.SILENCE_ENCODING] == self.SILENCE_TOKEN, 'mapping conflict for silence'
 
         self.logger = logging.getLogger(__name__)
 
-    '''
-
-    '''
     def to_binary(self, message):
         """ Given a text message, returns a binary string (still represented as a character string).
 
@@ -1303,7 +1173,7 @@ silence_idx is which index in mapping is silence, defaults to 0
 
     def to_text(self, data):
         """ Transforms a binary string into text. Given a binary string, returns the encoded text. If the
-    string cannot be deserialized, returns None.
+        string cannot be deserialized, returns None.
 
         :param data: the binary string to deserialze.
 
@@ -1336,7 +1206,6 @@ class ASCIISerializer:
         i2s = {}
         for k in range(0, 255):
             i2s[k] = chr(k)
-
         return GeneralSerializer(i2s, ord(' '))
 
 
@@ -1355,52 +1224,36 @@ class Session:
         self._learner = learner
         self._default_sleep = default_sleep
         self._sleep = self._default_sleep
-        # listen to changes in the currently running task
-        self._env.task_updated.register(self.on_task_updated)
-        # observable status
-        self.env_token_updated = Observable()
+        self._env.task_updated.register(self.on_task_updated)  # Listen to changes in current running task
+        self.env_token_updated = Observable()  # observable status
         self.learner_token_updated = Observable()
         self.total_reward_updated = Observable()
         self.total_time_updated = Observable()
-        # -- accounting --
-        # total time
-        self._total_time = 0
-        # total cumulative reward
-        self._total_reward = 0
-        # keep track of how many times we have tried each task
-        self._task_count = defaultdict(int)
-        # keep track of how much time we have spent on each task
-        self._task_time = defaultdict(int)
+        self._total_time = 0  # -- accounting -- total time
+        self._total_reward = 0  # Total cumulative reward
+        self._task_count = defaultdict(int)  # keep track of how many attempts per task
+        self._task_time = defaultdict(int)  # Keep track of how much time we have spend on each track
 
     def run(self):
         """ initialize a token variable
 
         :return:
         """
+        # TODO fix
         token = None
-        # send out initial values of status variables
-        self.total_time_updated(self._total_time)
+        self.total_time_updated(self._total_time)  # Send out intial values of status variables
         self.total_reward_updated(self._total_reward)
-        # loop until stopped
-        self._stop = False
+        self._stop = False  # Loop until stopped
 
         while not self._stop:
-            # first speaks the environment one token (one bit)
-            token, reward = self._env.next(token)
+            token, reward = self._env.next(token)  # first speaks the environment, one token (one bit)
             self.env_token_updated(token)
-            # reward the learner if it has been set
-            self._learner.try_reward(reward)
+            self._learner.try_reward(reward)  # Reward the learner if set
             self.accumulate_reward(reward)
-
-            # allow some time before processing the next iteration
-            if self._sleep > 0:
+            if self._sleep > 0:  # Allow some time before processing the next interation
                 time.sleep(self._sleep)
-
-            # then speaks the learner one token
-            token = self._learner.next(token)
+            token = self._learner.next(token)  # Leaner speaks one token
             self.learner_token_updated(token)
-
-            # and we loop
             self._total_time += 1
             self._task_time[self._current_task.get_name()] += 1
             self.total_time_updated(self._total_time)
@@ -1500,8 +1353,8 @@ class Session:
         """
         self._sleep = self._default_sleep
 
-
-# These are the possible types of events (with their parameters, if any)
+""" These are the possible types of events (with their parameters, if any)
+"""
 Start = namedtuple('Start', ())
 Ended = namedtuple('Ended', ())
 WorldStart = namedtuple('WorldStart', ())
@@ -1526,12 +1379,11 @@ class MessageReceived():
     A message received event. It has some useful helpers helper methods for handling received messages
     """
     def __init__(self, message):
-        """
+        """ this instance variable gets assigned the outcome of the trigger's condition
 
         :param message:
         """
         self.message = message
-        # this instance variable gets assigned the outcome of the trigger's condition
         self.condition_outcome = None
 
     def is_message(self, msg, suffix=''):
@@ -1558,8 +1410,8 @@ class MessageReceived():
         """
         preffix = self.message[0:-(len(msg) + len(suffix))]
         m = re.search("^\s*$", preffix)
-        return self.message[-(len(msg) + len(suffix)):-len(suffix)] ==\
-               msg and  suffix == self.message[-len(suffix):] and m
+        return self.message[
+               -(len(msg) + len(suffix)):-len(suffix)] == msg and  suffix == self.message[-len(suffix):] and m
 
     def get_match(self, ngroup=0):
         """ If the regular expression in the Trigger condition had groups, it can retreive what they captured.
@@ -1576,16 +1428,12 @@ class MessageReceived():
         """
         return self.condition_outcome.groups()
 
-"""
-Event handlers are annotated through decorators and are automatically registered by the environment on Task startup
-
+""" Event handlers are annotated through decorators and are automatically registered by the environment on Task startup.
 Implementation trick to remember the type of event and the filtering condition that is informed through the decorators.
-
 We map the annotated methods to their corresponding triggers, so when we start a task, we can scan through its
-memebers and find the trigger here.
+members and find the trigger here.
 """
 global_event_handlers = {}
-
 
 def method_to_func(f):
     """ Converts a bound method to an unbound function.
@@ -1593,6 +1441,7 @@ def method_to_func(f):
     :param f:
     :return:
     """
+    # TODO fix
     try:
         return f.im_func
     except AttributeError:  # Python 3
@@ -1607,13 +1456,12 @@ def on_start():
     :return:
     """
     def register(f):
-        """
+        """ Filtering condition always True
 
         :param f:
         :return:
         """
         f = method_to_func(f)
-        # The filtering condition is always True
         global_event_handlers[f] = Trigger(Start, lambda e: True, f)
         return f
 
@@ -1623,8 +1471,12 @@ def on_ended():
     """Decorator for the End of Task event handler, Denitialization event decorator"""
 
     def register(f):
+        """ Filtering condition always True
+
+        :param f:
+        :return:
+        """
         f = method_to_func(f)
-        # The filtering condition is always True
         global_event_handlers[f] = Trigger(Ended, lambda e: True, f)
         return f
 
@@ -1636,13 +1488,12 @@ def on_world_start():
     :return:
     """
     def register(f):
-        """
+        """ The filtering condition is always True
 
         :param f:
         :return:
         """
         f = method_to_func(f)
-        # The filtering condition is always True
         global_event_handlers[f] = Trigger(WorldStart, lambda e: True, f)
         return f
 
@@ -1651,12 +1502,10 @@ def on_world_start():
 
 #
 def on_state_changed(condition):
-    """ Decorator for the StateChanged event handler
-
-    Decorator to capture a StateChanged event. Its condition is a function that takes the tasks state (or the world
-    state and the task state, in that order, if the task has a world parameter) and checks for any condition on
-    those state variables. Notice that the argument is the `state` instance variable within the task and not the
-    task itself.
+    """ Decorator for the StateChanged event handler  Decorator to capture a StateChanged event. Its condition is a
+    function that takes the tasks state (or the world state and the task state, in that order, if the task has a
+    world parameter) and checks for any condition on those state variables. Notice that the argument is the `state`
+    instance variable within the task and not the task itself.
 
     :param condition:
     :return:
@@ -1672,9 +1521,8 @@ def on_state_changed(condition):
         # The filtering condition is given as an argument. There could be one or two state objects (corresponding to
         the world state). So we check if we need to call the condition with one or two arguments.
         """
-        global_event_handlers[f] = Trigger(
-                StateChanged, lambda e: e.second_state and
-                                        condition(e.state, e.second_state) or
+        global_event_handlers[f
+        ] = Trigger(StateChanged, lambda e: e.second_state and condition(e.state, e.second_state) or
                                         (not e.second_state and condition(e.state)), f)
         return f
 
@@ -1689,21 +1537,19 @@ def on_message(target_message=None):
     :return:
     """
     def register(f):
-        """
+        """ If a target message is given, interpret it as a regular expression
 
         :param f:
         :return:
         """
         f = method_to_func(f)
-        # If a target message is given, interpret it as a regular expression
         if target_message:
             cmessage = re.compile(target_message)
         else:
             cmessage = None
         # The filtering condition applied the target message expression to the event message
-        global_event_handlers[f] = Trigger(
-                MessageReceived,
-                lambda e: cmessage is None or cmessage.search(e.message), f)
+        global_event_handlers[f
+        ] = Trigger(MessageReceived, lambda e: cmessage is None or cmessage.search(e.message), f)
         return f
 
     return register
@@ -1716,20 +1562,19 @@ def on_output_message(target_message=None):
     :return:
     """
     def register(f):
-        """
+        """ If a target message is given, interpret it as a regular expression
 
         :param f:
         :return:
         """
         f = method_to_func(f)
-        # If a target message is given, interpret it as a regular expression
         if target_message:
             cmessage = re.compile(target_message)
         else:
             cmessage = None
         # The filtering condition applied the target message expression to the event message
-        global_event_handlers[f] = Trigger(OutputMessageUpdated,
-                                           lambda e: cmessage is None or cmessage.search(e.output_message), f)
+        global_event_handlers[f
+        ] = Trigger(OutputMessageUpdated, lambda e: cmessage is None or cmessage.search(e.output_message), f)
         return f
 
     return register
@@ -1753,10 +1598,9 @@ def on_sequence(target_sequence=None):
         else:
             csequence = None
         # The filtering condition is either the target bit itself or nothing
-        global_event_handlers[f] = Trigger(SequenceReceived,
-                                           lambda e: csequence is None or csequence.search(e.sequence), f)
+        global_event_handlers[f
+        ] = Trigger(SequenceReceived, lambda e: csequence is None or csequence.search(e.sequence), f)
         return f
-
     return register
 
 
@@ -1778,8 +1622,8 @@ def on_output_sequence(target_sequence=None):
         else:
             csequence = None
         # The filtering condition is either the target bit itself or nothing
-        global_event_handlers[f] = Trigger(OutputSequenceUpdated,
-                                           lambda e: csequence is None or csequence.search(e.output_sequence), f)
+        global_event_handlers[f
+        ] = Trigger(OutputSequenceUpdated, lambda e: csequence is None or csequence.search(e.output_sequence), f)
         return f
 
     return register
@@ -1815,8 +1659,7 @@ def handler_to_trigger(f):
             return global_event_handlers[f]
         else:
             return None
-    except TypeError:
-        # if f is unhashable, it's definetly not a function
+    except TypeError:  # If not hashable, it's not a function
         return None
 
 
@@ -1912,10 +1755,8 @@ class State(object):
         elif isinstance(value, dict):
             self.logger.debug("Wrapping variable {0} as a dict".format(value))
             value = StateTrackingDictionaryWrapper(value, self)
-        # apply the assignment operation
-        super(State, self).__setattr__(name, value)
-        # raise a StateChanged
-        self._raise_state_changed()
+        super(State, self).__setattr__(name, value)  # Apply the assignment operation
+        self._raise_state_changed()  #  Raise a StateChanged
 
     def _raise_state_changed(self):
         """
@@ -1933,12 +1774,11 @@ class ScriptSet(object):
     def __init__(self):
         """ The environment is set when the script is started
         """
-
         self._env = None
         self._started = False
         self._ended = False
-        # observable events
-        self.ended_updated = Observable()
+        self.ended_updated = Observable()  # Observable events
+        # TODO fix
         # a bit ugly, but there are worse things in life
         self.state_updated = Observable()
         # remember dynamically register handlers to destroy their triggers
@@ -1968,7 +1808,7 @@ class ScriptSet(object):
         return self._ended
 
     def start(self, env):
-        """
+        """ this is where all the state variables should be kept
 
         :param env:
         :return:
@@ -1976,7 +1816,6 @@ class ScriptSet(object):
         self._env = env
         self._ended = False
         self._started = False
-        # this is where all the state variables should be kept
         self.state = State(self)
 
     def end(self):
@@ -1989,13 +1828,15 @@ class ScriptSet(object):
 
     def get_triggers(self):
         """ Returns the set of triggers that have been registered for this task
+        We try to extract the function object that was registered
 
         :return:
         """
+        # TODO fix
         triggers = []
         for fname in dir(self):
             try:
-                # We try to extract the function object that was registered
+                #
                 try:
                     f = getattr(self, fname).im_func
                 except AttributeError:  # Python 3
@@ -2026,13 +1867,12 @@ class ScriptSet(object):
             self.dyn_handlers.add(handler)
 
     def _raise_state_changed(self):
-        """
+        """ notify (outside) observers
 
         :return:
         """
         ret = self._env.raise_state_changed()
         if self.has_started():
-            # notify (outside) observers
             self.state_updated(self)
         return ret
 
