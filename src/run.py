@@ -47,31 +47,21 @@ def main():
     opt, args = op.parse_args()
     if len(args) == 0:
         op.error("Tasks schedule configuration file required.")
-    # retrieve the task configuration file
-    tasks_config_file = args[0]
+    tasks_config_file = args[0]  # Retrieve task configuration
     logger = logging.getLogger(__name__)
     logger.info("Starting new evaluation session")
-    # we choose how the environment will produce and interpret the bit signal
-    serializer = create_serializer(opt.serializer)
-    # create a learner (the human learner takes the serializer)
-    learner = create_learner(opt.learner, serializer, opt.learner_cmd, opt.learner_port)
-    # create our tasks and put them into a scheduler to serve them
-    task_scheduler = create_tasks_from_config(tasks_config_file)
-    # construct an environment
-    env = Environment(serializer, task_scheduler, opt.scramble, opt.max_reward_per_task)
-    # a learning session
-    session = Session(env, learner, opt.time_delay)
-    # setup view
-    view = create_view(opt.view, opt.learner, env, session, serializer, opt.show_world)
+    serializer = create_serializer(opt.serializer)  # Set hoe enviroment produces and interprets a bit signal
+    learner = create_learner(opt.learner, serializer, opt.learner_cmd, opt.learner_port)  # Create learner
+    task_scheduler = create_tasks_from_config(tasks_config_file)  # Create tasks, add to scheduler to be served
+    env = Environment(serializer, task_scheduler, opt.scramble, opt.max_reward_per_task) # Construct environment
+    session = Session(env, learner, opt.time_delay)  # a learning session
+    view = create_view(opt.view, opt.learner, env, session, serializer, opt.show_world)  # setup view
     try:
-        # send the interface to the human learner
-        learner.set_view(view)
-    except AttributeError:
-        # this was not a human learner, nothing to do
+        learner.set_view(view)  # Send interface to human learner
+    except AttributeError:  # not human. pass
         pass
     try:
-        view.initialize()
-        # ok guys, talk
+        view.initialize()  # talk
         session.run()
     except BaseException:
         view.finalize()
@@ -82,7 +72,8 @@ def main():
 
 
 def getc(typename):
-    """ dynamically load the class given by typename separate the module from the class name
+    """ dynamically load the class given by typename separate the module from the class name.
+    Import the module (and the class within it)
 
     :param typename:
     :return:
@@ -90,7 +81,6 @@ def getc(typename):
     # TODO: move into some misc aux functions module
     path = typename.split('.')
     mod, cname = '.'.join(path[:-1]), path[-1]
-    # import the module (and the class within it)
     m = __import__(mod, fromlist=[cname])
     c = getattr(m, cname)
     if not c:
@@ -121,7 +111,7 @@ def create_view(view_type, learner_type, env, session, serializer, show_world):
 
 
 def create_learner(learner_type, serializer, learner_cmd, learner_port=None):
-    """
+    """ instantiate the learner
 
     :param learner_type:
     :param serializer:
@@ -133,7 +123,6 @@ def create_learner(learner_type, serializer, learner_cmd, learner_port=None):
     if learner_type.startswith('learners.human_learner'):
         return c(serializer)
     else:
-        # instantiate the learner
         return c(learner_cmd, learner_port) if 'RemoteLearner' in str(c) else c()
 
 
@@ -160,21 +149,21 @@ def create_tasks_from_config(tasks_config_file):
     elif fformat == 'py':
         config_loader = PythonConfigLoader()
     else:
+        # TODO unreslove ref to fformat
         raise RuntimeError(
-                "Unknown configuration file format '.{fformat}' of" " {filename}".format(
-                        fformat=fformat, filename=tasks_config_file))
+                "Unknown configuration file format '.{"
+                ""fformat}' of" " {filename}".format(fformat=fformat, filename=tasks_config_file))
     return config_loader.create_tasks(tasks_config_file)
 
 
 def save_results(session, output_file):
-    """
+    """ Nothing to save or
 
     :param session:
     :param output_file:
     :return:
     """
     if session.get_total_time() == 0:
-        # nothing to save
         return
     with open(output_file, 'w') as fout:
         print('* General results', file=fout)
