@@ -6,9 +6,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 import unittest
@@ -30,8 +29,7 @@ class TestSmallCompTasks(unittest.TestCase):
         :return:
         """
         sign = answer_correct and 1 or -1
-        with task_messenger(Task,
-                            serializer=IdentitySerializer()) as m:
+        with task_messenger(Task, serializer=IdentitySerializer()) as m:
             # we will solve the task N times (to check for sync issues)
             N = m._env._max_reward_per_task
             for i in range(N):
@@ -40,8 +38,7 @@ class TestSmallCompTasks(unittest.TestCase):
                 # there are some instructions
                 self.assertGreater(instructions_blen, 0, "No instructions!")
                 # we should have received the reward from the previous iteration
-                self.assertEqual(m.get_cumulative_reward(),
-                                 sign * i)
+                self.assertEqual(m.get_cumulative_reward(), sign * i)
                 # extract the correct answer
                 answer = get_answer(m)
                 m.send(answer)
