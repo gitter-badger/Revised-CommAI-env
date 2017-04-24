@@ -93,6 +93,7 @@ class TestRepetitionTasks(unittest.TestCase):
 
             :return:
             """
+
             self.trySolution(nano.Task11, patient=False, solution="0000000110", correct=True)
             # What you say on the 9th bit doesn't matter
             self.trySolution(nano.Task11, patient=False, solution="0000000111", correct=True)
@@ -104,7 +105,7 @@ class TestRepetitionTasks(unittest.TestCase):
             self.trySolution(nano.Task11, patient=False, solution="00000011", correct=False)
             # With a patient teacher you have to wait for the 10 bits of the task + 1 of the separator
             self.trySolution(nano.Task11, patient=True, solution="00000011000", correct=False)
-
+            # TODO no statement
 
 def main():
     unittest.main()
