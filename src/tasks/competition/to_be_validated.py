@@ -10,8 +10,7 @@
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
-from core.task import Task, on_start, on_message, on_sequence,\
-    on_state_changed, on_timeout, on_output_message
+from core.task import Task, on_start, on_message, on_sequence, on_state_changed, on_timeout, on_output_message
 import tasks.competition.messages as msg
 import random
 import re
@@ -58,10 +57,9 @@ for basket in global_properties:
                 reverse_global_properties[basket][property] = []
             reverse_global_properties[basket][property].append(object)
 
-
 # a list of questions about a number, shared by multiple tasks
-number_questions = ['please tell me the number.', 'what\'s the number?',
-                    'what is the number?', 'can you tell me the number?']
+number_questions = ['please tell me the number.', 'what\'s the number?', 'what is the number?',
+                    'can you tell me the number?']
 
 
 class ItalianHowManyPropertiesDoesAnObjectHaveTask(Task):
@@ -82,13 +80,12 @@ class ItalianHowManyPropertiesDoesAnObjectHaveTask(Task):
         :param event:
         :return:
         """
-        italian_object_translations = {
-            'apple': 'mela', 'asparagus': 'asparago', 'avocado': 'avocado', 'banana': 'banana', 'beet': 'rapa',
-            'carrot': 'carota', 'cucumber': 'cetriolo', 'onion': 'cipolla', 'pear': 'pera', 'pineapple': 'ananas',
-            'potato': 'patata', 'tomato': 'pomodoro', 'mango': 'mango'}
-
-        italian_numbers_in_words=[
-            'zero', 'uno', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove', 'dieci']
+        italian_object_translations = {'apple': 'mela', 'asparagus': 'asparago', 'avocado': 'avocado',
+                                       'banana': 'banana', 'beet': 'rapa', 'carrot': 'carota', 'cucumber': 'cetriolo',
+                                       'onion': 'cipolla', 'pear': 'pera', 'pineapple': 'ananas', 'potato': 'patata',
+                                       'tomato': 'pomodoro', 'mango': 'mango'}
+        italian_numbers_in_words=['zero', 'uno', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove',
+                                  'dieci']
 
         basket = random.choice(global_properties.keys())
         object=random.choice(global_properties[basket].keys())
@@ -144,13 +141,12 @@ class ItalianHowManyPropertiesDoesAnObjectHaveTask(Task):
         # TODO event not used
         # randomly pick digit or string version
         formatted_count = str(self.property_count)
-        # no choice if there is no alphabetic version, else flip a
-        # coin to decide whether to return digit or string version
-        if (len(self.alphabetic_property_count)>0 and
-                random.randint(0, 1) == 1):
+        """ no choice if there is no alphabetic version, else flip a coin to decide whether to return digit or string
+        version
+        """
+        if (len(self.alphabetic_property_count)>0 and random.randint(0, 1) == 1):
             formatted_count=self.alphabetic_property_count
         self.set_message("la risposta corretta e': " + formatted_count + ".")
-
 
 
 class GuessTheNumberAskingQuestionsExplicitModelTask(Task):
@@ -222,7 +218,8 @@ class GuessTheNumberAskingQuestionsExplicitModelTask(Task):
         :return:
         """
         # TODO event not used
-        self.set_message('if you asked: ' + random.choice(number_questions) + ', I would have said: '+ self.target_number + '.')
+        self.set_message('if you asked: ' + random.choice(number_questions) + ', I would have said: ' +
+                         self.target_number + '.')
 
 
 class GuessTheNumberAskingQuestionsTask(Task):
@@ -247,18 +244,18 @@ class GuessTheNumberAskingQuestionsTask(Task):
         # generating a random number with that number of digits
         self.target_number=str(random.randint(1, 9))
         # first value shouldn't be 0, although this doesn't really matter for our current purposes
-        self.target_number+=''.join(["%s" % random.randint(0, 9) for i in range(1, self.digits)]) # this relies
+        self.target_number+=''.join(["%s" % random.randint(0, 9) for i in range(1, self.digits)])
         # TODO rewrite another 'weird' Python reference
-        """ on weird limit properties of Python's range preparing a regexp to capture requests for help we need to
-        escape the periods and question marks in number_questions
+        """  this relies on weird limit properties of Python's range preparing a regexp to capture requests for help
+        we need to escape the periods and question marks in number_questions
         """
         escaped_number_questions=[]
         for question in number_questions:
             escaped_number_questions.append(re.sub(r'([\.\?])',r'\\\1',question))
         self.re_query = re.compile(r".*(" + "|".join(escaped_number_questions) + ")$")
         # preparing the message
-        message_string = "guess the " + str(
-                self.digits) + "-digit number I am thinking of; you can ask me for the number."
+        message_string = "guess the " + str(self.digits) + \
+                         "-digit number I am thinking of; you can ask me for the number."
         self.set_message(message_string)
         self.instructions_completed = False
 
@@ -294,8 +291,8 @@ class GuessTheNumberAskingQuestionsTask(Task):
         :return:
         """
         # TODO event not used
-        self.set_message('if you asked: ' + random.choice(
-                number_questions) + ', I would have said: ' + self.target_number + '.')
+        self.set_message('if you asked: ' + random.choice(number_questions) + ', I would have said: ' +
+                         self.target_number + '.')
 
 class GuessTheNumberAskingForDigitsExplicitModelTask(Task):
     """
@@ -334,13 +331,11 @@ class GuessTheNumberAskingForDigitsExplicitModelTask(Task):
         """ this relies on weird limit properties of Python's range preparing a regexp to capture requests for help
         """
         self.re_query = re.compile(r".*(" + "|".join(escaped_digit_questions) + ")$")
-
         # also, we initialize a counter to keep track of the next digit
         self.next_digit=0
-
         # preparing the message
-        message_string = "guess the " + str(
-                self.digits) + "-digit number I am thinking of; you can ask me: " + random.choice(self.digit_questions)
+        message_string = "guess the " + str(self.digits) + "-digit number I am thinking of; you can ask me: " + \
+                         random.choice(self.digit_questions)
         self.set_message(message_string)
         self.instructions_completed = False
 
@@ -382,8 +377,8 @@ class GuessTheNumberAskingForDigitsExplicitModelTask(Task):
         # TODO event not used
         give_away_message = ''
         if (self.next_digit<(self.digits)):
-            give_away_message += 'if you asked: ' + random.choice(
-                    self.digit_questions) + ', I would have said: ' + self.target_number[self.next_digit] + '. '
+            give_away_message += 'if you asked: ' + random.choice(self.digit_questions) + \
+                                 ', I would have said: ' + self.target_number[self.next_digit] + '. '
         give_away_message += 'the number is ' + self.target_number + '.'
         self.set_message(give_away_message)
 
@@ -417,18 +412,19 @@ class GuessTheNumberAskingForDigitsTask(Task):
         # picking a random nuber of digits between 1 and 5
         self.digits = random.randint(1,5)
         # generating a random number with that number of digits
-        self.target_number=str(random.randint(1,9))
+        self.target_number = str(random.randint(1,9))
         # first value shouldn't be 0, although this doesn't really matter for our current purposes
-        self.target_number+=''.join(["%s" % random.randint(0, 9) for i in range(1, self.digits)])
+        self.target_number += ''.join(["%s" % random.randint(0, 9) for i in range(1, self.digits)])
         # TODO rewrite another 'weird' Python reference
         # this relies on weird limit properties of Python's range preparing a regexp to capture requests for help
         self.re_query = re.compile(r".*(" + "|".join(escaped_digit_questions) + ")$")
 
         # also, we initialize a counter to keep track of the next digit
-        self.next_digit=0
+        self.next_digit = 0
 
         # preparing the message
-        message_string = "guess the " + str(self.digits) + "-digit number I am thinking of; you can ask me for the next digit."
+        message_string = "guess the " + \
+                         str(self.digits) + "-digit number I am thinking of; you can ask me for the next digit."
         self.set_message(message_string)
         self.instructions_completed = False
 
@@ -465,7 +461,8 @@ class GuessTheNumberAskingForDigitsTask(Task):
         # TODO event not used
         give_away_message = ''
         if (self.next_digit<(self.digits)):
-            give_away_message += 'if you asked: ' + random.choice(self.digit_questions) + ', I would have said: ' + self.target_number[self.next_digit] + '. '
+            give_away_message += 'if you asked: ' + random.choice(self.digit_questions) + ', I would have said: ' + \
+                                 self.target_number[self.next_digit] + '. '
         give_away_message += 'the number is ' + self.target_number + '.'
         self.set_message(give_away_message)
 
@@ -759,7 +756,7 @@ class LocalCharacterPrimeTarget(Task):
         :return:
         """
         # TODO event not used
-        self.prime,self.target=generate_prime_and_target(self.primes,self.targets,1,global_prime_cardinality)
+        self.prime,self.target = generate_prime_and_target(self.primes, self.targets, 1, global_prime_cardinality)
         self.target += "."
         self.set_message(self.prime + ".")
         self.instructions_completed = False
@@ -805,8 +802,8 @@ class GlobalTwoAssociatedDelimitedStringsMax4(Task):
         """
         # TODO event not used
         self.string_length = random.randint(1, 4)
-        self.prime, self.target=generate_prime_and_target(
-                global_primes, global_targets, self.string_length, global_prime_cardinality)
+        self.prime, self.target=generate_prime_and_target(global_primes, global_targets, self.string_length,
+                                                          global_prime_cardinality)
         self.set_message(self.prime + '#' + self.target + ".")
         self.instructions_completed = False
 
@@ -899,8 +896,8 @@ class LocalTwoAssociatedDelimitedStringsMax4(Task):
         :return:
         """
         string_length = random.randint(1, 4)
-        self.prime, self.target=generate_prime_and_target(
-                self.primes,self.targets, self.string_length,global_prime_cardinality)
+        self.prime, self.target=generate_prime_and_target(self.primes, self.targets, self.string_length,
+                                                          global_prime_cardinality)
         self.set_message(self.prime + '#' + self.target + ".")
         self.instructions_completed = False
 
@@ -945,8 +942,8 @@ class LocalTwoAssociatedStringsMax4(Task):
         """
         # TODO event not used
         self.string_length = random.randint(1, 4)
-        self.prime, self.target=generate_prime_and_target(
-                self.primes, self.targets, self.string_length, global_prime_cardinality)
+        self.prime, self.target=generate_prime_and_target(self.primes, self.targets, self.string_length,
+                                                          global_prime_cardinality)
         self.set_message(self.prime + self.target + ".")
         self.instructions_completed = False
 
@@ -989,8 +986,8 @@ class GlobalStringPrimeTargetMax4(Task):
         """
         # TODO event not used
         self.string_length = random.randint(1, 4)
-        self.prime, self.target=generate_prime_and_target(
-                global_primes, global_targets, self.string_length, global_prime_cardinality)
+        self.prime, self.target=generate_prime_and_target(global_primes, global_targets, self.string_length,
+                                                          global_prime_cardinality)
         self.target += "."
         self.set_message(self.prime + ".")
         self.instructions_completed = False
@@ -1037,8 +1034,8 @@ class LocalStringPrimeTargetMax4(Task):
         :return:
         """
         self.string_length = random.randint(1, 4)
-        self.prime, self.target=generate_prime_and_target(self.primes, self.targets, self.string_length,
-                                                          global_prime_cardinality)
+        self.prime, self.target=generate_prime_and_target(
+                self.primes, self.targets, self.string_length, global_prime_cardinality)
         self.target += "."
         self.set_message(self.prime + ".")
         self.instructions_completed = False
