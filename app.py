@@ -6,7 +6,7 @@
 # CommAI-env Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 import os
@@ -31,7 +31,6 @@ def hello():
         visits = redis.incr('counter')
     except redis.RedisError:
         visits = "<i>cannot connect to Redis, counter disabled</i>"
-
     html = '<h3>Hello {name}!</h3>' '<b>Hostname:</b> {hostname}<br/>' '<b>Visits:</b> {visits}'
     return html.format(name=os.getenv('NAME', "world"), hostname=socket.gethostname(), visits=visits)
 
