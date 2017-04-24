@@ -6,9 +6,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
 import unittest
@@ -53,7 +52,6 @@ class TestRepetitionTasks(unittest.TestCase):
             # and also the last bit of the task doesn't really count
             self.trySolution(nano.Task0, patient=False, solution="0000010", correct=True)
             self.trySolution(nano.Task0, patient=False, solution="0000011", correct=True)
-
             # speaking earlier shouldn't work and stop you
             self.trySolution(nano.Task0, patient=False, solution="000010", correct=False)
             # the patient teacher waits a bit longer
