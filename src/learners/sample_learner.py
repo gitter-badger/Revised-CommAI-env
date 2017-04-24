@@ -6,9 +6,9 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
+
 # TODO ix imports
 from core.serializer import StandardSerializer, IdentitySerializer
 from learners.base import BaseLearner
@@ -106,7 +106,6 @@ class SampleMemorizingLearner(BaseLearner):
         text_input = self.serializer.to_text(self.memory)
         if text_input and text_input[-2:] == '  ':
             self.teacher_stopped_talking = True
-
         if self.teacher_stopped_talking:
             # send the memorized sequence
             output, self.memory = self.memory[0], self.memory[1:]
