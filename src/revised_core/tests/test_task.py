@@ -6,10 +6,10 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
+# TODO fox imports
 import unittest
 import core.task as task
 
@@ -198,8 +198,7 @@ class TestEvents(unittest.TestCase):
                 :param event:
                 :return:
                 """
-                # we only generate an init event
-                tt.start_handler(event)
+                tt.start_handler(event)  # we only geerate init event
 
             def _register_task_trigger(self, task, trigger):
                 # TODO task not used
@@ -211,8 +210,7 @@ class TestEvents(unittest.TestCase):
                 """
                 self.triggers.append(trigger)
 
-        # raise the start event
-        tt.start(EnvironmentMock(triggers))
+        tt.start(EnvironmentMock(triggers))   # raise the start event
         triggers.extend(tt.get_triggers())
         handlers = set(map(lambda t: t.event_handler, triggers))
         self.assertEqual(2, len(triggers))
