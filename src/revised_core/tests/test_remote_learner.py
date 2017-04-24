@@ -6,9 +6,8 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
+# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 
 def main():
@@ -24,7 +23,6 @@ def main():
     socket = context.socket(zmq.PAIR)
     socket.connect("tcp://localhost:%s" % port)
     socket.send_string(str('hello'))
-
     message = '00101110'
     cnt = 0
     while True:
@@ -32,9 +30,7 @@ def main():
         print(reward)
         msg_in = socket.recv()
         print(msg_in)
-
-        # think...
-        msg_out = str(random.getrandbits(1) if cnt % 7 == 0 else 1)
+        msg_out = str(random.getrandbits(1) if cnt % 7 == 0 else 1)  # think....
         if cnt % 2 == 0:
             msg_out = str(message[cnt % 8])
         socket.send(msg_out)
