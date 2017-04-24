@@ -6,7 +6,7 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the# LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the# LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
@@ -51,25 +51,23 @@ class EnvironmentMessenger:
         return self._env._output_channel.is_silent()
 
     def read(self):
-        """ Sends silence until the teacher has stopped speaking
+        """ Sends silence until the teacher has stopped speaking. Keep on putting silence in the output channel
 
         :return:
         """
         nbits = 0
         while not self.is_silent():
-            # Keep on putting silence in the output channel
             nbits += self.send(self._serializer.SILENCE_TOKEN)
         return nbits
 
     def read_until(self, condition):
-        """ Sends silence until a given condition holds true.
+        """ Sends silence until a given condition holds true. Keep on putting silence in the output channel
 
         :param condition: a function that takes an EnvironmentMessenger
         :return:
         """
-        # wrap the condition to catch exceptions
         def safe_condition_eval():
-            """
+            """ wrap the condition to catch exceptions
 
             :return:
             """
@@ -80,12 +78,12 @@ class EnvironmentMessenger:
                 return False
         nbits = 0
         while not self.is_silent() and not safe_condition_eval():
-            # Keep on putting silence in the output channel
             nbits += self.send(self._serializer.SILENCE_TOKEN)
         return nbits
 
     def send(self, msg=None):
-        """ default message is a silence
+        """ default message is a silence, puts the message in the output channel. send every bit in it. send/receive a
+        bit and reward. save the bit. save the reward. a reward marks the end of a task for now, so clear the buffers
 
         :param msg:
         :return:
@@ -93,18 +91,12 @@ class EnvironmentMessenger:
         if msg is None:
             msg = self._serializer.SILENCE_TOKEN
         nbits = 0
-        # puts the message in the output channel
         self._output_channel.set_message(msg)
-        # send every bit in it
         while not self._output_channel.is_empty():
-            # send/receive a bit and reward
             env_bit, reward = self._env.next(self._output_channel.consume_bit())
-            # save the bit
             self._input_channel.consume_bit(env_bit)
-            # save the reward
             if reward is not None:
                 self.cum_reward += reward
-                # a reward marks the end of a task for now, so clear the buffers
             nbits += 1
         return nbits
 
@@ -117,16 +109,14 @@ class EnvironmentMessenger:
 
     def get_last_message(self, n_silence=2):
         """ Returns the last message sent by the teacher. The message is delimited between the end of the input
-        stream and the point after n_silence silent tokens where issued.
+        stream and the point after n_silence silent tokens where issued. get the input text remove the trailing
+        silences find the point where the last message started (after at least n_silence tokens)
 
         :param n_silence:
         :return:
         """
-        # get the input text
         input_text = self._input_channel.get_text()
-        # remove the trailing silences
         input_text = input_text.rstrip(self._serializer.SILENCE_TOKEN)
-        # find the point where the last message started (after at least n_silence tokens)
         last_silence = input_text.rfind(self._serializer.SILENCE_TOKEN * n_silence)
         if last_silence == -1:
             return input_text
