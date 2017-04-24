@@ -6,7 +6,7 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 # TODO fix imports
@@ -21,12 +21,12 @@ code = locale.getpreferredencoding()
 
 
 class BaseView(object):
-    """
+    """ observe basic high level information about the session and environment
 
     """
 
     def __init__(self, env, session):
-        """
+        """Observe basic high level information about session and  env,  Save information for display later
 
         :param env:
         :param session:
@@ -34,12 +34,10 @@ class BaseView(object):
         # TODO: Move environment and session outside of the class
         self._env = env
         self._session = session
-        # observe basic high level information about the session and environment
         env.task_updated.register(self.on_task_updated)
         session.total_reward_updated.register(self.on_total_reward_updated)
         session.total_time_updated.register(self.on_total_time_updated)
         self.logger = logging.getLogger(__name__)
-        # we save information for display later
         self.info = {'reward': 0, 'time': 0, 'current_task': 'None'}
 
     def on_total_reward_updated(self, reward):
@@ -98,7 +96,7 @@ class BaseView(object):
         :return:
         """
         self._stdscr = curses.initscr()
-        # TODO generalize this:
+        # TODO generalize this move difining to __init__
         begin_x = 0
         begin_y = 0
         # self._info_win_width = 20
@@ -126,7 +124,8 @@ class ConsoleView(BaseView):
     """
 
     def __init__(self, env, session, serializer, show_world=False):
-        """
+        """ for visualization purposes, we keep an internal buffer of the input and output stream so when they are
+        cleared from task to task, we can keep the history intact.
 
         :param env:
         :param session:
@@ -134,27 +133,18 @@ class ConsoleView(BaseView):
         :param show_world:
         """
         super(ConsoleView, self).__init__(env, session)
-        """
-        for visualization purposes, we keep an internal buffer of the input and output stream so when they are
-        cleared from task to task, we can keep the history intact.
-        """
         self.input_buffer = ''
         self.output_buffer = ''
         self.panic = 'SKIP'
-        # record what the learner says
-        self._learner_channel = InputChannel(serializer)
-        # record what the environment says
-        self._env_channel = InputChannel(serializer)
-        # listen to the updates in these channels
-        self._learner_channel.sequence_updated.register(self.on_learner_sequence_updated)
+        self._learner_channel = InputChannel(serializer)  # Record what learner says
+        self._env_channel = InputChannel(serializer)  # Record what environment says
+        self._learner_channel.sequence_updated.register(self.on_learner_sequence_updated)   # Listen to updates
         self._learner_channel.message_updated.register(self.on_learner_message_updated)
         self._env_channel.sequence_updated.register(self.on_env_sequence_updated)
         self._env_channel.message_updated.register(self.on_env_message_updated)
         if show_world:
-            # register a handler to plot the world if show_world is active
-            env.world_updated.register(self.on_world_updated)
-        # connect the channels with the observed input bits
-        session.env_token_updated.register(self.on_env_token_updated)
+            env.world_updated.register(self.on_world_updated)  # Register a handle to plot world if show_world active
+        session.env_token_updated.register(self.on_env_token_updated)  # Connect channe;s with observed input bits
         session.learner_token_updated.register(self.on_learner_token_updated)
         del self.info['current_task']
 
@@ -248,10 +238,11 @@ class ConsoleView(BaseView):
         self._worldwin.refresh()
 
     def initialize(self):
-        """ initialize curses
+        """ initialize curses, create info box with reward and time
 
         :return:
         """
+        # TODO defined outside __init__
         self._stdscr = curses.initscr()
         begin_x = 0
         begin_y = 0
@@ -268,7 +259,6 @@ class ConsoleView(BaseView):
         self._win = self._stdscr.subwin(self.height, self.width, begin_y, begin_x)
         self._worldwin = self._win.subwin(self.height - self._world_win_y, self.width - self._world_win_x,
                                           self._world_win_y, self._world_win_x)
-        # create info box with reward and time
         self._info_win = self._win.subwin(self._info_win_height, self._info_win_width, 0,
                                           self.width - self._info_win_width)
         self._user_input_win = self._win.subwin(1, self.width - self._user_input_win_x, self._user_input_win_y,
@@ -309,7 +299,7 @@ class PlainView(object):
     """
 
     def __init__(self, env, session):
-        """
+        """ observe basic high level information about the session and environment
 
         :param env:
         :param session:
@@ -317,14 +307,11 @@ class PlainView(object):
         # TODO: Move environment and session outside of the class
         self._env = env
         self._session = session
-        # observe basic high level information about the session and environment
         env.task_updated.register(self.on_task_updated)
         session.total_reward_updated.register(self.on_total_reward_updated)
         session.total_time_updated.register(self.on_total_time_updated)
-
         self.logger = logging.getLogger(__name__)
-        # we save information for display later
-        self.info = {'reward': 0, 'time': 0, 'current_task': 'None'}
+        self.info = {'reward': 0, 'time': 0, 'current_task': 'None'}  # Save information for display
 
     def on_total_reward_updated(self, reward):
         """
@@ -354,6 +341,7 @@ class PlainView(object):
             print('\n', task.get_name())
 
     def paint_info_win(self):
+        # TODO static function
         """
 
         :return:
@@ -361,6 +349,7 @@ class PlainView(object):
         return
 
     def initialize(self):
+        # TODO static function
         """
 
         :return:
@@ -368,6 +357,7 @@ class PlainView(object):
         return
 
     def finalize(self):
+        # TODO static function
         """
 
         :return:
