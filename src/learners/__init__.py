@@ -16,7 +16,7 @@ import glob
 
 modules = glob.glob('./*.py')
 for each_module in modules:
-    #TODO unresloved reference m
+    # TODO unresloved reference m
     __import__('learner' + m)
 
 """
