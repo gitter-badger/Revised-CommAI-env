@@ -12,26 +12,24 @@ available in /docs/CommAI_PDF_1701.08954.pdf.
 After a line-by-line examination of the repository, I determined an overhaul of the CommAI-env is required
 from the ground up, rebuilding it in pure Python >=3.5.
 
-I am seeking contributions in any form.
-
-You may open a discussion by clicking the issue tab at the top of the page, New Issue.
-
-Pull Requests are welcome at any time! Before doing any coding, please check in as the code is being updated daily and
+### I am seeking contributions in any form.
+- You may open a discussion by clicking the issue tab at the top of the page, New Issue.
+- Pull Requests are welcome at any time! Before doing any coding, please check in as the code is being updated daily and
 may diverge from your work.
 
-Service access, financial donations, or any form of sponsorship would be very welcome.
-<a href="https://www.patreon.com/bePatron?u=5636094">Become a Patron!</a>
+- Service access, financial donations, or any form of sponsorship would be very welcome.
+- <a href="https://www.patreon.com/bePatron?u=5636094">Become a Patron!</a>
 
 #### Stephen Hope
 Ottawa, Canada
 stephenbhope@gmail.com
 Tel [00] 1-613-594-4727
 
- - CommAI-env, https://arxiv.org/abs/1511.08130  The Github repository, https://github.com/facebookresearch/CommAI-env
- ceased active development after the initial beta-testing release.
+ CommAI-env, https://arxiv.org/abs/1511.08130 The Github repository, https://github.com/facebookresearch/CommAI-env
 
-### WIP - The facebookresearch/CommAI-env development ceased at beta-testing stage, the Revised-CommAI-env will refactor
-all source code to pure Python >=3.5
+### The facebookresearch/CommAI-env development ceased at beta-testing stage, completely untested, and unlinted.
+
+# The Revised-CommAI-env will refactor all source code to pure Python >=3.5, fully tested and linted.
 
 WIP - Repackage CommAI-env for standard deployments via Docker, Snap, and Virtualbox images.
 
