@@ -131,7 +131,7 @@ class TestEnvironment(unittest.TestCase):
                 :return:
                 """
                 self.end_handled = True
-# TODO Fix
+
         tt = TestTask(max_time=10)
         env = environment.Environment(SerializerMock(), SingleTaskScheduler(tt))
         tt.start(env)
@@ -147,12 +147,12 @@ class TestEnvironment(unittest.TestCase):
         tt.end_handled = False
         self.assertFalse(env.raise_event(task.Ended()))  # End should not be handled anymore
         self.assertFalse(tt.end_handled)
-        # TODO rewrite
+        # TODO rewrite - humor
         # Register them again! mwahaha (evil laugh) -- lol
         env._register_task_triggers(tt)
         self.assertFalse(env.raise_event(task.Ended()))  # End should not be handled anyore
         self.assertFalse(tt.end_handled)
-        # TODO rewrite
+        # TODO rewrite - humor
         # Deregister them again! mwahahahaha (more evil laugh)
         env._deregister_task_triggers(tt)
         self.assertFalse(env.raise_event(task.Ended()))
