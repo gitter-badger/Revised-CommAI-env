@@ -23,7 +23,13 @@ class TestBase(unittest.TestCase):
 
         :return:
         """
+
+
         class TestTask(base.BaseTask):
+            """
+            test for not solving it at all
+            """
+
             def __init__(self, max_time=1000):
                 """
 
@@ -44,17 +50,18 @@ class TestBase(unittest.TestCase):
 
             @on_message(r"Interrupt.$")
             def on_interrupt(self, event):
+                # TODO event not used
                 """
 
                 :param event:
                 :return:
                 """
-                # TODO event not used
+
                 self.set_message("Interrupted.")
 
             @on_message(r"Respectful.$")
-            # TODO event not used
             def on_respect(self, event):
+                # TODO event not used
                 """
 
                 :param event:
@@ -63,7 +70,6 @@ class TestBase(unittest.TestCase):
                 self.set_message("Good.")
 
         with task_messenger(TestTask) as m:
-            # test for not solving it at all
             message = "Interrupt."
             m.send(message)
             blen = m.read()
