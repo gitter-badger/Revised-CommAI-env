@@ -23,7 +23,7 @@ class TestObjectsProperties(unittest.TestCase):
     helper methods
     """
     def check_positive_feedback(self, m, instructions, answer):
-        """ hear the congratulations
+        """ hear the congratulations.  there is some feedback
 
         :param m:
         :param instructions:
@@ -31,14 +31,14 @@ class TestObjectsProperties(unittest.TestCase):
         :return:
         """
         feedback_blen = m.read()
-        # there is some feedback
         self.assertGreater(feedback_blen, 0,
                            "answering '{0}' to query '{1}' didn't work.".format(answer, instructions))m.send()
         self.assertEqual(m.get_cumulative_reward(), 1,
                          "answering '{0}' to query '{1}' didn't work.".format(answer, instructions))
 
     def check_negative_feedback(self, m, exp_answer):
-        """ hear the feedback
+        """ hear the feedback. the answer could be a space-separated list that solves the task in any order.
+         exp_answer is not a string and thus, the expected answer is a collection of possibilities
 
         :param m:
         :param exp_answer:
@@ -47,81 +47,64 @@ class TestObjectsProperties(unittest.TestCase):
         m.read()
         answer, = m.search_last_message(r"(?:one|the) right \w+ (?:is|are): (.+)\.$")
         m.send()
-
         try:
-            # the answer could be a space-separated list that solves the task in any order
             self.assertEqual(set(self.string_to_enum(exp_answer)), set(self.string_to_enum(answer)),
                              "{0} != {1}".format(exp_answer, answer))
         except AttributeError:
-            # exp_answer is not a string and thus, the expected answer is a collection of possibilities
             self.assertIn(answer, exp_answer)
 
     def solve_correctly_test(self, m, get_correct_answer):
-        """ read the instructions
+        """ read the instructions. get the instructions. get the answer. send the answer with the termination marker.
+        hear the congratulations
 
         :param m:
         :param get_correct_answer:
         :return:
         """
         m.read()
-        # get the instructions
         instructions = m.get_last_message()
-        # get the answer
         answer = get_correct_answer(m)[0]
-        # send the answer with the termination marker
         m.send("{0}.".format(answer))
-        # hear the congratulations
         self.check_positive_feedback(m, instructions, answer)
 
     def solve_interrupting_teacher(self, m, get_correct_answer):
-        """ read the instructions up to the point we can get the answer
+        """ read the instructions up to the point we can get the answer. get the answer.  borderline condition: send
+        the first character and check that the teacher hasn't just stopped talking. (if it did, then this would be a
+        good response, and it's not what we are testing here).  send the rest of the answer with the termination
+        marker.  interrupting the teacher shouldn't have worked for us.  wait for the teacher to stop talking.  get
+        the instructions.  still no reward.  get the answer now that the teacher is silent.  send the answer with the
+        termination marker.  hear the congratulations
 
         :param m:
         :param get_correct_answer:
         :return:
         """
         m.read_until(get_correct_answer)
-        # get the answer
         answer = get_correct_answer(m)[0]
-        """
-        # borderline condition: send the first character and check that the teacher hasn't just stopped talking
-        # (if it did, then this would be a good response, and it's not what we are testing here)
-        """
         m.send(answer[0])
         self.assertFalse(m.is_silent(), "failed to interrupt teacher: " "correct answer detected too late.")
-        # send the rest of the answer with the termination marker
         m.send("{0}.".format(answer[1:]))
-        # interrupting the teacher shouldn't have worked for us
         self.assertEqual(m.get_cumulative_reward(), 0)
-        # wait for the teacher to stop talking
         m.read()
-        # get the instructions
         instructions = m.get_last_message()
-        # still no reward
         self.assertEqual(m.get_cumulative_reward(), 0)
-        # get the answer now that the teacher is silent
         answer = get_correct_answer(m)[0]
-        # send the answer with the termination marker
         m.send("{0}.".format(answer))
-        # hear the congratulations
         self.check_positive_feedback(m, instructions, answer)
 
     def timeout_test(self, m, get_correct_answer):
-        """ read the instructions
+        """ read the instructions.  get the answer check if the answer is a collection of possibilities or just one
+        option stay silent. hear the correction.
 
         :param m:
         :param get_correct_answer:
         :return:
         """
         m.read()
-        # get the answer
         answer = get_correct_answer(m)
-        # check if the answer is a collection of possibilities or just one option
         answer = answer[1] if len(answer) > 1 else answer[0]
-        # stay silent
         while m.is_silent():
             m.send()
-        # hear the correction
         self.check_negative_feedback(m, answer)
 
     def do_test_battery(self, task, get_correct_answer):
@@ -136,7 +119,6 @@ class TestObjectsProperties(unittest.TestCase):
         with task_messenger(task) as m:
             self.timeout_test(m, get_correct_answer)
         with task_messenger(task) as m:
-            #
             self.solve_interrupting_teacher(m, get_correct_answer)
 
     separators = [" ", " and ", ", ", ", and "]
@@ -178,8 +160,8 @@ tasks testing routines
             :return:
             """
             property_, = m.search_last_message(r"basket is (\w+)")
-            return property_, self.do_test_battery(
-                    objects_properties.AssociateObjectWithPropertyTask, get_correct_answer)
+            return property_, self.do_test_battery(objects_properties.AssociateObjectWithPropertyTask,
+                                                   get_correct_answer)
 
     def testVerifyThatObjectHasProperty(self):
         # TODO function name lower case

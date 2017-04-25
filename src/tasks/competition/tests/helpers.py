@@ -47,7 +47,7 @@ class EnvironmentMessenger:
 
         :return:
         """
-        # TODO access protected memebr outside of class
+        # TODO access protected member outside of class
         return self._env._output_channel.is_silent()
 
     def read(self):

@@ -17,11 +17,10 @@ from tasks.competition.base import BaseTask
 from tasks.competition.objects_properties import global_properties
 import random
 
-# use the set of objects from the objects-properties association tasks.
-objects = list(set(obj for basket, objects in global_properties.items()
-                   for obj in objects))
+""" Use the set of objects from the objects-properties association tasks.
+"""
+objects = list(set(obj for basket, objects in global_properties.items() for obj in objects))
 dirs = ['east', 'west', 'north', 'south']
-
 TIME_CHAR = 8
 TIME_VERB = (len("Say 'I xxxxxxxxxxxx' to xxxxxxxxxxxx.") + len("You xxxxxxxxxxxxed.")) * TIME_CHAR
 TIME_TURN = (len("I turn right.") + len("You turned.")) * TIME_CHAR
@@ -43,41 +42,40 @@ class TurningTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """ during initalization of task, save the direction the learner is facing
+        # TODO event not used
+        """ during initialization of task, save the direction the learner is facing. # randomly choose a target.  ask
+        the learner to turn in the target direction direction and save it too
 
         :param event:
         :return:
         """
         self.state.init_dir = self.get_world().state.learner_direction
-        # randomly choose a target direction and save it too
         self.target_turn = random.choice(['left', 'right'])
         if self.target_turn == 'right':
             self.state.target_direction = self.get_world().get_clockwise_direction(1)
         else:
             self.state.target_direction = self.get_world().get_clockwise_direction(-1)
-
-        # ask the learner to turn in the target direction
         self.set_message("Turn {0}.".format(self.target_turn))
 
-    @on_state_changed(
-        lambda ws, ts: ws.learner_direction == ts.target_direction)
-    def on_moved(self, event):
+
+    @on_state_changed(lambda ws, ts: ws.learner_direction == ts.target_direction)
+        def on_moved(self, event):
+        # TODO static method, event not used, unresolved ref self
         """ reward the learner when it's facing the right direction
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
     @on_timeout()
     def fail_learner(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message(random.choice(msg.timeout))
 
 
@@ -94,39 +92,36 @@ class MovingTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """
+        # TODO event not used
+        """ during initialization task, save the learner's position.  save the destination position one step forward
+        from the learner is.  ask the learner to move forward
 
         :param event:
         :return:
         """
-        # TODO event not used
-        # during initalization task, save the learner's position
         self.state.initial_pos = self.get_world().state.learner_pos
-        # save the destination position one step forward from the learner is
         dp = self.get_world().valid_directions[self.get_world().state.learner_direction]
         self.state.dest_pos = self.state.initial_pos + dp
-
-        # ask the learner to move forward
         self.set_message("Move forward.")
 
     @on_state_changed(lambda ws, ts: ws.learner_pos == ts.dest_pos)
     def on_moved(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
     @on_timeout()
     def fail_learner(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message(random.choice(msg.timeout))
 
 
@@ -143,14 +138,15 @@ class MovingRelativeTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """ during initalization task, save the direction the learner is facing
+        # TODO event not used, target_turn def outside __inti__
+        """ during initialization task, save the direction the learner is facing.  randomly choose a target direction
+        and save the position one step forward in that direction.  Ask the learner to move in a particular direction
+        (left or right)
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.state.init_dir = self.get_world().state.learner_direction
-        # randomly choose a target direction and save the position one step forward in that direction
         self.state.initial_pos = self.get_world().state.learner_pos
         self.target_turn = random.choice(['left', 'right'])
         if self.target_turn == 'right':
@@ -159,28 +155,26 @@ class MovingRelativeTask(BaseTask):
             self.state.target_dir = self.get_world().get_clockwise_direction(-1)
         dp = self.get_world().valid_directions[self.state.target_dir]
         self.state.dest_pos = self.state.initial_pos + dp
-
-        # Ask the learner to move in a particular direction (left or right)
         self.set_message("Move {0}.".format(self.target_turn))
 
     @on_state_changed(lambda ws, ts: ws.learner_pos == ts.dest_pos)
     def on_moved(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
     @on_timeout()
     def fail_learner(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message(random.choice(msg.timeout))
 
 
@@ -197,14 +191,15 @@ class MovingAbsoluteTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """ during initalization task, save the direction the learner is facing
+        # TODO event not used, target_turn def outside __inti__
+        """ during initialization task, save the direction the learner is facing.  randomly choose a target direction
+        and save the position one step forward in that direction.  Ask the learner to move in a particular absolute
+        direction (north, east, south, west)
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.state.init_dir = self.get_world().state.learner_direction
-        # randomly choose a target direction and save the position one step forward in that direction
         self.state.initial_pos = self.get_world().state.learner_pos
         self.target_turn = random.choice(['left', 'right'])
         if self.target_turn == 'right':
@@ -213,28 +208,26 @@ class MovingAbsoluteTask(BaseTask):
             self.state.target_dir = self.get_world().get_clockwise_direction(-1)
         dp = self.get_world().valid_directions[self.state.target_dir]
         self.state.dest_pos = self.state.initial_pos + dp
-
-        # Ask the learner to move in a particular absolute direction (north, east, south, west)
         self.set_message("You are facing {0}, move {1}.".format(self.state.init_dir, self.state.target_dir))
 
     @on_state_changed(lambda ws, ts: ws.learner_pos == ts.dest_pos)
     def on_moved(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
     @on_timeout()
     def fail_learner(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message(random.choice(msg.timeout))
 
 
@@ -249,45 +242,40 @@ class PickUpTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """ choose some random object
-
+        # TODO event not used, Target_obj def outside __inti__
+        """ choose some random object,  find the cell in front of the learner.  place the object there
         :param event:
         :return:
         """
-        # TODO event not used
         self.target_obj, = random.sample(objects, 1)
-        # find the cell in front of the learner
         ws = self.get_world().state
         ld = self.get_world().valid_directions[ws.learner_direction]
         lp = ws.learner_pos
         self.state.initial_count = ws.learner_inventory[self.target_obj]
-        # place the object there
         self.get_world().put_entity(lp + ld, self.target_obj, True, True)
-
         self.add_handler(on_state_changed(lambda ws, ts: ws.learner_inventory[self.target_obj] == ts.initial_count + 1)
                          (self.on_object_picked_up))
 
-        self.set_message(
-                "You have {indef_object} in front of you. " "Pick up the {object}.".format(
+        self.set_message("You have {indef_object} in front of you. " "Pick up the {object}.".format(
                         indef_object=msg.indef_article(self.target_obj), object=self.target_obj))
 
     def on_object_picked_up(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
     @on_timeout()
     def fail_learner(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message(random.choice(msg.timeout))
 
 
@@ -301,49 +289,45 @@ class PickUpAroundTask(BaseTask):
 
         :param world:
         """
-        super(PickUpAroundTask, self).__init__(
-                max_time=50 * TIME_CHAR + 2 * TIME_PICK + 4 * TIME_MOVE + 4 * TIME_TURN, world=world)
+        super(PickUpAroundTask, self).__init__(max_time=50 * TIME_CHAR + 2 * TIME_PICK + 4 * TIME_MOVE + 4 * TIME_TURN,
+                                               world=world)
 
     @on_start()
     def on_start(self, event):
-        """ choose a random object
+        # TODO event not used, target_obj, direction, def outside __inti__
+        """ choose a random object.  find a random cell around the learner. place the object there.
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.target_obj, = random.sample(objects, 1)
-        # find a random cell around the learner
         self.direction = random.choice(list(self.get_world().valid_directions.keys()))
         ws = self.get_world().state
         p = ws.learner_pos + self.get_world().valid_directions[self.direction]
         self.state.initial_count = ws.learner_inventory[self.target_obj]
-        # place the object there
         self.get_world().put_entity(p, self.target_obj, True, True)
-
         self.add_handler(on_state_changed(lambda ws, ts: ws.learner_inventory[self.target_obj] == ts.initial_count + 1)
                          (self.on_object_picked_up))
-
         self.set_message("There is {indef_object} {direction} from you, " "pick up the {object}.".format(
                 indef_object=msg.indef_article(self.target_obj), direction=self.direction, object=self.target_obj))
 
     def on_object_picked_up(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
     @on_timeout()
     def fail_learner(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message(random.choice(msg.timeout))
 
 
@@ -363,45 +347,43 @@ class PickUpInFrontTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """ choose a random object
+        # TODO event not used
+        """ choose a random object.  select a random number of steps.  place the object that number of steps in front
+        of the learner.
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.target_obj, = random.sample(objects, 1)
         ws = self.get_world().state
-        # select a random number of steps
         self.n = random.randint(1, PickUpInFrontTask.max_steps_forward)
-        # place the object that number of steps in front of the learner
         p = ws.learner_pos + self.n * self.get_world().valid_directions[ws.learner_direction]
         self.state.initial_count = ws.learner_inventory[self.target_obj]
         self.get_world().put_entity(p, self.target_obj, True, True)
-
-        self.add_handler(on_state_changed(lambda ws, ts: ws.learner_inventory[self.target_obj
-                                                         ] == ts.initial_count + 1)(self.on_object_picked_up))
-
+        self.add_handler(
+                on_state_changed(lambda ws, ts: ws.learner_inventory[self.target_obj] == ts.initial_count + 1)
+                (self.on_object_picked_up))
         self.set_message("There is {indef_object} {n} steps forward, " "pick up the {object}.".format(
-                indef_object=msg.indef_article(self.target_obj), n=msg.number_to_string(self.n),
-                object=self.target_obj))
+                        indef_object=msg.indef_article(self.target_obj), n=msg.number_to_string(self.n),
+                        object=self.target_obj))
 
     def on_object_picked_up(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1, "You picked up the {0}.".format(self.target_obj))
 
     @on_timeout()
     def fail_learner(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message(random.choice(msg.timeout))
 
 
@@ -416,39 +398,34 @@ class GivingTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """
+        """ pick a random object.  give one of it to the learner.  save how many objects of this we have.  inform the
+        world that we can expect to receive such an object.
 
         :param event:
         :return:
         """
         # TODO event not used
         ws = self.get_world().state
-        # pick a random object
         self.state.target_obj, = random.sample(objects, 1)
-        # give one of it to the learner
         ws.learner_inventory[self.state.target_obj] += 1
-        # save how many objects of this we have
         self.state.initial_count = ws.teacher_inventory[self.state.target_obj]
-        # inform the world that we can expect to receive such an object
         ws.teacher_accepts.add(self.state.target_obj)
+        self.set_message("I gave you {indef_object}. Give it back to me " "by saying \"I give you {indef_object}\"."
+                         .format(indef_object=msg.indef_article(self.state.target_obj)))
 
-        self.set_message(
-                "I gave you {indef_object}. Give it back to me " "by saying \"I give you {indef_object}\".".format(
-                        indef_object=msg.indef_article(self.state.target_obj)))
-
-    @on_state_changed(
-        lambda ws, ts: ws.teacher_inventory[ts.target_obj] == ts.initial_count + 1)
+    @on_state_changed(lambda ws, ts: ws.teacher_inventory[ts.target_obj] == ts.initial_count + 1)
     def on_give_me_object(self, event):
+        # TODO event not used
         """ if I have one more of the target object, the learner solved the task.
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
     @on_timeout()
     def fail_learner(self, event):
+        # TODO event not used
         """
 
         :param event:
@@ -469,53 +446,47 @@ class PickUpAroundAndGiveTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """
+        # TODO event not used, direction, obj_pos, obj_picked up def outside __inti__
+        """ pick a random object.  save how many objects of this we have.  save how many instances of the object the
+        learner initially had. choose some random direction.  measure a cell one step in that direction.  put an
+        object in the given position.  initialize a variable to check if the object has been picked up.  inform the
+        world that we can expect to receive such an object.
 
         :param event:
         :return:
         """
-        # TODO event not used
         ws = self.get_world().state
-        # pick a random object
         target_obj, = random.sample(objects, 1)
         self.state.target_obj = target_obj
-        # save how many objects of this we have
         self.state.initial_count = ws.teacher_inventory[target_obj]
-        # save how many instances of the object the learner intially had
         self.state.learner_initial_count = ws.learner_inventory[target_obj]
-        # choose some random direction
         self.direction = random.choice(list(self.get_world().valid_directions.keys()))
-        # measure a cell one step in that direction
         self.obj_pos = ws.learner_pos + self.get_world().valid_directions[self.direction]
-        # put an object in the given position
         self.get_world().put_entity(self.obj_pos, target_obj, True, True)
-        # initialize a variable to check if the object has been picked up
         self.object_picked_up = False
-        # inform the world that we can expect to receive such an object
         ws.teacher_accepts.add(self.state.target_obj)
-
         self.set_message("There is {indef_object} {direction} from you." " Pick it up and give it to me.".format(
                 indef_object=msg.indef_article(self.state.target_obj), direction=self.direction))
 
     @on_state_changed(lambda ws, ts: ws.learner_inventory[ts.target_obj] == ts.learner_initial_count + 1)
     def on_object_picked_up(self, event):
+        # TODO event not used, object_picked_up def outside __inti__
         """ if I have one more of the target object, the learner solved the task if it also picked up the object in
         the grid.
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.object_picked_up = True
 
     @on_state_changed(lambda ws, ts: ws.teacher_inventory[ts.target_obj] == ts.initial_count + 1)
     def on_give_me_object(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         if self.object_picked_up:
             self.set_reward(1)
         else:
@@ -523,26 +494,26 @@ class PickUpAroundAndGiveTask(BaseTask):
 
     @on_timeout()
     def fail_learner(self, event):
-        """
-
+        # TODO event not used
+        """ cleaning up
         :param event:
         :return:
         """
-        # TODO event not used
-        # cleaning up
         if not self.object_picked_up:
             self.get_world().remove_entity(self.obj_pos)
         self.set_message(random.choice(msg.timeout))
 
     @on_ended()
     def on_ended(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.get_world().state.teacher_accepts.remove(self.state.target_obj)
+
+# TODO guess this wprd
 """
  Counting + Proprioception
 """
@@ -561,42 +532,40 @@ class CountingInventoryTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used, target_obj def outside __inti__
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.target_obj, = random.sample(objects, 1)
         self.set_message("How many {0} do you have?".format(msg.pluralize(self.target_obj, 2)))
 
     @on_message("(\d+)\.$")
     def on_something_said(self, event):
-        """ find out the correct answer
+        """ find out the correct answer.  get the answer of the learner and parse it
 
         :param event:
         :return:
         """
         count = self.get_world().state.learner_inventory[self.target_obj]
-        # get the answer of the learner and parse it
         answer = event.get_match(1)
         num_answer = msg.string_to_number(answer)
         if num_answer == count:
             self.set_reward(1, "Correct!")
         else:
             self.set_message("{negative_feedback} " "You have {count} {objects}.".format(
-                    negative_feedback=random.choice(msg.failed),
-                    count=count,
-                    objects=msg.pluralize(self.target_obj, count)))
+                    negative_feedback=random.choice(msg.failed), count=count, objects=msg.pluralize(self.target_obj,
+                                                                                                    count)))
 
     @on_timeout()
     def fail_learner(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message(random.choice(msg.timeout))
 
 
@@ -614,82 +583,74 @@ class CountingInventoryGivingTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used, failed, time_gave_me_object, stage, def outside __inti__
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.failed = False
         self.time_gave_me_object = None
         self.state.target_obj, = random.sample(objects, 1)
-        self.state.initial_count = \
-            self.get_world().state.learner_inventory[self.state.target_obj]
-
+        self.state.initial_count =  self.get_world().state.learner_inventory[self.state.target_obj]
         self.set_message("How many {0} do you have?".format(msg.pluralize(self.state.target_obj, 2)))
         self.stages = ['initial-query', 'one-more-query', 'waiting-give-back', 'final-query']
         self.stage = 'initial-query'
 
     @on_message("(\w+)\.$")
     def on_answer_query(self, event):
-        """ if we are waiting for an object, then we don't expect an answer to a query
+
+        """ if we are waiting for an object, then we don't expect an answer to a query.  if you just gave me an
+        object, then this is not the answer for a query.  short variable for the world state.  we check if the
+        learner's answer matches the number of instances it has of the given object.  get the answer of the learner
+        and parse it. check if the learner has failed.  get a feedback response. reward the learner if it replied
+        correctly all the questions. if not self.failed:
 
         :param event:
         :return:
         """
         if self.stage == 'waiting-give-back':
             return
-        # if you just gave me an object, then this is not the answer for a query
         if self.time_gave_me_object == self.get_time():
             return
-        # short variable for the world state
         ws = self.get_world().state
-        # we check if the learner's answer matches the number of instances it has of the given object
         count = ws.learner_inventory[self.state.target_obj]
-        # get the answer of the learner and parse it
         answer = event.get_match(1)
         try:
             num_answer = msg.string_to_number(answer)
         except ValueError:
             num_answer = None
-        # check if the learner has failed
+            # TODO fail, stage, def outside __inti__
         self.failed = self.failed or num_answer != count
-        # get a feedback response
         feedback = random.choice(msg.congratulations) if num_answer == count else random.choice(msg.failed)
         if self.stage == 'initial-query':
             ws.learner_inventory[self.state.target_obj] += 1
             self.set_message("{feedback} I gave you {indef_object}. " "How many {objects} do you have now?".format(
-                    indef_object=msg.indef_article(self.state.target_obj),
-                    objects=msg.pluralize(self.state.target_obj, 2),
-                    feedback=feedback))
+                    indef_object=msg.indef_article(self.state.target_obj), objects=msg.pluralize(
+                            self.state.target_obj, 2), feedback=feedback))
             self.stage = 'one-more-query'
         elif self.stage == 'one-more-query':
-            self.set_message(
-                    "{feedback} Now give the {object} back to me.".format(object=self.state.target_obj,
-                                                                          feedback=feedback))
+            self.set_message("{feedback} Now give the {object} back to me.".format(object=self.state.target_obj,                                                                                 feedback=feedback))
             ws.teacher_accepts.add(self.state.target_obj)
             self.stage = 'waiting-give-back'
         elif self.stage == 'final-query':
-            # reward the learner if it replied correctly all the questions
-            if not self.failed:
-                self.set_reward(1, feedback)
-            else:
-                self.set_reward(0, feedback)
+            self.set_reward(1, feedback)
+        else:
+            self.set_reward(0, feedback)
 
-    @on_state_changed(        lambda ws, ts: ws.teacher_inventory[ts.target_obj] == ts.initial_count + 1)
+    @on_state_changed(lambda ws, ts: ws.teacher_inventory[ts.target_obj] == ts.initial_count + 1)
     def on_gave_me_target_object(self, event):
+        # TODO event not used, stage def outside __init__
         """ if I have one more of the target object, the learner solved the task if it also picked up the object in
         the grid.
 
         :param event:
         :return:
         """
-        # TODO event not used
         if self.stage == 'waiting-give-back':
             self.time_gave_me_object = self.get_time()
             self.set_message("Good! You gave me {indef_object}. " "How many {objects} do you have now?".format(
-                    indef_object=msg.indef_article(self.state.target_obj),
-                    objects=msg.pluralize(self.state.target_obj, 2)))
+                    indef_object=msg.indef_article(self.state.target_obj), objects=msg.pluralize(self.state.target_obj,                                                                                                2)))
         self.stage = 'final-query'
 
     @on_timeout()
@@ -718,12 +679,12 @@ class LookTask(BaseTask):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used, dir def outside __inti__
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.dir = random.choice(dirs)
         dir = self.get_world().state.learner_direction
         self.set_message("Look to the " + self.dir + "," + " you are currently facing " + dir + ".")
@@ -749,14 +710,13 @@ class LookAroundTask(Task):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used, visted_dirs, ndir, def outside __init__
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
-        self.visited_dirs = {'east': False, 'west': False,
-                             'north': False, 'south': False}
+        self.visited_dirs = {'east': False, 'west': False, 'north': False, 'south': False}
         self.ndir = 0
         dir = self.get_world().state.learner_direction
         self.set_message("Look around. You are facing " + dir + ".")
@@ -764,6 +724,7 @@ class LookAroundTask(Task):
 
     @on_state_changed(lambda ws, ts: ws.learner_pos != ts.learner_pos)
     def on_moved(self, event):
+        # TODO event not used
         """
 
         :param event:
@@ -773,6 +734,7 @@ class LookAroundTask(Task):
 
     @on_message(r"I look\.$")
     def on_message(self, event):
+        # TODO event not used, dir shadow, ddir rename
         """
 
         :param event:
@@ -806,13 +768,12 @@ class FindObjectAroundTask(Task):
 
     @on_start()
     def on_start(self, event):
-        """
+        # TODO event not used, dir shadow, obj, instructions_completed def outside __init__, can't find im_func ref
+        """ random assignment of object to location.
 
         :param event:
         :return:
         """
-        # TODO event not used
-        # random assignment of object to location
         self.state.learner_pos = self.get_world().state.learner_pos
         pos = self.state.learner_pos
         pe = self.get_world().put_entity
@@ -824,27 +785,27 @@ class FindObjectAroundTask(Task):
         self.instructions_completed = False
         self.set_message("Pick the " + self.obj + " next to you.")
         obj_count = self.get_world().state.learner_inventory[self.obj]
-        self.add_handler(on_state_changed(
-                lambda ws, ts: ws.learner_inventory[self.obj] == obj_count + 1)(self.on_object_picked.im_func))
+        self.add_handler(on_state_changed(lambda ws, ts: ws.learner_inventory[self.obj] == obj_count + 1)(
+                self.on_object_picked.im_func))
 
     @on_ended()
     def on_ended(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         pos = self.state.learner_pos
         for i in range(0, len(dirs)):
             np = pos + self.get_world().valid_directions[dirs[i]]
             self.get_world().remove_entity(np)
 
     def on_object_picked(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1, 'Well done!')

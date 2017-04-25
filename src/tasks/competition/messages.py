@@ -6,24 +6,22 @@
 # CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
 # All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 import random
 
-# a list of congratulations messages to be issued when the learner solves a task
+"""  a list of congratulations messages to be issued when the learner solves a task.  a list of congratulations
+messages to be issued when the learner fails a task.  handy list with word transcriptions of the integers from 0 to 10
+"""
 congratulations = ['good job.', 'bravo.', 'congratulations.', 'nice work.', 'correct.']
-
-# a list of congratulations messages to be issued when the learner fails a task
 failed = ['wrong!', 'wrong.', 'you failed!', 'incorrect.']
-
 timeout = ['time is out!', 'sorry, time is out!', 'too bad, time out!']
-
-# handy list with word transcriptions of the integers from 0 to 10
 numbers_in_words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
 
+
 def number_to_string(num):
-    """ Returns a string version of a number, randomly picking betweenletters and numbers.
+    """ Returns a string version of a number, randomly picking between letters and numbers.
 
     :param num:
     :return:
@@ -55,12 +53,9 @@ def string_to_number(n):
     else:
         return int(n)
 
-"""
-simple grammatical functions
-"""
-
 
 def indef_article(x):
+    # TODO rename
     """
 
     :param x:
@@ -86,6 +81,7 @@ def pluralize(obj, c):
 
 
 def lemmatize(word):
+    # TODO rename
     """ if the word ends with an s and it's the result of pluralization remove the s:
 
     :param word:

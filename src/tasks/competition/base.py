@@ -3,12 +3,12 @@
 # Copyright (c) 2017-, Stephen B. Hope
 # All rights reserved.
 #
-# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc.
-# All rights reserved.
+# CommAI-env source files, Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
 #
-# This source code is licensed under the BSD-style license found in the# LICENSE file in the root directory of this
+# This source code is licensed under the BSD-style license found in the# LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
+# TODO unresolved ref core, Task, on_message
 from core.task import Task, on_message
 
 
@@ -26,15 +26,14 @@ class BaseTask(Task):
 
     @on_message()
     def on_any_message(self, event):
-        """ ignore anything the learner says while the teacher is speaking if the environment is speaking
+        """ ignore anything the learner says while the teacher is speaking if the environment is speaking.  and the
+        last message was not a silence.  i will ignore what the learner just said by forgetting it
 
         :param event:
         :return:
         """
         if not self._env.is_silent():
-            # and the last message was not a silence
             if event.message[-1] != ' ':
-                # i will ignore what the learner just said by forgetting it
                 self.ignore_last_char()
 
     def deinit(self):
@@ -43,6 +42,7 @@ class BaseTask(Task):
         :return:
         """
         silence = self.get_default_output()
+        # TODO access to protected member _env._output_channel_listener of class
         output_text = self._env._output_channel_listener.get_text()
         task_separator_issued = output_text.endswith(silence)
         if not task_separator_issued:
