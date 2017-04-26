@@ -9,7 +9,7 @@
 # This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
+# TODO fix revised_core.seializer, .channels imports
 import unittest
 import core.serializer as serializer
 import core.channels as channels
@@ -37,7 +37,6 @@ class TestChannels(unittest.TestCase):
             :return:
             """
             self.assertEqual(test_string[:len(input_message)], input_message)
-
         ic.message_updated.register(all_good)
         for b in serialized_test_string:
             ic.consume_bit(b)
@@ -55,8 +54,12 @@ class TestChannels(unittest.TestCase):
             ic.consume_bit(b)
 
         def all_good(input_message):
-            self.assertEqual('', input_message)
+            """
 
+            :param input_message:
+            :return:
+            """
+            self.assertEqual('', input_message)
         ic.message_updated.register(all_good)
         ic.clear()
 
@@ -121,7 +124,9 @@ class TestChannels(unittest.TestCase):
         self.assertEqual(something_read[0], len(test_string))
 
     def testOverwrittingConsistency(self):
-        """
+        # TODO REDESIGN into DEMENTED PYTHON
+        """ array because Python's scoping rules are demented:  http://stackoverflow.com/questions/4851463/python
+        -closure-write-to-variable-in-parent-scope
 
         :return:
         """
@@ -129,9 +134,7 @@ class TestChannels(unittest.TestCase):
         ic = channels.InputChannel(slzr)
         oc = channels.OutputChannel(slzr)
         test_string = 'my message'
-        # TODO REDESIGN into DEMENTED PYTHON
-        # array because Python's scoping rules are demented:
-        #  http://stackoverflow.com/questions/4851463/python-closure-write-to-variable-in-parent-scope
+
         something_read = [0]
 
         def all_good(input_message):
