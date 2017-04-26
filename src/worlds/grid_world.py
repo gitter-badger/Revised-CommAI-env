@@ -10,9 +10,9 @@
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 
-# TODO fix imports
-from core.task import World, on_world_start, on_message, on_sequence, on_state_changed, on_timeout, on_output_message
-from collections import namedtuple, defaultdict
+# TODO fix tasks, revised_core imports
+from revised_core.task import World, on_world_start, on_message, on_sequence, on_state_changed, on_timeout, on_output_message
+from collections_extended import namedtuple, defaultdict
 import logging
 import tasks.competition.messages as msg
 
@@ -171,17 +171,19 @@ class GridWorld(World):
     @on_world_start()
     def on_start_grid_world(self, event):
         # TODO event not used
-        """ creates a new Point tuple using init_pos tuple as parameters
+        """ creates a new Point tuple using init_pos tuple as parameters.  Dictionary of entities in world.  Learner
+        inventory (multiset).  Teacher (a multiset).  Object set the teacher is willing to receive.
 
         :param event:
         :return:
         """
         self.state.learner_pos = Point(*self._init_pos)
+        # TODO unresloved ref $ Agent faces one direction
         self.state.learner_direction = self._init_direction  $ Agent faces one direction
-        self.state.entities = {}  # Dictionary of entities in world
-        self.state.learner_inventory = defaultdict(int)  # Learner inventory (multiset)
-        self.state.teacher_inventory = defaultdict(int)  # Teacher (a multiset)
-        self.state.teacher_accepts = set()  # Object set the teacher is willing to recieve
+        self.state.entities = {}
+        self.state.learner_inventory = defaultdict(int)
+        self.state.teacher_inventory = defaultdict(int)
+        self.state.teacher_accepts = set()
 
     @on_message(r"I turn left\.$")
     def on_turn_left(self, event):
@@ -234,7 +236,7 @@ class GridWorld(World):
 
     @on_message(r"I pick up the (\w+)\.$")
     def on_pick_up(self, event):
-        """
+        """ There is an object with the given name here. We pick it up.
 
         :param event:
         :return:
@@ -242,9 +244,7 @@ class GridWorld(World):
         obj_name = event.get_match(1)
         obj_pos = self.state.learner_pos + self.valid_directions[self.state.learner_direction]
         if obj_pos in self.state.entities and obj_name == self.state.entities[obj_pos].name:
-            # There is an object with the given name here
             if self.state.entities[obj_pos].pickable:
-                # We pick it up
                 self.state.learner_inventory[obj_name] += 1
                 del self.state.entities[obj_pos]
                 self.set_message("You picked up the {0}.".format(obj_name))
@@ -314,22 +314,26 @@ class GridWorld(World):
         return p not in self.state.entities or self.state.entities[p].traversable
 
     def __str__(self):
-        """ Creates a grid world representation as a string
+        """ Creates a grid world representation as a string. Should be cell in center to show the learner.  print the
+        coordinates.  we print the learner in the middle, using its facing direction first character.  if there is an
+        object, we fit as much as we can of the name.
 
         :return:
         """
         # TODO convert to python 3.5, fix function complexity
         grid_h = 5
         grid_w = 5
-        assert grid_w % 2 == 1 and grid_h % 2 == 1  # Should be cell in center to show the learner
+        assert grid_w % 2 == 1 and grid_h % 2 == 1
         cell_h = 2
         cell_w = 3
         lines = []
+        # TODO rewrite, list_literal
         l = []
         l.append(' ' * (cell_w + 1))
         for j in range(grid_w):
             l.append('{0: >{length}d} '.format(self.state.learner_pos.x - int(cell_w / 2) - 1 + j, length=cell_w))
         lines.append(''.join(l))
+        # TODO rewrite, list_literal
         l = []
         l.append(' ' * (cell_w + 1))
         l.append('+')
@@ -342,23 +346,19 @@ class GridWorld(World):
             for k in range(cell_h):
                 l = []
                 if k == 0:
-                    # print the coordinates
                     l.append('{0: >{length}d} '.format(self.state.learner_pos.y - int(cell_h / 2) - 1 + i,
                                                        length=cell_w))
                 else:
                     l.append(' ' * (cell_w + 1))
                 l.append('+')
-
                 for j in range(grid_w):
                     absolute_i = self.state.learner_pos.y + i - int(grid_h / 2)
                     absolute_j = self.state.learner_pos.x + j - int(grid_w / 2)
                     absolute_pos = Point(absolute_j, absolute_i)
                     if i == int(grid_h / 2) and j == int(grid_w / 2):
-                        # we print the learner in the middle, using its facing direction first character
                         l.append(self.state.learner_direction[0] * cell_w)
                     elif absolute_pos in self.state.entities:
                         e = self.state.entities[absolute_pos]
-                        # if there is an object, we fit as much as we can of the name
                         l.append('{0: <{length}}'.format(e.name[k * cell_w:(k + 1) * cell_w], length=cell_w))
                     else:
                         l.append(' ' * cell_w)
