@@ -145,7 +145,7 @@ class RepeatingPhraseTask(Task):
 
     @on_start()
     def on_start(self, event):
-        # TODO event not used
+        # TODO event not used, instructions_completed outside _init__
         """ For illustrative purposes only, we defer the instructions to a script that is executed when this variable
         takes the value 2 Don't hear the input coming from the learner until the instructions are over.
 
@@ -157,56 +157,56 @@ class RepeatingPhraseTask(Task):
 
     @on_state_changed(lambda s: s.sample_state == 2)
     def on_state_changed(self, event):
+        # TODO event not used
         """ This handler gets executed when the sample state changes to 2
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.state.sample_state = 1
         self.set_message("Say 'I am not Mr Robot'.")
 
     @on_output_message(r"\.")
     def on_finished_instructions(self, event):
+        # TODO event not instructions_completed def outside __init__
         """
 
         :param event:
         :return:
         """
-        # TODO event not instructions_completed def outside __init__
         self.instructions_completed = True
 
     @on_message()
     def on_any_message(self, event):
+        # TODO event not used
         """ we forget the input if the instructions are not completed yet
 
         :param event:
         :return:
         """
-        # TODO event not used
         if not self.instructions_completed:
             self.ignore_last_char()
 
     @on_message(r"I am not Mr Robot$")
     def on_correct_message(self, event):
+        # TODO event not used
         """ This handler gets executed whenever the learner says anything containing the string "I am not a Robot"
         (credit) thus, a mimicking learner will be given
 
         :param event:
         :return:
         """
-        # TODO event not used
         if self.instructions_completed:
             self.set_reward(1, "Correct")
 
     @on_timeout()
     def on_timeout(self, event):
+        # TODO event not used
         """ This handler gets executed if the learner didn't solve the task in 10000 steps
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message("Sorry, time is out.")
 
 
@@ -222,42 +222,42 @@ class SampleConflictingMessagesTask(Task):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message("Say my name")
 
     @on_message("Say$")
     def on_disrespect(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message("I'm Heisenberg, you don't give me orders.", 5)
 
     @on_message(r"my name$")
     def on_some_message(self, event):
+        # TODO event not used
         """ Send a low priority message that will be blocked
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message("Are you repeating everything I say?", 1)
 
     @on_message(r"Heisenberg$")
     def on_keyword_message(self, event):
+        # TODO event not used
         """ The priority parameter only applies for the message for now In this case, the message will be blocked.
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1, "You're Goddamn right.", priority=5)
 
 
@@ -274,12 +274,12 @@ class MovingTask(Task):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used
         """ initialize state variables
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.state.initial_pos = self.get_world().state.learner_pos
         dp = self.get_world().valid_directions[self.get_world().state.learner_direction]
         self.state.dest_pos = self.state.initial_pos + dp
@@ -287,12 +287,12 @@ class MovingTask(Task):
 
     @on_state_changed(lambda ws, ts: ws.learner_pos == ts.dest_pos)
     def on_moved(self, event):
+        # TODO event not used
         """ notice that we get the task state and the world state
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
 
@@ -310,12 +310,12 @@ class TurnLeftTask(Task):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.state.init_direction = self.get_world().state.learner_direction
         dest_index = ((self.cd.index(self.state.init_direction)) - 1) % 4
         self.state.dest_direction = self.cd[dest_index]
@@ -324,12 +324,12 @@ class TurnLeftTask(Task):
 
     @on_state_changed(lambda ws, ts: ws.learner_direction == ts.dest_direction)
     def on_turned(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
 
@@ -340,12 +340,12 @@ class TurnRightTask(Task):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.state.init_direction = self.get_world().state.learner_direction
         dest_index = ((self.cd.index(self.state.init_direction)) + 1) % 4
         self.state.dest_direction = self.cd[dest_index]
@@ -354,12 +354,12 @@ class TurnRightTask(Task):
 
     @on_state_changed(lambda ws, ts: ws.learner_direction == ts.dest_direction)
     def on_turned(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
 
@@ -376,22 +376,22 @@ class LookAroundTask(Task):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message("Look around.")
 
     @on_message(u"I look.")
     def on_message(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1)
 
 
@@ -408,23 +408,23 @@ class PickAnApple(Task):
 
     @on_ended()
     def cleanup(self, event):
+        # TODO event not used
         """ remove the objects that were laid by this task (the apple may not be there anymore, but it doesn't matter)
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.get_world().remove_entity(self.block_pos)
         self.get_world().remove_entity(self.apple_pos)
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used, apple_pos, block_pos def outside __init__
         """ drop an apple,  drop an untraversable block drop an apple,
 
         :param event:
         :return:
         """
-        # TODO event not used, apple_pos, block_pos def outside __init__
         d = 2
         self.state.starting_apples = self.get_world().state.learner_inventory['apple']
         self.apple_pos = self.get_world().state.learner_pos + Span(random.randint(-d, d), random.randint(-d, d))
@@ -437,12 +437,12 @@ class PickAnApple(Task):
 
     @on_state_changed(lambda ws, ts: ws.learner_inventory['apple'] > ts.starting_apples)
     def on_apple_picked(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1, 'Enjoy!')
 
 
@@ -468,10 +468,10 @@ class UnicodeTask(Task):
 
     @on_message(u"א$")
     def on_message(self, event):
+        # TODO event not used
         """ on non-silent character
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_reward(1, "Correct!")
