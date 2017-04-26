@@ -5,6 +5,7 @@ contextlib2
 unittest
 curses
 collections_extended
+logging
 
 
 re
