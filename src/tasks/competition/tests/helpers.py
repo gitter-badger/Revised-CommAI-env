@@ -9,11 +9,11 @@
 # This source code is licensed under the BSD-style license found in the# LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO WIP fix imports
+# TODO WIP fix revised_core, re imports
 import revised_core.environment as environment
 import revised_core.serializer as serializer
 import revised_core.channels as channels
-import contextlib
+import contextlib2
 import re
 
 
@@ -184,7 +184,7 @@ class SingleTaskScheduler:
         pass
 
 
-@contextlib.contextmanager
+@contextlib2.contextmanager
 def task_messenger(task_funct, world_funct=None, serializer=serializer.StandardSerializer()):
     """ Returns an EnvironmentMessenger to interact with the created task.
 
