@@ -1,0 +1,121 @@
+_src_revised_core_revised_core_py
+
+237 # TODO static method
+250 # TODO static method
+282 # TODO fix
+313 # TODO fix 
+340 # TODO unresolved refs defaultdict, Observable, logging, _on_input_sequence_updated, _on_input_message_updated,
+341 # TODO line 2 _on_output_sequence_updated, _on_output_message_updated
+368 # TODO rewrite
+381 # TODO var reward not used, unresolved ref _allowable_reward, _switch_new_task
+389 # TODO this bit is dropped otherwise on a timeout...
+408 indent error
+644 # TODO rewrite
+720 # TODO static func
+751 # TODO static
+790 # TODO: Create a BatchedScheduler that takes as an argument another
+805 # TODO unresolved ref defaultdict
+944 # TODO unresolved attrib ,tokenize class ScramblingSerializerWrapper
+959 # TODO unrelsolved attrib ,tokenize class ScramblingSerializerWrapper
+973 # TODO unresolved attrib ,tokenize class ScramblingSerializerWrapper
+991 # TODO unresolved attrib ,gen_pseudo_word class ScramblingSerializerWrapper
+1006 # TODO unresolved ref to string
+1035 # TODO arg name to lower case, unresolved ref random, math
+1089 # TODO unresolved ref logging
+1103 # TODO fix for python 3
+1127 # TODO replace
+1172 # TODO unresovled ref to math, logging
+1204 # TODO unresolved ref to codecs
+1232 # TODO can not return a value from __inti__
+1254 # TODO unresolved ref to Observable, defaultdict
+1271 # TODO fix
+1294 # TODO def outside __init__
+1350 # TODO def outside __init__
+1388 # TODO unresolved ref namedtuple
+1398 # TODO 'horrible way of making second_state optional' authors words
+1474 # TODO fix for python 3
+1621 # TODO unresloved ref re
+1694 # TODO unresolved ref defaultdict
+1747 # TODO access to protected member of class
+1780 # TODO unresoveled refs to defaultdict, logger
+1795 # TODO access to protected member of class
+1811 # TODO unreslved ref Obserable
+1845 # TODO def outside __init__
+1865 # TODO fix for python 3
+1896 # TODO access to protected member of class
+1951 # TODO access to protected member of class
+1989 # TODO access to protected member of class
+2017 # TODO static
+2029 # TODO access to protected member of class
+2032 # TODO shadowing set_reward
+2047 # TODO shadowing set_message
+2063 # TODO access to protected member of class
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
