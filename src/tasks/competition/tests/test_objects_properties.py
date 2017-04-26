@@ -8,7 +8,7 @@
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 
-# TODO fix imports
+# TODO fix tasks import
 import unittest
 import tasks.competition.messages as msg
 import tasks.competition.objects_properties as objects_properties
@@ -31,6 +31,7 @@ class TestObjectsProperties(unittest.TestCase):
         :return:
         """
         feedback_blen = m.read()
+        # TODO end of statement expected
         self.assertGreater(feedback_blen, 0,
                            "answering '{0}' to query '{1}' didn't work.".format(answer, instructions))m.send()
         self.assertEqual(m.get_cumulative_reward(), 1,
@@ -234,8 +235,7 @@ tasks testing routines
             :param m:
             :return:
             """
-            object_, basket = m.search_last_message(
-                r"does (\w+) have in (\w+)'s")
+            object_, basket = m.search_last_message(r"does (\w+) have in (\w+)'s")
             if basket in global_properties and object_ in global_properties[basket]:
                 props = global_properties[basket][object_]
                 all_answers = [str(len(props))]
