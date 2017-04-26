@@ -57,7 +57,7 @@ environment for Python.
 
 1. Register for the General AI Challenge at https://www.general-ai-challenge.org/active-rounds
 
-2. Send an email to Tomas Prokop at b-toprok@microsoft.com and attach a copy of your registration confirmation. He is
+ON-HOLD 2. Send an email to Tomas Prokop at b-toprok@microsoft.com and attach a copy of your registration confirmation. He is
 the point of contact at Microsoft which is provisioning entrants with access to Azure Cloud Services.
 
 3. If you do not have a **free** Github account register here: https://github.com/

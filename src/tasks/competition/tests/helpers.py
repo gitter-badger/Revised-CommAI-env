@@ -9,11 +9,11 @@
 # This source code is licensed under the BSD-style license found in the# LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
-import core.environment as environment
-import core.serializer as serializer
-import core.channels as channels
-import contextlib
+# TODO WIP fix revised_core, re imports
+import revised_core.environment as environment
+import revised_core.serializer as serializer
+import revised_core.channels as channels
+import contextlib2
 import re
 
 
@@ -47,7 +47,7 @@ class EnvironmentMessenger:
 
         :return:
         """
-        # TODO access protected member outside of class
+        # TODO access protected member _env_output_channel outside of class
         return self._env._output_channel.is_silent()
 
     def read(self):
@@ -124,7 +124,7 @@ class EnvironmentMessenger:
             return input_text[last_silence + n_silence:]
 
     def search_on(self, message, pattern):
-        # TODO method may be static
+        # TODO method static
         """
 
         :param message:
@@ -166,7 +166,7 @@ class EnvironmentMessenger:
 
         :return:
         """
-        # TODO access protected member
+        # TODO access protected member _env_task_time of class
         return self._env._task_time
 
 
@@ -184,7 +184,7 @@ class SingleTaskScheduler:
         pass
 
 
-@contextlib.contextmanager
+@contextlib2.contextmanager
 def task_messenger(task_funct, world_funct=None, serializer=serializer.StandardSerializer()):
     """ Returns an EnvironmentMessenger to interact with the created task.
 

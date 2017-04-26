@@ -1,3 +1,5 @@
 flask
 redis
 nose
+contextlib
+re

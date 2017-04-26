@@ -8,7 +8,7 @@
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 
-# TODO fix imports
+# TODO fix worlds, tasks, imports
 import unittest
 from worlds.grid_world import GridWorld
 import tasks.competition.messages as msg
@@ -55,7 +55,6 @@ class TestNavigation(unittest.TestCase):
         m.read()
         instructions = m.get_last_message()
         solve(m)
-        #
         self.check_positive_feedback(m, instructions)
 
     def timeout_test(self, m, solve):
@@ -303,7 +302,7 @@ Tasks testing routines
             :param m:
             :return:
             """
-            # TODO object named object ............
+            # FIXME object named object
             object_, = m.search_last_message(r"How many (\w+)")
             m.send(msg.number_to_string(0) + ".")
             m.read()
