@@ -9,12 +9,12 @@
 # This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
+# TODO fix revised_core.channels import
 import curses
 import curses.textpad
 import logging
 import locale
-from core.channels import InputChannel
+from revised_core.channels import InputChannel
 
 locale.setlocale(locale.LC_ALL, '')
 code = locale.getpreferredencoding()
@@ -91,24 +91,24 @@ class BaseView(object):
         self._info_win.refresh()
 
     def initialize(self):
-        """ initialize curses
+        """ initialize curses. self._info_win_width = 20.  create info box with reward and time.
 
         :return:
         """
         self._stdscr = curses.initscr()
-        # TODO generalize this move difining to __init__
+        # TODO generalize this
+        # TODO _info_win_height, height width, _win, _info_win def outside __init__
         begin_x = 0
         begin_y = 0
-        # self._info_win_width = 20
         self._info_win_height = 4
         self.height, self.width = self._stdscr.getmaxyx()
         self._win = self._stdscr.subwin(self.height, self.width, begin_y, begin_x)
-        # create info box with reward and time
         self._info_win = self._win.subwin(self._info_win_height, self.width, 0, 0)
         curses.noecho()
         curses.cbreak()
 
     def finalize(self):
+        # TODO static
         """
 
         :return:
@@ -125,7 +125,9 @@ class ConsoleView(BaseView):
 
     def __init__(self, env, session, serializer, show_world=False):
         """ for visualization purposes, we keep an internal buffer of the input and output stream so when they are
-        cleared from task to task, we can keep the history intact.
+        cleared from task to task, we can keep the history intact. Record what learner says.  Record what environment
+        says.  Listen to updates.  Register a handle to plot world if show_world active.  Connect channe;s with
+        observed input bits.
 
         :param env:
         :param session:
@@ -136,15 +138,15 @@ class ConsoleView(BaseView):
         self.input_buffer = ''
         self.output_buffer = ''
         self.panic = 'SKIP'
-        self._learner_channel = InputChannel(serializer)  # Record what learner says
-        self._env_channel = InputChannel(serializer)  # Record what environment says
-        self._learner_channel.sequence_updated.register(self.on_learner_sequence_updated)   # Listen to updates
+        self._learner_channel = InputChannel(serializer)
+        self._env_channel = InputChannel(serializer)
+        self._learner_channel.sequence_updated.register(self.on_learner_sequence_updated)
         self._learner_channel.message_updated.register(self.on_learner_message_updated)
         self._env_channel.sequence_updated.register(self.on_env_sequence_updated)
         self._env_channel.message_updated.register(self.on_env_message_updated)
         if show_world:
-            env.world_updated.register(self.on_world_updated)  # Register a handle to plot world if show_world active
-        session.env_token_updated.register(self.on_env_token_updated)  # Connect channe;s with observed input bits
+            env.world_updated.register(self.on_world_updated)
+        session.env_token_updated.register(self.on_env_token_updated)
         session.learner_token_updated.register(self.on_learner_token_updated)
         del self.info['current_task']
 
@@ -165,12 +167,12 @@ class ConsoleView(BaseView):
         self._learner_channel.consume_bit(token)
 
     def on_learner_message_updated(self, message):
+        # TODO message not used
         """ we use the fact that messages arrive character by character
 
         :param message:
         :return:
         """
-        # TODO message not used
         if self._learner_channel.get_text():
             self.input_buffer += self._learner_channel.get_text()[-1]
             self.input_buffer = self.input_buffer[-self._scroll_msg_length:]
@@ -242,7 +244,9 @@ class ConsoleView(BaseView):
 
         :return:
         """
-        # TODO defined outside __init__
+        # TODO _stdscr, _teascher_seq_y, _learner_seq_y, _world_win_y, _world_win_x, _info_win_width,
+        # TODO line 2 _info_win_height, _user_input_win_y, _user_input_win_x, height, _scroll_msg_length,
+        # TODO line 3 _win, _worldwin, _info_win, _user_input_win, _user_input_label_win defined outside __init__
         self._stdscr = curses.initscr()
         begin_x = 0
         begin_y = 0
@@ -293,13 +297,14 @@ class ConsoleView(BaseView):
         length = self._scroll_msg_length - 10
         return "{0:_>{length}}[{1: <8}]".format(text[-length:], bits[-7:], length=length)
 
+
 class PlainView(object):
     """
 
     """
 
     def __init__(self, env, session):
-        """ observe basic high level information about the session and environment
+        """ observe basic high level information about the session and environment.  Save information for display.
 
         :param env:
         :param session:
@@ -311,7 +316,7 @@ class PlainView(object):
         session.total_reward_updated.register(self.on_total_reward_updated)
         session.total_time_updated.register(self.on_total_time_updated)
         self.logger = logging.getLogger(__name__)
-        self.info = {'reward': 0, 'time': 0, 'current_task': 'None'}  # Save information for display
+        self.info = {'reward': 0, 'time': 0, 'current_task': 'None'}
 
     def on_total_reward_updated(self, reward):
         """
