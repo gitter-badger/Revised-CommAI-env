@@ -4,6 +4,7 @@ nose
 contextlib2
 unittest
 curses
+collections_extended
 
 
 re
