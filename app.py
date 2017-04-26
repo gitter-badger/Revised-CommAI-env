@@ -3,12 +3,12 @@
 # Copyright (c) 2017-, Stephen B. Hope
 # All rights reserved.
 #
-# CommAI-env Copyright (c) 2016-present, Facebook, Inc.
-# All rights reserved.
+# CommAI-env Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
 #
 # This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
+# TODO fix imports
 import os
 import socket
 import flask
