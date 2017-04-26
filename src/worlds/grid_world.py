@@ -97,7 +97,7 @@ class GWEntity(namedtuple('GWEntity', ('name', 'pickable', 'traversable'))):
 
 class GridWorld(World):
     """
-    This is an infinite grid world where there can be objects layed around (pickable or not, traversable or not).
+    This is an infinite grid world where there can be objects laying around (pickable or not, traversable or not).
 
     Learner primitives:
         I move forward, I turn left/right, I look, I pick up the X, I give you a[n] X.

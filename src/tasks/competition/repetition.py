@@ -9,19 +9,18 @@
 # This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
-from core.task import Task, on_start, on_message, on_sequence,\
-    on_state_changed, on_timeout, on_output_message
+# TODO fix revised_core, tasks imports
+from revised_core.task import Task, on_start, on_message, on_sequence, on_state_changed, on_timeout, on_output_message
 from tasks.competition.base import BaseTask
 import tasks.competition.messages as msg
 import random
 import string
 import itertools
-import copy
+
 
 # task-specific messages
 verbs = ["say", "repeat"]
-negation = ["do not", "don\'t"]
+negation = ["do not", "don't"]
 
 # FIXME: replace with association's objects and properties?
 phrases = ["apple", "banana", "cat", "hello world"]
@@ -47,6 +46,7 @@ class BeSilentTask(Task):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used, flag_failed outside __init__
         """ # give instructions at the beginning of the task
 
          initialize a variable to keep track if the learner has been failed
@@ -60,28 +60,28 @@ class BeSilentTask(Task):
     #
     @on_message("[^ ]")
     def on_message(self, event):
-        # TODO event not used
+        # TODO event not used, flag_failed outside __init__
         """ silence is represented by the space character catch any non-space character
          # if the learner produces anything but a space, it receives reward 0 and the task is over. We need to make
-         sure to do this only once so for every incoming 1 bit we don't start again sending the feedback message.
+         sure to do this only once so for every incoming 1 bit we don't start again sending the feedback message. set
+         the flag, so we don't.
 
         :param event:
         :return:
         """
         if not self.flag_failed:
             self.set_reward(0, random.choice(msg.failed))
-            # set the flag, so we don't
             self.flag_failed = True
 
     @on_timeout()
     def on_timeout(self, event):
+        # TODO event not used
         """ when the maximum amount of time set for the task has elapsed
          if the learner has been silent, it receives reward +1 and the task is over.
         :param event:
         :return:
         """
-        # TODO event not used
-        self.set_reward(1, random.choice(msg.congratulations))
+                self.set_reward(1, random.choice(msg.congratulations))
 
 
 class RepeatCharacterTask(BaseTask):
@@ -93,55 +93,51 @@ class RepeatCharacterTask(BaseTask):
 
         :param world:
         """
-        super(RepeatCharacterTask, self).__init__(world=world, max_time=1000)
+        super(RepeatCharacterTask, self).__init__(world = world, max_time = 1000)
 
     @on_start()
     def on_start(self, event):
-        """  randomly sample a character to be repeated
+        # TODO event not used, cur_char def outside __init__
+        """  randomly sample a character to be repeated.  ask the learner to repeat the phrase sampling one of the
+        possible ways of asking that.
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.cur_char = random.choice(string.ascii_letters)
-        # ask the learner to repeat the phrase sampling one of the possible ways of asking that.
-        self.set_message("{query_verb} {phrase}.".format(query_verb=random.choice(verbs), phrase=self.cur_char))
+        self.set_message("{query_verb} {phrase}.".format(query_verb = random.choice(verbs), phrase = self.cur_char))
 
     #
     @on_message(r'\.$')
     def on_message(self, event):
-        """ we wait for the learner to send a message finalized by a full stop.
+        """ we wait for the learner to send a message finalized by a full stop. if the message sent by the learner
+        equals the teacher's selected phrase followed by a period, reward the learner. If the learner said anything
+        else, it fails the task.
 
         :param event:
         :return:
         """
         if event.is_message(self.cur_char, '.'):
-            """
-            # if the message sent by the learner equals the teacher's selected phrase followed by a period, reward
-            the learner.
-            """
             self.set_reward(1, random.choice(msg.congratulations))
         else:
-            # If the learner said anything else, it fails the task.
             self.fail_learner()
 
     @on_timeout()
     def on_timeout(self, event):
+        # TODO event not used
         """ if the learner has not produced any plausible answer by the max_time allowed, fail the learner sending
         appropriate feedback.
-
         :param event:
         :return:
         """
-        # TODO event not used
         self.fail_learner()
 
     def fail_learner(self):
-        """
+        """ fail the learner sending a random fail feedback message
+
 
         :return:
         """
-        # fail the learner sending a random fail feedback message
         self.set_reward(0, random.choice(msg.failed))
 
 
@@ -154,59 +150,51 @@ class RepeatWhatISayTask(BaseTask):
 
         :param world:
         """
-        super(RepeatWhatISayTask, self).__init__(world=world, max_time=1000)
+        super(RepeatWhatISayTask, self).__init__(world = world, max_time = 1000)
 
     @on_start()
     def on_start(self, event):
-        """
+        # TODO event not used, cur_phrase def outside __init__
+        """ randomly sample a phrase.  ask the learner to repeat the phrase sampling one of the possible.  ways of
+        asking that.
 
         :param event:
         :return:
         """
-        # TODO event not used
-        # randomly sample a phrase
         self.cur_phrase = random.choice(phrases)
-        # ask the learner to repeat the phrase sampling one of the possible
-        # ways of asking that.
-        self.set_message("{query_verb} {phrase}."
-                         .format(
-                             query_verb=random.choice(verbs),
-                             phrase=self.cur_phrase))
+        self.set_message("{query_verb} {phrase}.".format(query_verb = random.choice(verbs), phrase = self.cur_phrase))
 
-    # we wait for the learner to send a message finalized by a full stop.
+    #
     @on_message(r'\.$')
     def on_message(self, event):
-        """
+        """ we wait for the learner to send a message finalized by a full stop.  if the message sent by the learner
+        equals the teacher's selected.  phrase followed by a period, reward the learner.  If the learner said
+        anything else, it fails the task.
 
         :param event:
         :return:
         """
         if event.is_message(self.cur_phrase, '.'):
-            # if the message sent by the learner equals the teacher's selected
-            # phrase followed by a period, reward the learner.
             self.set_reward(1, random.choice(msg.congratulations))
         else:
-            # If the learner said anything else, it fails the task.
             self.fail_learner()
 
     @on_timeout()
     def on_timeout(self, event):
-        """
+        # TODO event not used
+        """ if the learner has not produced any plausible answer by the max_time.  allowed, fail the learner sending
+        appropriate feedback.
 
         :param event:
         :return:
         """
-        # TODO event not used
-        # if the learner has not produced any plausible answer by the max_time
-        # allowed, fail the learner sending appropriate feedback.
         self.fail_learner()
 
     def fail_learner(self):
-        """
+        """ fail the learner sending a random fail feedback message
 
         :return:
         """
-        # fail the learner sending a random fail feedback message
         self.set_reward(0, random.choice(msg.failed))
 
 
@@ -219,59 +207,50 @@ class RepeatWhatISay2Task(BaseTask):
 
         :param world:
         """
-        super(RepeatWhatISay2Task, self).__init__(world=world, max_time=1000)
+        super(RepeatWhatISay2Task, self).__init__(world = world, max_time = 1000)
 
     @on_start()
     def on_start(self, event):
-        """
+        # TODO event not used, cur_phrase def outside __init__
+        """ sample a random phrase.  ask the learner to repeat the phrase sampling one of the possible.  ways of
+        asking that, and putting some context after the target.
 
         :param event:
         :return:
         """
-        # TODO event not used
-        # sample a random phrase
         self.cur_phrase = random.choice(phrases)
-        # ask the learner to repeat the phrase sampling one of the possible
-        # ways of asking that, and putting some context after the target.
-        self.set_message("{query_verb} {phrase} {context}."
-                         .format(
-                             query_verb=random.choice(verbs),
-                             phrase=self.cur_phrase,
-                             context=random.choice(context)))
+        self.set_message("{query_verb} {phrase} {context}.".format(
+                query_verb = random.choice(verbs), phrase = self.cur_phrase, context = random.choice(context)))
 
     @on_message(r'\.$')
     def on_message(self, event):
-        """
+        """ if the message sent by the learner equals the teacher's selected.  phrase followed by a period, reward
+        the learner. If the learner said anything else, it fails the task.
 
         :param event:
         :return:
         """
         if event.is_message(self.cur_phrase, '.'):
-            # if the message sent by the learner equals the teacher's selected
-            # phrase followed by a period, reward the learner.
             self.set_reward(1, random.choice(msg.congratulations))
         else:
-            # If the learner said anything else, it fails the task.
             self.fail_learner()
 
     @on_timeout()
     def on_timeout(self, event):
-        """
+        # TODO event not used
+        """ if the learner has not produced any plausible answer by the max_time.  allowed, fail the learner sending
+        appropriate feedback.
 
         :param event:
         :return:
         """
-        # TODO event not used
-        # if the learner has not produced any plausible answer by the max_time
-        # allowed, fail the learner sending appropriate feedback.
         self.fail_learner()
 
     def fail_learner(self):
-        """
+        """ fail the learner sending a random fail feedback message
 
         :return:
         """
-        # fail the learner sending a random fail feedback message
         self.set_reward(0, random.choice(msg.failed))
 
 
@@ -284,52 +263,47 @@ class RepeatWhatISayMultipleTimesTask(BaseTask):
 
         :param world:
         """
-        super(RepeatWhatISayMultipleTimesTask, self).__init__(world=world, max_time=10000)
+        super(RepeatWhatISayMultipleTimesTask, self).__init__(world = world, max_time = 10000)
 
     @on_start()
     def on_start(self, event):
-        """
+        # TODO event not used, cur_char, n target def outside __init__
+        """ sample a random phrase.  sample the number of times it has to repeat the phrase (can be expressed in
+        letters or numbers.  ask the learner to repeat the target phrase n times.  save the correct answer
 
         :param event:
         :return:
         """
-        # TODO event not used
-        # sample a random phrase
         self.cur_phrase = random.choice(phrases)
-
-        # sample the number of times it has to repeat the phrase (can be expressed in letters or numbers)
         self.n = random.randint(repeat_min, repeat_max)
-
-        # ask the learner to repeat the target phrase n times.
-        self.set_message("{query_verb} {phrase} {times} times.".format(
-                query_verb=random.choice(verbs), phrase=self.cur_phrase, times=msg.number_to_string(self.n)))
-        # save the correct answer
+        self.set_message(
+                "{query_verb} {phrase} {times} times.".format(
+                        query_verb = random.choice(verbs),  phrase = self.cur_phrase,
+                        times = msg.number_to_string(self.n)))
         self.target = ' '.join([self.cur_phrase] * self.n)
 
     @on_message(r'\.$')
     def on_message(self, event):
-        """
+        """ if the message sent by the learner equals the teacher's selected phrase repeated n times followed by a.
+        period, reward the learner.  If the learner said anything else, it fails the task.
 
         :param event:
         :return:
         """
         if event.is_message(self.target, '.'):
-            # if the message sent by the learner equals the teacher's selected phrase repeated n times followed by a
-            # period, reward the learner.
             self.set_reward(1, random.choice(msg.congratulations))
         else:
-            # If the learner said anything else, it fails the task.
             self.fail_learner()
 
     @on_timeout()
     def on_timeout(self, event):
+        # TODO event not used
         """ if the learner has not produced any plausible answer by the max_time allowed, fail the learner sending
         appropriate feedback.
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.fail_learner()
 
     def fail_learner(self):
@@ -337,8 +311,8 @@ class RepeatWhatISayMultipleTimesTask(BaseTask):
 
         :return:
         """
-        self.set_reward(0, "{negative_feedback} correct answer is: {answer}."
-                        .format(negative_feedback=random.choice(msg.failed), answer=self.target))
+        self.set_reward(0, "{negative_feedback} correct answer is: {answer}.".format(negative_feedback = random.choice(
+                msg.failed), answer = self.target))
 
 
 class RepeatWhatISayMultipleTimes2Task(BaseTask):
@@ -354,46 +328,41 @@ class RepeatWhatISayMultipleTimes2Task(BaseTask):
 
     @on_start()
     def on_start(self, event):
-        """ sample a random phrase
+        """ sample a random phrase.  sample the number of times it has to repeat the phrase (can be expressed in
+        letters or numbers).  save the correct answer.
 
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO event not used, cur_phrase, n, target, def outside __init__
         self.cur_phrase = random.choice(phrases)
-        # sample the number of times it has to repeat the phrase (can be expressed in letters or numbers)
         self.n = random.randint(repeat_min, repeat_max)
-
         self.set_message("{query_verb} {phrase} {times} times {context}.".format(
-                query_verb=random.choice(verbs), phrase=self.cur_phrase,times=msg.number_to_string(self.n),
-                context=random.choice(context)))
-        # save the correct answer
+                query_verb = random.choice(verbs), phrase = self.cur_phrase, times = msg.number_to_string(self.n),
+                context = random.choice(context)))
         self.target = ' '.join([self.cur_phrase] * self.n)
 
     @on_message(r'\.$')
     def on_message(self, event):
-        """
+        """if the message sent by the learner equals the teacher's selected# phrase repeated n times followed
+            by a period, reward the learner..  If the learner said anything else, it fails the task.
 
         :param event:
         :return:
         """
         if event.is_message(self.target, '.'):
-            """ if the message sent by the learner equals the teacher's selected# phrase repeated n times followed
-            by a period, reward the learner.
-            """
             self.set_reward(1, random.choice(msg.congratulations))
         else:
-            # If the learner said anything else, it fails the task.
             self.fail_learner()
 
     @on_timeout()
     def on_timeout(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.fail_learner()
 
     def fail_learner(self):
@@ -401,9 +370,8 @@ class RepeatWhatISayMultipleTimes2Task(BaseTask):
 
         :return:
         """
-        #
         self.set_reward(0, "{negative_feedback} correct answer is: {answer}.".format(
-                negative_feedback=random.choice(msg.failed), answer=self.target))
+                negative_feedback = random.choice(msg.failed), answer = self.target))
 
 
 class RepeatWhatISayMultipleTimesSeparatedByCommaTask(BaseTask):
@@ -415,50 +383,45 @@ class RepeatWhatISayMultipleTimesSeparatedByCommaTask(BaseTask):
 
         :param world:
         """
-        super(RepeatWhatISayMultipleTimesSeparatedByCommaTask, self).__init__(world=world, max_time=10000)
+        super(RepeatWhatISayMultipleTimesSeparatedByCommaTask, self).__init__(world = world, max_time = 10000)
 
     @on_start()
     def on_start(self, event):
-        """ sample a random phrase
+        # TODO event not used, cur_phrase, n, target, def outside __init__
+        """ sample a random phrase.  sample the number of times it has to repeat the phrase (can be expressed in
+        letters or numbers).  save the correct answer.
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.cur_phrase = random.choice(phrases)
-        # sample the number of times it has to repeat the phrase (can be expressed in letters or numbers)
         self.n = random.randint(repeat_min, repeat_max)
-
         self.set_message("{query_verb} {phrase} {times} times separated " "by comma (,).".format(
-                query_verb=random.choice(verbs), phrase=self.cur_phrase, times=msg.number_to_string(self.n),
-                context=random.choice(context)))
-        # save the correct answer
+                query_verb = random.choice(verbs), phrase = self.cur_phrase, times = msg.number_to_string(self.n),
+                context = random.choice(context)))
         self.target = ', '.join([self.cur_phrase] * self.n)
 
     @on_message(r'\.$')
     def on_message(self, event):
-        """
+        """ if the message sent by the learner equals the teacher's selected phrase repeated n times followed by
+            a period, reward the learner.  If the learner said anything else, it fails the task.
 
         :param event:
         :return:
         """
         if event.is_message(self.target, '.'):
-            """ if the message sent by the learner equals the teacher's selected phrase repeated n times followed by
-            a period, reward the learner.
-            """
             self.set_reward(1, random.choice(msg.congratulations))
         else:
-            # If the learner said anything else, it fails the task.
             self.fail_learner()
 
     @on_timeout()
     def on_timeout(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.fail_learner()
 
     def fail_learner(self):
@@ -467,73 +430,69 @@ class RepeatWhatISayMultipleTimesSeparatedByCommaTask(BaseTask):
         :return:
         """
         self.set_reward(0, "{negative_feedback} correct answer is: {answer}.".format(
-                negative_feedback=random.choice(msg.failed), answer=self.target))
+                negative_feedback = random.choice(msg.failed), answer = self.target))
 
 
 class RepeatWhatISayMultipleTimesSeparatedByAndTask(BaseTask):
     """
 
     """
-    def __init__(self, world=None):
+    def __init__(self, world = None):
         """
 
         :param world:
         """
-        super(RepeatWhatISayMultipleTimesSeparatedByAndTask, self).__init__(world=world, max_time=10000)
+        super(RepeatWhatISayMultipleTimesSeparatedByAndTask, self).__init__(world = world, max_time = 10000)
 
     @on_start()
     def on_start(self, event):
-        """ sample a random phrase
+        # TODO event not used, cur_phrase, n, target  def outside __init__
+        """ sample a random phrase.  sample the number of times it has to repeat the phrase (can be expressed in
+        letters or numbers).  save the correct answer
 
         :param event:
         :return:
         """
-        # TODO event not used
-
         self.cur_phrase = random.choice(phrases)
-
-        # sample the number of times it has to repeat the phrase (can be expressed in letters or numbers)
         self.n = random.randint(repeat_min, repeat_max)
-
         self.set_message("{query_verb} {phrase} {times} times separated " "by and.".format(
-                query_verb=random.choice(verbs), phrase=self.cur_phrase, times=msg.number_to_string(self.n),
-                context=random.choice(context)))
-        # save the correct answer
+                query_verb = random.choice(verbs), phrase = self.cur_phrase, times = msg.number_to_string(self.n),
+                context = random.choice(context)))
         self.target = ' and '.join([self.cur_phrase] * self.n)
 
     @on_message(r'\.$')
     def on_message(self, event):
-        """
+        """ if the message sent by the learner equals the teacher's selected phrase repeated n times followed by
+             a period, reward the learner.  If the learner said anything else, it fails the task.
 
         :param event:
         :return:
         """
         if event.is_message(self.target, '.'):
-            """ if the message sent by the learner equals the teacher's selected phrase repeated n times followed by
-             a period, reward the learner.
-            """
             self.set_reward(1, random.choice(msg.congratulations))
         else:
-            # If the learner said anything else, it fails the task.
             self.fail_learner()
 
+
     @on_timeout()
-    def on_timeout(self, event):
+        def on_timeout(self, event):
+        # FIXME ref before assign
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
+
         self.fail_learner()
 
     def fail_learner(self):
+        # TODO expected statement
         """ fail the learner if it hasn't repeated the message by the timeout
 
         :return:
         """
         self.set_reward(0, "{negative_feedback} correct answer is: {answer}.".format(
-                negative_feedback=random.choice(msg.failed), answer=self.target))
+                negative_feedback = random.choice(msg.failed), answer = self.target))
 
 
 class RepeatWhatISayMultipleTimesSeparatedByCATask(BaseTask):
@@ -545,41 +504,37 @@ class RepeatWhatISayMultipleTimesSeparatedByCATask(BaseTask):
 
         :param world:
         """
-        super(RepeatWhatISayMultipleTimesSeparatedByCATask, self).__init__(world=world, max_time=10000)
+        super(RepeatWhatISayMultipleTimesSeparatedByCATask, self).__init__(world = world, max_time = 10000)
 
     @on_start()
     def on_start(self, event):
-        """
+        # TODO event not used, cur_phrase, n, target  def outside __init__
+        """ sample a random phrase.  sample the number of times it has to repeat the phrase (can be expressed in
+        letters or numbers).  save the correct answer
 
         :param event:
         :return:
         """
-        # TODO event not used
-        # sample a random phrase
         self.cur_phrase = random.choice(phrases)
-
-        # sample the number of times it has to repeat the phrase (can be expressed in letters or numbers)
         self.n = random.randint(repeat_min, repeat_max)
 
         self.set_message("{query_verb} {phrase} {times} times separated " "by comma and and.".format(
-                query_verb=random.choice(verbs), phrase=self.cur_phrase, times=msg.number_to_string(self.n),
-                context=random.choice(context)))
-        # save the correct answer
+                query_verb = random.choice(verbs), phrase = self.cur_phrase, times = msg.number_to_string(self.n),
+                context = random.choice(context))
         self.target = ' and '.join([", ".join([self.cur_phrase] * (self.n - 1)), self.cur_phrase])
 
     @on_message(r'\.$')
     def on_message(self, event):
-        """
+        """if the message sent by the learner equals the teacher's selected phrase repeated n times followed by
+            a period, reward the learner. self.set_reward(1, random.choice(msg.congratulations)).  If the learner
+            said anything else, it fails the task.
 
         :param event:
         :return:
         """
         if event.is_message(self.target, '.'):
-            """ if the message sent by the learner equals the teacher's selected phrase repeated n times followed by
-            a period, reward the learner. self.set_reward(1, random.choice(msg.congratulations))
-            """
+            # TODO figure out the intended action
         else:
-            # If the learner said anything else, it fails the task.
             self.fail_learner()
 
     @on_timeout()
@@ -593,7 +548,7 @@ class RepeatWhatISayMultipleTimesSeparatedByCATask(BaseTask):
         :return:
         """
         self.set_reward(0, "{negative_feedback} correct answer is: {answer}.".format(
-                negative_feedback=random.choice(msg.failed), answer=self.target))
+                negative_feedback = random.choice(msg.failed), answer = self.target))
 
 
 class RepeatWhatISayDisjunction(BaseTask):
@@ -602,29 +557,28 @@ class RepeatWhatISayDisjunction(BaseTask):
 
         :param world:
         """
-        super(RepeatWhatISayDisjunction, self).__init__(world=world,  max_time=3000)
+        super(RepeatWhatISayDisjunction, self).__init__(world = world,  max_time = 3000)
 
     @on_start()
     def on_start(self, event):
-        """ randomly sample two objects
+        # TODO event not used, cur_phrases, answers def outside init
+        """ randomly sample two objects.  ask the learner to repeat the phrase sampling one of the possible ways of
+        asking that.  compute the answer
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.cur_phrases = [random.choice(phrases), random.choice(phrases)]
-
-        # ask the learner to repeat the phrase sampling one of the possible ways of asking that.
         self.set_message("{query_verb} {phrase1} or {phrase2}.".format(
-                query_verb=random.choice(verbs), phrase1=self.cur_phrases[0], phrase2=self.cur_phrases[1]))
-
-        # compute the answer
+                query_verb = random.choice(verbs), phrase1 = self.cur_phrases[0], phrase2 = self.cur_phrases[1]))
         self.answers = copy.deepcopy(self.cur_phrases)
 
-    # we wait for the learner to send a message finalized by a full stop.
+    #.
     @on_message(r'\.$')
     def on_message(self, event):
-        """
+        """ we wait for the learner to send a message finalized by a full stop. if the message sent by the learner
+        equals the teacher's selected phrase followed by a period, reward the learner.# If we reached thsi point, it
+        fails the task.
 
         :param event:
         :return:
@@ -632,24 +586,19 @@ class RepeatWhatISayDisjunction(BaseTask):
         for answer in self.answers:
             print(answer)
             if event.is_message_exact(answer, '.'):
-                    """ if the message sent by the learner equals the teacher's selected phrase followed by a period,
-                    reward the learner.
-                    """
                     self.set_reward(1, random.choice(msg.congratulations))
                     break
-
-            # If we reached thsi point, it fails the task.
             self.fail_learner()
 
     @on_timeout()
     def on_timeout(self, event):
+        # TODO event not used
         """ if the learner has not produced any plausible answer by the max_time allowed, fail the learner sending
         # appropriate feedback/
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.fail_learner()
 
     def fail_learner(self):
@@ -669,29 +618,28 @@ class RepeatWhatISayConjunctionNegation(BaseTask):
 
         :param world:
         """
-        super(RepeatWhatISayConjunctionNegation, self).__init__(world=world, max_time=3000)
+        super(RepeatWhatISayConjunctionNegation, self).__init__(world = world, max_time = 3000)
 
     @on_start()
     def on_start(self, event):
-        """ randomly sample two objects
+        # TODO event not used, cur_phrase, negation1, negation2, answer_parts, target  def outside __init__
+        """ randomly sample two objects.  randomly sample existence of negation for first and second object.  ask the
+        learner to repeat the phrase sampling one of the possible ways of asking that. compute the answer. generate
+        all permutations of objects separated by and.  in case of no object (e.g., do not say x and do not say y) add
+        space
 
         :param event:
         :return:
         """
-        # TODO event not used
+        answer_parts
         self.cur_phrases = [random.choice(phrases), random.choice(phrases)]
-        # randomly sample existence of negation for first and second object
         self.negation1 = random.choice([0, 1])
         self.negation2 = random.choice([0, 1])
-
-        # ask the learner to repeat the phrase sampling one of the possible ways of asking that.
         self.set_message("{negation1} {query_verb} {phrase1} and {negation2} " "{query_verb} {phrase2}.".format(
-                negation1=random.choice(negation)
-                if self.negation1 == 1 else "", query_verb=random.choice(verbs), phrase1=self.cur_phrases[0],
+                negation1 = random.choice(negation)
+                if self.negation1 == 1 else "", query_verb = random.choice(verbs), phrase1 = self.cur_phrases[0],
                 negation2=random.choice(negation)
-                if self.negation2 == 1 else "",  phrase2=self.cur_phrases[1]))
-
-        # compute the answer
+                if self.negation2 == 1 else "",  phrase2 = self.cur_phrases[1]))
         self.answer_parts = []
         if self.negation1 == 1 and self.negation2 == 0 and self.cur_phrases[0] != self.cur_phrases[1]:
             self.answer_parts.append(self.cur_phrases[1])
@@ -702,30 +650,26 @@ class RepeatWhatISayConjunctionNegation(BaseTask):
                 self.answer_parts.append(self.cur_phrases[1])
             elif self.cur_phrases[0] != self.cur_phrases[1]:
                     self.answer_parts.append(self.cur_phrases[0])
-
-        # generate all permutations of objects separated by and
         self.answers = []
         for answer in itertools.permutations(list(set(self.answer_parts))):
             self.answers.append(" and ".join(answer))
-        # in case of no object (e.g., do not say x and do not say y) add space
+        #
         if not self.answers:
             self.answer.append(" ")
 
     @on_message(r'\.$')
     def check_response(self, event):
-        """ we wait for the learner to send a message finalized by a full stop.
+        """ we wait for the learner to send a message finalized by a full stop. if the message sent by the learner
+        equals the teacher's selected phrase followed by a period, reward the learner. If we reached thsi point, it
+        fails the task.
 
         :param event:
         :return:
         """
         for answer in self.answers:
             if event.is_message_exact(answer, '.'):
-                """ if the message sent by the learner equals the teacher's selected phrase followed by a period,
-                reward the learner.
-                """
                 self.set_reward(1, random.choice(msg.congratulations))
                 break
-            # If we reached thsi point, it fails the task.
             self.fail_learner()
 
     @on_timeout()
@@ -765,16 +709,16 @@ class VerbTask(BaseTask):
 
         :param world:
         """
-        super(VerbTask, self).__init__(max_time=2 * TIME_VERB, world=world)
+        super(VerbTask, self).__init__(max_time = 2 * TIME_VERB, world = world)
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used, target_verb  def outside __init__
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.target_verb = random.choice(self.verbs)
         self.set_message("Say 'I {0}' to {0}.".format(self.target_verb))
 
@@ -792,12 +736,12 @@ class VerbTask(BaseTask):
 
     @on_timeout()
     def on_timeout(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.fail_learner()
 
     def fail_learner(self):

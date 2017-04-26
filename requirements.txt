@@ -6,6 +6,8 @@ unittest
 curses
 collections_extended
 logging
+random
+itertools
 
 
 re
