@@ -6,10 +6,10 @@
 # This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
+# TODO fix tasks. revised_core. imports
 import unittest
 import tasks.competition.base as base
-from core.task import on_start, on_message
+from revised_core.task import on_start, on_message
 from tasks.competition.tests.helpers import task_messenger
 
 
