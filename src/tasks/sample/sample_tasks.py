@@ -10,8 +10,8 @@
 # This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
-from core.task import Task, on_start, on_message, on_sequence, on_state_changed, on_timeout, on_output_message, on_ended
+# TODO fix revised_core, worlds, imports
+from revised_core.task import Task, on_start, on_message, on_sequence, on_state_changed, on_timeout, on_output_message, on_ended
 from worlds.grid_world import Point, Span
 import random
 
@@ -28,7 +28,7 @@ class RepeatingCharTask(Task):
 
     @on_start()
     def on_start(self, event):
-        # TODO event not used
+        # TODO event not used, target_char def outside __init__
         """
 
         :param event:
@@ -62,7 +62,7 @@ class YesNoTask(Task):
 
     @on_start()
     def on_start(self, event):
-        # TODO event not used
+        # TODO event not used, coin_toss def outside __init__
         """
 
         :param event:
@@ -73,8 +73,7 @@ class YesNoTask(Task):
         random_prop = ''.join(chr(ord('a') + random.randint(0, 26))
                               for i in range(5))
         self.coin_toss = random.randint(0, 1)
-        self.set_message(
-                "{0} is {1}. Is {0} {2}?".format(
+        self.set_message("{0} is {1}. Is {0} {2}?".format(
                         random_obj, random_prop if self.coin_toss else "not " + random_prop, random_prop))
 
     @on_message("yes|no")
@@ -174,7 +173,7 @@ class RepeatingPhraseTask(Task):
         :param event:
         :return:
         """
-        # TODO event not used
+        # TODO event not instructions_completed def outside __init__
         self.instructions_completed = True
 
     @on_message()
@@ -425,7 +424,7 @@ class PickAnApple(Task):
         :param event:
         :return:
         """
-        # TODO event not used, difined outside __init__
+        # TODO event not used, apple_pos, block_pos def outside __init__
         d = 2
         self.state.starting_apples = self.get_world().state.learner_inventory['apple']
         self.apple_pos = self.get_world().state.learner_pos + Span(random.randint(-d, d), random.randint(-d, d))
