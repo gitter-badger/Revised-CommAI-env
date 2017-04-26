@@ -1,0 +1,16 @@
+src_view_console_py
+
+12 # TODO fix imports
+34 # TODO: Move environment and session outside of the class
+99 # TODO generalize this move difining to __init__
+173 # TODO message not used
+182 # TODO sequence not used
+193 # TODO message not used
+207 # TODO sequence not used
+245  # TODO defined outside __init__
+307 # TODO: Move environment and session outside of the class
+344 # TODO static function
+352 # TODO static function
+360 # TODO static function
+
+
