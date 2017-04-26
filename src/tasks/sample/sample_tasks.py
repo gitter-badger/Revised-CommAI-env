@@ -458,12 +458,12 @@ class UnicodeTask(Task):
 
     @on_start()
     def on_start(self, event):
+        # TODO event not used
         """
 
         :param event:
         :return:
         """
-        # TODO event not used
         self.set_message('a in Hebrew is א. How do you say a in Hebrew?')
 
     @on_message(u"א$")
