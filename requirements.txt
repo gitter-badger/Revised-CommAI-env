@@ -3,6 +3,7 @@ redis
 nose
 contextlib2
 unittest
+curses
 
 
 re
