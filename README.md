@@ -1,22 +1,22 @@
-## Revised-CommAI-env Under Development
-A standard environment for machine learning and general AI research
- <a href="https://www.patreon.com/bePatron?u=5636094"
- data-patreon-widget-type="become-patron-button">Become a Patron!</a>
+## Revised-CommAI-env Pre-Release Ver. 0.2
+#### Setting a new standard for a stable, containerised, development, testing,  and evaluation environment
+####for Machine Learning and AI researchers and developers. GNU 3.0+ Licensed
+Copyright (c) 2017, Stephen B. Hope, see LICENSE for details.
 
-### The Revised-CommAI-env, Pre-Release Ver. 0.1
-Copyright (c) 2017, Stephen B. Hope, All rights reserved, see LICENSE.md for details.
+    - Status: Under Development
+    - First Beta Testing Release Target: June 2017
+    - Vesion 1.0 Release Target: Sept 2017
 
-The facebookresearch Team began the implementation of the CommAI-env as detailed by Marco Baroni et al. The abstract is
-available in /docs/CommAI_PDF_1701.08954.pdf.
+<a href="https://www.patreon.com/bePatron?u=5636094"data-patreon-widget-type="become-patron-button">Become a Patron!</a>
 
-After a line-by-line examination of the repository, I determined an overhaul of the CommAI-env is required
-from the ground up, rebuilding it in pure Python >=3.5.
+The facebookresearch Team began the implementation of the CommAI-env as detailed by Marco Baroni et al. The abstract
+is available in /docs/CommAI_PDF_1701.08954.pdf.
+
+After a line-by-line examination of the facebookresearch repository, I determined an refactor of the currently
+CommAI-env implementation was required from the ground up, rebuilding it in pure Python >=3.5.
 
 ### I am seeking contributions in any form.
 - You may open a discussion by clicking the issue tab at the top of the page, New Issue.
-- Pull Requests are welcome at any time! Before doing any coding, please check in as the code is being updated daily and
-may diverge from your work.
-
 - Service access, financial donations, or any form of sponsorship would be very welcome.
 - <a href="https://www.patreon.com/bePatron?u=5636094">Become a Patron!</a>
 
@@ -24,10 +24,6 @@ may diverge from your work.
 Ottawa, Canada
 stephenbhope@gmail.com
 Tel [00] 1-613-594-4727
-
- CommAI-env, https://arxiv.org/abs/1511.08130 The Github repository, https://github.com/facebookresearch/CommAI-env
-
-WIP - Repackage CommAI-env for standard deployments via Docker, Snap, and Virtualbox images.
 
 ### On the environment, CommAI: Evaluating the first steps towards a useful general AI
 Marco Baroni, Armand Joulin, Allan Jabri, Germàn Kruszewski, Angeliki Lazaridou, Klemen Simonic, Tomas Mikolov
@@ -41,13 +37,8 @@ desiderata, while keeping all further complexities to a minimum._
 
 Source: Cornell University Library, https://arxiv.org/abs/1701.08954
 
-### Rationale for dropping support of Python 2.x
-
-The current EOL for Python 2.7 is 2020, back-porting with future imports to 2.x adds a layer of unnecessary code,
-and is the underlying cause of many of the existing issues. Localizing to Python >=3.5 provides a native bytecode
-environment for Python.
-
 # TODO license info
 
 # TODO Contributions.md
 
+CommAI-env, https://arxiv.org/abs/1511.08130 The Github repository, https://github.com/facebookresearch/CommAI-env
