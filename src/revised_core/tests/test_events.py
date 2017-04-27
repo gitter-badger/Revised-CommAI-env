@@ -9,9 +9,9 @@
 # This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
+# TODO fix revised_core import
 import unittest
-import core.events as events
+import revised_core.events as events
 
 
 class MyEvent(object):
@@ -52,8 +52,7 @@ class TestEvents(unittest.TestCase):
             self.event_raised = True
 
         em = events.EventManager()
-        em.register(self,
-                    events.Trigger(MyEvent, lambda e: True, on_start))
+        em.register(self, events.Trigger(MyEvent, lambda e: True, on_start))
         em.raise_event(MyEvent())
         self.assertTrue(self.event_raised)
 
