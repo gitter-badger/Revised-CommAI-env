@@ -9,9 +9,9 @@
 # This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fox imports
+# TODO fix revised_core import
 import unittest
-import core.task as task
+import revised_core.task as task
 
 
 class TestEvents(unittest.TestCase):
@@ -126,7 +126,7 @@ class TestEvents(unittest.TestCase):
 
             @task.on_start()
             def start_handler(self, event):
-                """ overridden handler
+                """ overridden handler.  The start_handler must be the one of the overridden task.
 
                 :param event:
                 :return:
@@ -137,7 +137,6 @@ class TestEvents(unittest.TestCase):
         triggers = tt.get_triggers()
         handlers = set(map(lambda t: t.event_handler, triggers))
         self.assertEqual(1, len(triggers))
-        # The start_handler must be the one of the overridden task
         self.assertIn(self.get_func(ConcreteTask.start_handler), handlers)
         self.assertFalse(self.get_func(BaseTask.start_handler) in handlers)
 
@@ -167,7 +166,7 @@ class TestEvents(unittest.TestCase):
                 :return:
                 """
                 def end_handler(self, event):
-                    # TODO self and event not used
+                    # TODO self and event not used end_handler_func outside __init__
                     """
 
                     :param self:
@@ -186,6 +185,7 @@ class TestEvents(unittest.TestCase):
 
             """
             def __init__(self, triggers):
+                # TODO triggers shadow outer scope
                 """
 
                 :param triggers:
@@ -193,12 +193,12 @@ class TestEvents(unittest.TestCase):
                 self.triggers = triggers
 
             def raise_event(self, event):
-                """
+                """ we only geerate init event
 
                 :param event:
                 :return:
                 """
-                tt.start_handler(event)  # we only geerate init event
+                tt.start_handler(event)
 
             def _register_task_trigger(self, task, trigger):
                 # TODO task not used
@@ -210,26 +210,29 @@ class TestEvents(unittest.TestCase):
                 """
                 self.triggers.append(trigger)
 
-        tt.start(EnvironmentMock(triggers))   # raise the start event
+        # raise the start event
+        tt.start(EnvironmentMock(triggers))
         triggers.extend(tt.get_triggers())
         handlers = set(map(lambda t: t.event_handler, triggers))
         self.assertEqual(2, len(triggers))
         self.assertIn(self.get_func(TestTask.start_handler), handlers)
+        # TODO src / revised_core / tests / test_task.py:220
         self.assertIn(self.get_func(tt.end_handler_func), handlers)
 
     def get_func(self, method):
-        # TODO get rid of static method
-        """
+        # FIXME rewrite to python
+
+        """ Python 3.  Python 3 (unbound method == func)
 
         :param method:
         :return:
         """
         try:
             return method.im_func
-        except AttributeError:  # Python 3
+        except AttributeError:
             try:
                 return method.__func__
-            except AttributeError:  # Python 3 (unbound method == func)
+            except AttributeError:
                 return method
 
 
