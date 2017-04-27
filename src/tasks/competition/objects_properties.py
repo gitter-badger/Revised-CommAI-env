@@ -11,7 +11,6 @@ from core.task import on_start, on_message, on_timeout
 from tasks.competition.base import BaseTask
 import tasks.competition.messages as msg
 import random
-import string
 import re
 
 """
