@@ -1,13 +1,14 @@
+# FIXME
+
 ## Revised-CommAI-env Pre-Release Ver. 0.2
 #### Setting a new standard for a stable, containerised, development, testing,  and evaluation environment
-####for Machine Learning and AI researchers and developers. GNU 3.0+ Licensed
+#### for Machine Learning and AI researchers and developers. GNU 3.0+ Licensed
 Copyright (c) 2017, Stephen B. Hope, see LICENSE for details.
 
     - Status: Under Development
     - First Beta Testing Release Target: June 2017
     - Vesion 1.0 Release Target: Sept 2017
-
-<a href="https://www.patreon.com/bePatron?u=5636094"data-patreon-widget-type="become-patron-button">Become a Patron!</a>
+<a href="https://www.patreon.com/bePatron?u=5636094" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
 
 The facebookresearch Team began the implementation of the CommAI-env as detailed by Marco Baroni et al. The abstract
 is available in /docs/CommAI_PDF_1701.08954.pdf.
@@ -25,7 +26,7 @@ Ottawa, Canada
 stephenbhope@gmail.com
 Tel [00] 1-613-594-4727
 
-### On the environment, CommAI: Evaluating the first steps towards a useful general AI
+#### On the environment, CommAI: Evaluating the first steps towards a useful general AI
 Marco Baroni, Armand Joulin, Allan Jabri, Germàn Kruszewski, Angeliki Lazaridou, Klemen Simonic, Tomas Mikolov
 
 _With machine learning successfully applied to new daunting problems almost every day, general AI starts looking
