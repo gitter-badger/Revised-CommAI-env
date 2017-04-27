@@ -47,4 +47,7 @@ The current EOL for Python 2.7 is 2020, back-porting with future imports to 2.x 
 and is the underlying cause of many of the existing issues. Localizing to Python >=3.5 provides a native bytecode
 environment for Python.
 
+# TODO license info
+
+# TODO Contributions.md
 
