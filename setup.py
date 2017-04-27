@@ -9,15 +9,17 @@ try:
 except ImportError:
     from distutils.core import setup
 
-config = dict(description='A standard environment for machine learning',
-              author='Stephen Hope',
+config = dict(description='A new standard environment for machine learning and AI research',
+              author='Stephen B. Hope',
               url='https://github.com/stephenbhope/Revised-CommAI-env',
               download_url='https://github.com/stephenbhope/Revised-CommAI-env',
               author_email='stephenbhope@gmail.com.',
-              version='0.1',
+              version='0.2',
               install_requires=['nose'],
-              packages=['NAME'],
+              packages=[''],
               scripts=[],
+              copywrite='Copyright(C) 2017-, Stephen B. Hope',
               name='Revised CommAI-env')
 
 setup(**config)
+
