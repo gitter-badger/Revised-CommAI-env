@@ -6,6 +6,7 @@
 # This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
+# TODO fix imports
 
 class InputChannel:
     """ remembers the inout in binary format. leftmost deserialization if the binary buffer.  remember the position
@@ -15,6 +16,7 @@ class InputChannel:
     """
 
     def __init__(self, serializer):
+        # TODO unresolved ref Observable
         """
         :param serializer:
         """
@@ -283,7 +285,7 @@ class PythonConfigLoader:
         if tasks_config_file.startswith('./'):
             tasks_config_file = tasks_config_file[2:]
         tasks_config_module = os.path.splitext(tasks_config_file)[0].replace('/', '.')
-        mod = __import__(tasks_config_module, fromlist=[''])
+        mod = __import__(tasks_config_module, fromlist = [''])
         return mod.create_tasks()
 
 
@@ -294,7 +296,7 @@ def get_class(name):
     :return:
     """
     components = name.split('.')
-    mod = __import__('.'.join(components[:-1]), fromlist=[components[-1]])
+    mod = __import__('.'.join(components[:-1]), fromlist = [components[-1]])
     mod = getattr(mod, components[-1])
     return mod
 
@@ -407,6 +409,7 @@ class Environment:
         output = self._output_channel.consume_bit()
                 self._output_channel_listener.consume_bit(output)
         self._task_time += 1
+    # TODO return outside function, reward unresolved
         return output, reward
 
     def get_reward_per_task(self):
@@ -475,6 +478,8 @@ class Environment:
     def set_reward(self, reward, message='', priority=0):
         """ Sets the reward that is going to be given to the learner once the task has sent all the remaining message
 
+
+        :param self:
         :param reward:
         :param message:
         :param priority:
@@ -876,6 +881,7 @@ class IdentitySerializer:
     Skips the serialization and just returns the text as-is.
     """
     def __init__(self):
+        # TODO unresolved ref logging
         """
 
         """
@@ -950,13 +956,13 @@ class ScramblingSerializerWrapper:
 
 
     def to_text(self, data):
+        # TODO unrelsolved attrib ,tokenize class ScramblingSerializerWrapper
         """ get the scrambled message back from the bits.  split into tokens, including spaces and punctuation marks.
          unmask the words in it
 
         :param data:
         :return:
         """
-        # TODO unrelsolved attrib ,tokenize class ScramblingSerializerWrapper
         scrambled_message = self._serializer.to_text(data)
         self.logger.debug("Tokenizing {0}".format(scrambled_message))
         tokens = self.tokenize(scrambled_message)
@@ -995,6 +1001,7 @@ class ScramblingSerializerWrapper:
             return self.capitalize(word, self.word_mapping[word.lower()])
 
     def capitalize(self, word, scrambled_word):
+        # TODO static, unresolved ref to string
         """ Preserve capitalization in words with same length.  Capitalize first letter.
 
         :param word:
@@ -1003,7 +1010,7 @@ class ScramblingSerializerWrapper:
         """
         if len(scrambled_word) == len(word):
             return ''.join(scrambled_word[i].upper()
-            # TODO unresolved ref to string
+
                            if word[i] in string.ascii_uppercase
                            else scrambled_word[i] for i in range(len(word)))
         else:
@@ -1080,13 +1087,13 @@ class StandardSerializer:
     Transforms text into bits and back using UTF-8 format.
     """
     def __init__(self):
-
+        # TODO unresolved ref logging
         """
 
         """
         self.SILENCE_TOKEN = ' '
         self.SILENCE_ENCODING = u' '
-        # TODO unresolved ref logging
+
         self.logger = logging.getLogger(__name__)
 
     def to_binary(self, message):
@@ -1238,6 +1245,7 @@ class Session:
 
     """
     def __init__(self, environment, learner, default_sleep=0.01):
+        # TODO unresolved ref to Observable, defaultdict
         """ internal initialization.  Listen to changes in current running task.  observable status.  -- accounting
         -- total time.  Total cumulative reward.  keep track of how many attempts per task.  Keep track of how much
         time we have spend on each track
@@ -1251,7 +1259,6 @@ class Session:
         self._default_sleep = default_sleep
         self._sleep = self._default_sleep
         self._env.task_updated.register(self.on_task_updated)
-        # TODO unresolved ref to Observable, defaultdict
         self.env_token_updated = Observable()
         self.learner_token_updated = Observable()
         self.total_reward_updated = Observable()
@@ -1347,7 +1354,7 @@ class Session:
         :param task:
         :return:
         """
-        # TODO def outside __init__
+        # TODO def _current_task, outside __init__
         self._current_task = task
         self._task_count[self._current_task.get_name()] += 1
 
@@ -1564,6 +1571,7 @@ def on_message(target_message=None):
     :return:
     """
     def register(f):
+        # TODO unresolved ref re
         """ If a target message is given, interpret it as a regular expression
 
         :param f:
@@ -1738,22 +1746,22 @@ class StateTrackingDictionaryWrapper(dict):
         self._owner = owner
 
     def __setitem__(self, name, value):
+        # TODO access to protected member of class
         """
 
         :param name:
         :param value:
         :return:
         """
-        # TODO access to protected member of class
         super(StateTrackingDictionaryWrapper, self).__setitem__(name, value)
         self._raise_state_changed()
 
     def _raise_state_changed(self):
+        # TODO _owner._raise_state_changed access to protected member of class
         """ recursively forwards the call to the owner
 
         :return:
         """
-
         return self._owner._raise_state_changed()
 
 
@@ -1762,6 +1770,7 @@ class State(object):
     Holds the state variables for a Task or a world and raises events when they change
     """
     def __init__(self, owner):
+        # TODO unresolved ref logging
         """ owner is the Tasks or World whose state we keep track of
 
         :param owner:
@@ -1792,7 +1801,7 @@ class State(object):
 
         :return:
         """
-        # TODO access to protected member of class
+        # TODO access to _owner protected member of class
         return self._owner._raise_state_changed()
 
 
@@ -1808,7 +1817,7 @@ class ScriptSet(object):
         self._env = None
         self._started = False
         self._ended = False
-        # TODO unreslved ref Obserable
+        # TODO unresolved ref Obserable
         self.ended_updated = Observable()
         self.state_updated = Observable()
         self.dyn_handlers = set()
@@ -1837,12 +1846,12 @@ class ScriptSet(object):
         return self._ended
 
     def start(self, env):
+        # TODO state def outside __init__
         """ this is where all the state variables should be kept
 
         :param env:
         :return:
         """
-        # TODO def outside __init__
         self._env = env
         self._ended = False
         self._started = False
@@ -1857,12 +1866,12 @@ class ScriptSet(object):
         self.ended_updated(self)
 
     def get_triggers(self):
+        # TODO fix for python 3
         """ Returns the set of triggers that have been registered for this task We try to extract the function object
         that was registered
 
         :return:
         """
-        # TODO fix for python 3
         triggers = []
         for fname in dir(self):
             try:
@@ -1886,6 +1895,7 @@ class ScriptSet(object):
         return self.__class__.__name__
 
     def add_handler(self, handler):
+        # TODO access to protected member of class _env._register_task_trigger
         """ Adds and registers a handler dynamically during a task runtime.
 
         :param handler:
@@ -1893,7 +1903,6 @@ class ScriptSet(object):
         """
         trigger = handler_to_trigger(handler)
         if trigger:
-            # TODO access to protected member of class
             self._env._register_task_trigger(self, trigger)
             self.dyn_handlers.add(handler)
 
@@ -1944,11 +1953,11 @@ class ScriptSet(object):
         self._env.add_message(message)
 
     def ignore_last_char(self):
+        # TODO access to protected member of class _env._input_channel _env._serializer
         """ Replaces the last character in the input channel with a silence.
 
         :return:
         """
-        # TODO access to protected member of class
         self._env._input_channel.set_deserialized_buffer\
             (self._env._input_channel.get_text()[:-1] + self._env._serializer.SILENCE_TOKEN)
 
@@ -1986,7 +1995,7 @@ class Task(ScriptSet):
         :param t:
         :return:
         """
-        # TODO access to protected member of class
+        # TODO access to protected member of class _env._output_channel
         if t >= self._max_time and self._env._output_channel.is_empty():
             self._env.event_manager.raise_event(Timeout())
             self.end()
@@ -2022,15 +2031,16 @@ API for the scripts
 """
 
     def get_time(self):
+        # TODO access to protected member of class _env._task_time
         """ Gets the environment's task time
 
         :return:
         """
-        # TODO access to protected member of class
         return self._env._task_time
 
-# TODO shadowing set_reward
+
     def set_reward(self, reward, message='', priority=1):
+        # TODO shadowing set_reward, redeclaired set_reward without use
         """ Assigns a reward to the learner and ends the task.
 
         :param self:
@@ -2056,9 +2066,9 @@ API for the scripts
         super(Task, self).set_message(message, priority)
 
     def get_default_output(self):
+        # TODO access to protected member of class self._env._serializer
         """ Returns the token that should be spoken by the task whenever there is no content in buffer.
 
         :return:
         """
-        # TODO access to protected member of class
         return self._env._serializer.SILENCE_TOKEN
