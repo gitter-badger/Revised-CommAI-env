@@ -9,13 +9,13 @@
 # This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
+# TODO fix revised_core imports
 import unittest
-import core.task as task
-import core.session as session
-import core.serializer as serializer
-import core.environment as environment
-from core.obs.observer import Observable
+import revised_core.task as task
+import revised_core.session as session
+import revised_core.serializer as serializer
+import revised_core.environment as environment
+from revised_core.obs.observer import Observable
 
 
 class NullTask(task.Task):
@@ -48,13 +48,13 @@ class EnvironmentMock(object):
         self.task = task
 
     def next(self, token):
-        """
+        """ always return a reward od 1
 
         :param token:
         :return:
         """
         self.task_updated(self.task)
-        return token, 1  # always return a reward od 1
+        return token, 1
 
     def raise_event(self, event):
         # TODO static

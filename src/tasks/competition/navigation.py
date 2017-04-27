@@ -9,9 +9,9 @@
 # This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
-from core.task import Task, on_start, on_message, on_sequence,\
-    on_state_changed, on_timeout, on_output_message, on_ended
+# TODO fix revised_core, tasks imports
+from revised_core.task import Task, on_start, on_message, on_sequence, on_state_changed, on_timeout, \
+    on_output_message, on_ended
 import tasks.competition.messages as msg
 from tasks.competition.base import BaseTask
 from tasks.competition.objects_properties import global_properties
@@ -38,11 +38,11 @@ class TurningTask(BaseTask):
 
         :param world:
         """
-        super(TurningTask, self).__init__(max_time=3 * TIME_TURN, world=world)
+        super(TurningTask, self).__init__(max_time = 3 * TIME_TURN, world = world)
 
     @on_start()
     def on_start(self, event):
-        # TODO event not used
+        # TODO target_turn, def outside __init__ event not used
         """ during initialization of task, save the direction the learner is facing. # randomly choose a target.  ask
         the learner to turn in the target direction direction and save it too
 
@@ -88,7 +88,7 @@ class MovingTask(BaseTask):
 
         :param world:
         """
-        super(MovingTask, self).__init__(max_time=3 * TIME_MOVE, world=world)
+        super(MovingTask, self).__init__(max_time = 3 * TIME_MOVE, world = world)
 
     @on_start()
     def on_start(self, event):
@@ -134,7 +134,7 @@ class MovingRelativeTask(BaseTask):
 
         :param world:
         """
-        super(MovingRelativeTask, self).__init__(max_time=2 * TIME_TURN + 2 * TIME_MOVE, world=world)
+        super(MovingRelativeTask, self).__init__(max_time = 2 * TIME_TURN + 2 * TIME_MOVE, world = world)
 
     @on_start()
     def on_start(self, event):
@@ -238,7 +238,7 @@ class PickUpTask(BaseTask):
 
         :param world:
         """
-        super(PickUpTask, self).__init__(max_time=50 * TIME_CHAR + 2 * TIME_PICK, world=world)
+        super(PickUpTask, self).__init__(max_time = 50 * TIME_CHAR + 2 * TIME_PICK, world = world)
 
     @on_start()
     def on_start(self, event):
@@ -255,9 +255,8 @@ class PickUpTask(BaseTask):
         self.get_world().put_entity(lp + ld, self.target_obj, True, True)
         self.add_handler(on_state_changed(lambda ws, ts: ws.learner_inventory[self.target_obj] == ts.initial_count + 1)
                          (self.on_object_picked_up))
-
         self.set_message("You have {indef_object} in front of you. " "Pick up the {object}.".format(
-                        indef_object=msg.indef_article(self.target_obj), object=self.target_obj))
+                        indef_object = msg.indef_article(self.target_obj), object = self.target_obj))
 
     def on_object_picked_up(self, event):
         # TODO event not used
@@ -289,12 +288,12 @@ class PickUpAroundTask(BaseTask):
 
         :param world:
         """
-        super(PickUpAroundTask, self).__init__(max_time=50 * TIME_CHAR + 2 * TIME_PICK + 4 * TIME_MOVE + 4 * TIME_TURN,
-                                               world=world)
+        super(PickUpAroundTask, self).__init__(
+                max_time = 50 * TIME_CHAR + 2 * TIME_PICK + 4 * TIME_MOVE + 4 * TIME_TURN, world = world)
 
     @on_start()
     def on_start(self, event):
-        # TODO event not used, target_obj, direction, def outside __inti__
+        # TODO event not used, target_obj, direction, def outside __inti__, ws shadows
         """ choose a random object.  find a random cell around the learner. place the object there.
 
         :param event:
@@ -309,7 +308,8 @@ class PickUpAroundTask(BaseTask):
         self.add_handler(on_state_changed(lambda ws, ts: ws.learner_inventory[self.target_obj] == ts.initial_count + 1)
                          (self.on_object_picked_up))
         self.set_message("There is {indef_object} {direction} from you, " "pick up the {object}.".format(
-                indef_object=msg.indef_article(self.target_obj), direction=self.direction, object=self.target_obj))
+                indef_object = msg.indef_article(self.target_obj),
+                direction = self.direction, object = self.target_obj))
 
     def on_object_picked_up(self, event):
         # TODO event not used
@@ -343,11 +343,12 @@ class PickUpInFrontTask(BaseTask):
         :param world:
         """
         super(PickUpInFrontTask, self).__init__(
-                max_time=50 * TIME_CHAR + 2 * TIME_PICK + PickUpInFrontTask.max_steps_forward * TIME_MOVE, world=world)
+                max_time = 50 * TIME_CHAR + 2 * TIME_PICK + PickUpInFrontTask.max_steps_forward * TIME_MOVE,
+                world = world)
 
     @on_start()
     def on_start(self, event):
-        # TODO event not used
+        # TODO target_obj, n def outside __init__ event not used
         """ choose a random object.  select a random number of steps.  place the object that number of steps in front
         of the learner.
 
@@ -364,8 +365,8 @@ class PickUpInFrontTask(BaseTask):
                 on_state_changed(lambda ws, ts: ws.learner_inventory[self.target_obj] == ts.initial_count + 1)
                 (self.on_object_picked_up))
         self.set_message("There is {indef_object} {n} steps forward, " "pick up the {object}.".format(
-                        indef_object=msg.indef_article(self.target_obj), n=msg.number_to_string(self.n),
-                        object=self.target_obj))
+                        indef_object = msg.indef_article(self.target_obj), n = msg.number_to_string(self.n),
+                        object = self.target_obj))
 
     def on_object_picked_up(self, event):
         # TODO event not used
@@ -394,7 +395,7 @@ class GivingTask(BaseTask):
 
         :param world:
         """
-        super(GivingTask, self).__init__(max_time=50 * TIME_CHAR + 2 * TIME_GIVE, world=world)
+        super(GivingTask, self).__init__(max_time = 50 * TIME_CHAR + 2 * TIME_GIVE, world = world)
 
     @on_start()
     def on_start(self, event):
@@ -411,7 +412,7 @@ class GivingTask(BaseTask):
         self.state.initial_count = ws.teacher_inventory[self.state.target_obj]
         ws.teacher_accepts.add(self.state.target_obj)
         self.set_message("I gave you {indef_object}. Give it back to me " "by saying \"I give you {indef_object}\"."
-                         .format(indef_object=msg.indef_article(self.state.target_obj)))
+                         .format(indef_object = msg.indef_article(self.state.target_obj)))
 
     @on_state_changed(lambda ws, ts: ws.teacher_inventory[ts.target_obj] == ts.initial_count + 1)
     def on_give_me_object(self, event):
@@ -442,7 +443,8 @@ class PickUpAroundAndGiveTask(BaseTask):
         :param world:
         """
         super(PickUpAroundAndGiveTask, self).__init__(
-                max_time=50 * TIME_CHAR + 4 * TIME_PICK + 4 * TIME_GIVE + 4 * TIME_MOVE + 4 * TIME_TURN, world=world)
+                max_time = 50 * TIME_CHAR + 4 * TIME_PICK + 4 * TIME_GIVE + 4 * TIME_MOVE + 4 * TIME_TURN,
+                world = world)
 
     @on_start()
     def on_start(self, event):
@@ -466,7 +468,7 @@ class PickUpAroundAndGiveTask(BaseTask):
         self.object_picked_up = False
         ws.teacher_accepts.add(self.state.target_obj)
         self.set_message("There is {indef_object} {direction} from you." " Pick it up and give it to me.".format(
-                indef_object=msg.indef_article(self.state.target_obj), direction=self.direction))
+                indef_object = msg.indef_article(self.state.target_obj), direction = self.direction))
 
     @on_state_changed(lambda ws, ts: ws.learner_inventory[ts.target_obj] == ts.learner_initial_count + 1)
     def on_object_picked_up(self, event):
@@ -490,7 +492,7 @@ class PickUpAroundAndGiveTask(BaseTask):
         if self.object_picked_up:
             self.set_reward(1)
         else:
-            self.set_message("You have to pick up the {object} first.".format(object=self.state.target_obj))
+            self.set_message("You have to pick up the {object} first.".format(object = self.state.target_obj))
 
     @on_timeout()
     def fail_learner(self, event):
@@ -528,7 +530,7 @@ class CountingInventoryTask(BaseTask):
 
         :param world:
         """
-        super(CountingInventoryTask, self).__init__(max_time=100 * TIME_CHAR, world=world)
+        super(CountingInventoryTask, self).__init__(max_time = 100 * TIME_CHAR, world = world)
 
     @on_start()
     def on_start(self, event):
@@ -555,8 +557,8 @@ class CountingInventoryTask(BaseTask):
             self.set_reward(1, "Correct!")
         else:
             self.set_message("{negative_feedback} " "You have {count} {objects}.".format(
-                    negative_feedback=random.choice(msg.failed), count=count, objects=msg.pluralize(self.target_obj,
-                                                                                                    count)))
+                    negative_feedback = random.choice(msg.failed), count = count, objects =
+                    msg.pluralize(self.target_obj, count)))
 
     @on_timeout()
     def fail_learner(self, event):
@@ -579,7 +581,7 @@ class CountingInventoryGivingTask(BaseTask):
 
         :param world:
         """
-        super(CountingInventoryGivingTask, self).__init__(max_time=1000 * TIME_CHAR, world=world)
+        super(CountingInventoryGivingTask, self).__init__(max_time = 1000 * TIME_CHAR, world = world)
 
     @on_start()
     def on_start(self, event):
@@ -626,11 +628,11 @@ class CountingInventoryGivingTask(BaseTask):
         if self.stage == 'initial-query':
             ws.learner_inventory[self.state.target_obj] += 1
             self.set_message("{feedback} I gave you {indef_object}. " "How many {objects} do you have now?".format(
-                    indef_object=msg.indef_article(self.state.target_obj), objects=msg.pluralize(
-                            self.state.target_obj, 2), feedback=feedback))
+                    indef_object = msg.indef_article(self.state.target_obj), objects=msg.pluralize(
+                            self.state.target_obj, 2), feedback = feedback))
             self.stage = 'one-more-query'
         elif self.stage == 'one-more-query':
-            self.set_message("{feedback} Now give the {object} back to me.".format(object=self.state.target_obj,                                                                                 feedback=feedback))
+            self.set_message("{feedback} Now give the {object} back to me.".format(object = self.state.target_obj,                                                                                 feedback=feedback))
             ws.teacher_accepts.add(self.state.target_obj)
             self.stage = 'waiting-give-back'
         elif self.stage == 'final-query':
@@ -640,7 +642,7 @@ class CountingInventoryGivingTask(BaseTask):
 
     @on_state_changed(lambda ws, ts: ws.teacher_inventory[ts.target_obj] == ts.initial_count + 1)
     def on_gave_me_target_object(self, event):
-        # TODO event not used, stage def outside __init__
+        # TODO event not used, time_gave_me_oject, stage def outside __init__
         """ if I have one more of the target object, the learner solved the task if it also picked up the object in
         the grid.
 
@@ -650,7 +652,8 @@ class CountingInventoryGivingTask(BaseTask):
         if self.stage == 'waiting-give-back':
             self.time_gave_me_object = self.get_time()
             self.set_message("Good! You gave me {indef_object}. " "How many {objects} do you have now?".format(
-                    indef_object=msg.indef_article(self.state.target_obj), objects=msg.pluralize(self.state.target_obj,                                                                                                2)))
+                    indef_object = msg.indef_article(self.state.target_obj),
+                    objects = msg.pluralize(self.state.target_obj,                                                                                                2)))
         self.stage = 'final-query'
 
     @on_timeout()
@@ -675,7 +678,7 @@ class LookTask(BaseTask):
 
         :param world:
         """
-        super(LookTask, self).__init__(max_time=1000, world=world)
+        super(LookTask, self).__init__(max_time = 1000, world = world)
 
     @on_start()
     def on_start(self, event):
@@ -706,11 +709,11 @@ class LookAroundTask(Task):
 
         :param world:
         """
-        super(LookAroundTask, self).__init__(max_time=5000, world=world)
+        super(LookAroundTask, self).__init__(max_time = 5000, world = world)
 
     @on_start()
     def on_start(self, event):
-        # TODO event not used, visted_dirs, ndir, def outside __init__
+        # TODO event not used, visited_dirs, ndir, def outside __init__
         """
 
         :param event:
@@ -762,7 +765,7 @@ class FindObjectAroundTask(Task):
 
         :param world:
         """
-        super(FindObjectAroundTask, self).__init__(max_time=10000, world=world)
+        super(FindObjectAroundTask, self).__init__(max_time = 10000, world = world)
         self.dir2obj = [0, 1, 2, 3]
         random.shuffle(self.dir2obj)
 

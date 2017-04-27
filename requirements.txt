@@ -8,6 +8,7 @@ collections_extended
 logging
 random
 itertools
+zmq
 
 
 re

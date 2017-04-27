@@ -1,3 +1,5 @@
+# FIXME
+
 Running the competition
 =======================
 
@@ -9,3 +11,4 @@ for example, by copying the sample file::
 Then, run it with::
 
   python run.py tasks_config.json
+

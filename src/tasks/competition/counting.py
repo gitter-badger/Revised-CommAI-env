@@ -7,18 +7,17 @@
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
 
-# TODO fix imports
-from core.task import on_start, on_message, on_timeout
+# TODO fix revised_core, tasks imports
+from revised_core.task import on_start, on_message, on_timeout
 from tasks.competition.base import BaseTask
 import tasks.competition.messages as msg
 import random
-"""
-global data structures to be called by multiple tasks, a dictionary with all possible objects in the vocabulary
+
+""" global data structures to be called by multiple tasks, a dictionary with all possible objects in the vocabulary.
+maximum number of objects to list
 """
 vocabulary = {0: "apple", 1: "banana", 2: "beet", 3: "carrot", 4: "cucumber", 5: "mango", 6: "onion", 7: "pear",
               8: "pineapple", 9: "potato", 10: "tomato"}
-
-# maximum number of objects to list
 max_total = 10
 vocab_size = len(vocabulary)
 
@@ -36,7 +35,7 @@ class SimpleCountingTask(BaseTask):
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used, separator not used, local var sperator not used
+        # TODO event not used, separator not used, local var separtor not used
         """ pick how many objects in total will be described.  for last object change separator from "," to "and".
          pick object.  build up message update counter.  pick object to ask the question.
 
@@ -63,9 +62,9 @@ class SimpleCountingTask(BaseTask):
         object_in_question = vocabulary[random.randint(1, vocab_size - 1)]
         # TODO def outside __init__ .answer, .give_away_message
         self.answer = msg.numbers_in_words[counter.get(object_in_question, 0)]
-        self.give_away_message = 'Wrong. The right answer is: {answer}.'.format(answer=self.answer)
+        self.give_away_message = 'Wrong. The right answer is: {answer}.'.format(answer = self.answer)
         self.set_message("I have {listing_objects}. How many {object} do I have? ".format(
-                listing_objects=partial_message, object=msg.pluralize(object_in_question, 2)))
+                listing_objects = partial_message, object = msg.pluralize(object_in_question, 2)))
 
     @on_message(r'\.')
     def check_response(self, event):

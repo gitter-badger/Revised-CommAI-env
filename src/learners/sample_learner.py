@@ -9,8 +9,8 @@
 # This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO ix imports
-from core.serializer import StandardSerializer, IdentitySerializer
+# TODO ix imports revised_core, learners
+from revised_core.serializer import StandardSerializer, IdentitySerializer
 from learners.base import BaseLearner
 
 
@@ -18,8 +18,9 @@ class SampleRepeatingLearner(BaseLearner):
     """
 
     """
-# TODO static fucntion
+
     def reward(self, reward):
+        # TODO static func
         """ YEAH! Reward!!! Whatever...
 
         :param reward:
@@ -75,12 +76,12 @@ class SampleMemorizingLearner(BaseLearner):
 
     """
     def __init__(self):
-        """
+        """ Learner has serialized 'hardcoded' to detect spaces
 
         """
         self.memory = ''
         self.teacher_stopped_talking = False
-        self.serializer = StandardSerializer()  # Learner has serialized 'hardcoded' to detct spaces
+        self.serializer = StandardSerializer()
         self.silence_code = self.serializer.to_binary(' ')
         self.silence_i = 0
 
@@ -96,19 +97,19 @@ class SampleMemorizingLearner(BaseLearner):
         self.memory = ''
 
     def next(self, user_input):
-        # TODO atrr user_input not used
-        """ If we have received a silence byte
+        # TODO attr user_input not used
+        """ If we have received a silence byte.  send the memorized sequence.  Memorize what the teacher said
 
-        :param User_input:
+        :param:
         :return:
         """
         text_input = self.serializer.to_text(self.memory)
         if text_input and text_input[-2:] == '  ':
             self.teacher_stopped_talking = True
         if self.teacher_stopped_talking:
-            output, self.memory = self.memory[0], self.memory[1:]  # send the memorized sequence
+            output, self.memory = self.memory[0], self.memory[1:]
         else:
             output = self.silence_code[self.silence_i]
             self.silence_i = (self.silence_i + 1) % len(self.silence_code)
-        self.memory += input  # Memorize what the teacher said
+        self.memory += input
         return output
