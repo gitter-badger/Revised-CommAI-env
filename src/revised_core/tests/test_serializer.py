@@ -9,9 +9,9 @@
 # This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
+# TODO fix imports revised_core
 import unittest
-from core import serializer
+from revised_core import serializer
 
 
 class TestSerializer(unittest.TestCase):
@@ -20,15 +20,13 @@ class TestSerializer(unittest.TestCase):
     """
 
     def testConsistency(self):
-        """
+        """ greek letter alpha (not working in current ascii serialization)
 
         :return:
         """
         slzr = serializer.StandardSerializer()
         self.assertEqual('a', slzr.to_text(slzr.to_binary('a')))
         self.assertEqual(' ', slzr.to_text(slzr.to_binary(' ')))
-        # TODO fix
-        # greek letter \alpha (not working in current ascii serialization)
         self.assertEqual(u"\u03B1", slzr.to_text(slzr.to_binary(u"\u03B1")))
 
     def testScramblingSerializerWrapper(self):
