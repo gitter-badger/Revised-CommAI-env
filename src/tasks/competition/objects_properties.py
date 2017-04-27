@@ -6,15 +6,14 @@
 # This source code is licensed under the BSD-style license found in the LICENSE.md file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
-# TODO fix imports
-from core.task import on_start, on_message, on_timeout
+# TODO fix revised_core, tasks imports
+from revised_core.task import on_start, on_message, on_timeout
 from tasks.competition.base import BaseTask
 import tasks.competition.messages as msg
 import random
 import re
 
-"""
-global data structures to be called by multiple tasks properties of objects in two baskets, for memory tasks
+""" global data structures to be called by multiple tasks properties of objects in two baskets, for memory tasks
 (please keep objects in alphabetical order for ease of debugging)
 """
 global_properties = {'john': {'apple': ['green', 'sour', 'hard', 'cheap', 'healthy', 'juicy', 'local'],
@@ -59,7 +58,7 @@ for p in global_properties:
     for o in global_properties[p]:
         global_objects.append(o)
 global_objects = list(set(global_objects))
-number_questions = ['please tell me the number.', 'what\'s the number?', 'what is the number?',
+number_questions = ['please tell me the number.', "what's the number?", 'what is the number?',
                     'can you tell me the number?']
 delimiters = r'(?:, | and |, and | )'
 
@@ -73,7 +72,7 @@ class ObjectExistenceTask1(BaseTask):
 
         :param world:
         """
-        super(ObjectExistenceTask1, self).__init__(world=world, max_time=3000)
+        super(ObjectExistenceTask1, self).__init__(world = world, max_time = 3000)
 
     @on_start()
     def on_start(self, event):
@@ -134,7 +133,7 @@ class ObjectExistenceTask2(BaseTask):
 
         :param world:
         """
-        super(ObjectExistenceTask2, self).__init__(world=world, max_time=3000)
+        super(ObjectExistenceTask2, self).__init__(world = world, max_time = 3000)
 
     @on_start()
     def give_instructions(self, event):
@@ -165,10 +164,10 @@ class ObjectExistenceTask2(BaseTask):
         object_in_question = random.choice(global_objects)
         self.answer = "Yes" if counter.get(object_in_question, 0) > 0 else "No"
         self.give_away_message = "I do have {object}." if self.answer == "Yes" else "I do not have {object}."
-        self.give_away_message = self.give_away_message.format(object=msg.indef_article(object_in_question))
+        self.give_away_message = self.give_away_message.format(object = msg.indef_article(object_in_question))
         self.give_away_message = "Wrong. " + self.give_away_message
         self.set_message('I have {listing_objects}. Do I have {object}? '.format(
-                listing_objects=message,  object=msg.indef_article(object_in_question)))
+                listing_objects = message, object = msg.indef_article(object_in_question)))
 
     @on_message(r'\.')
     def check_response(self, event):
@@ -210,7 +209,7 @@ class AssociateObjectWithPropertyTask(BaseTask):
 
         :param world:
         """
-        super(AssociateObjectWithPropertyTask, self).__init__(world=world, max_time=3000)
+        super(AssociateObjectWithPropertyTask, self).__init__(world = world, max_time = 3000)
 
     @on_start()
     def give_instructions(self, event):
@@ -224,7 +223,7 @@ class AssociateObjectWithPropertyTask(BaseTask):
         object_ = random.choice(list(global_properties[basket].keys()))
         self.property = random.choice(global_properties[basket][object_])
         self.set_message("{object} in {owner}'s basket is {property}. " "how is {object}?".format(
-                object=object_, owner=basket, property=self.property))
+                object = object_, owner = basket, property = self.property))
 
     @on_message(r"\.")
     def check_response(self, event):
@@ -244,7 +243,7 @@ class AssociateObjectWithPropertyTask(BaseTask):
         :param event:
         :return:
         """
-        self.set_message('the right answer is: {answer}.'.format(answer=self.property))
+        self.set_message('the right answer is: {answer}.'.format(answer = self.property))
 
 
 class VerifyThatObjectHasPropertyTask(BaseTask):
@@ -256,7 +255,7 @@ class VerifyThatObjectHasPropertyTask(BaseTask):
 
         :param world:
         """
-        super(VerifyThatObjectHasPropertyTask, self).__init__(world=world, max_time=3000)
+        super(VerifyThatObjectHasPropertyTask, self).__init__(world = world, max_time = 3000)
 
     @on_start()
     def give_instructions(self, event):
@@ -285,7 +284,8 @@ class VerifyThatObjectHasPropertyTask(BaseTask):
             property_ = random.choice(object_properties)
             self.answer = "yes"
         self.set_message(
-                "is {object} {property} in {owner}'s basket?'".format(object=object_, property=property_, owner=basket))
+                "is {object} {property} in {owner}'s basket?'".format(
+                        object = object_, property = property_, owner = basket))
 
     @on_message()
     def check_response(self, event):
@@ -317,7 +317,7 @@ class ListPropertiesOfAnObjectTask(BaseTask):
 
         :param world:
         """
-        super(ListPropertiesOfAnObjectTask, self).__init__(world=world, max_time=3500)
+        super(ListPropertiesOfAnObjectTask, self).__init__(world = world, max_time = 3500)
 
     @on_start()
     def give_instructions(self, event):
@@ -334,9 +334,8 @@ class ListPropertiesOfAnObjectTask(BaseTask):
         basket = random.choice(list(global_properties.keys()))
         object_ = random.choice(list(global_properties[basket].keys()))
         self.object_properties = set(global_properties[basket][object_])
-
         self.set_message("which properties does {object} have in "
-                         "{owner}'s basket?".format(object=object_,owner=basket))
+                         "{owner}'s basket?".format(object = object_, owner = basket))
         enum_re = delimiters.join([r'([a-z]+)'] * len(self.object_properties))
         enum_re += r'\.$'
         self.add_handler(on_message(enum_re)(self.check_response))
@@ -363,7 +362,7 @@ class ListPropertiesOfAnObjectTask(BaseTask):
         correct_properties = list(self.object_properties)
         random.shuffle(correct_properties)
         answer = " ".join(correct_properties)
-        self.set_message('the right properties are: {answer}.'.format(answer=answer))
+        self.set_message('the right properties are: {answer}.'.format(answer = answer))
 
 
 class NameAPropertyOfAnObjectTask(BaseTask):
@@ -375,7 +374,7 @@ class NameAPropertyOfAnObjectTask(BaseTask):
 
         :param world:
         """
-        super(NameAPropertyOfAnObjectTask, self).__init__(world=world, max_time=3000)
+        super(NameAPropertyOfAnObjectTask, self).__init__(world = world, max_time = 3000)
 
     @on_start()
     def give_instructions(self, event):
@@ -388,8 +387,8 @@ class NameAPropertyOfAnObjectTask(BaseTask):
         basket = random.choice(list(global_properties.keys()))
         object_ = random.choice(list(global_properties[basket].keys()))
         self.object_properties = global_properties[basket][object_]
-        self.set_message("can you tell me a property of {object} ""
-                         ""in {owner}'s basket?".format(object=object_, owner=basket))
+        self.set_message("can you tell me a property of {object} "
+                         "in {owner}'s basket?".format(object = object_, owner = basket))
 
     @on_message()
     def check_response(self, event):
@@ -410,7 +409,7 @@ class NameAPropertyOfAnObjectTask(BaseTask):
         :param event:
         :return:
         """
-        self.set_message('one right answer is: {answer}.'.format(answer=random.choice(self.object_properties)))
+        self.set_message('one right answer is: {answer}.'.format(answer = random.choice(self.object_properties)))
 
 
 class HowManyPropertiesDoesAnObjectHaveTask(BaseTask):
@@ -422,11 +421,11 @@ class HowManyPropertiesDoesAnObjectHaveTask(BaseTask):
 
         :param world:
         """
-        super(HowManyPropertiesDoesAnObjectHaveTask, self).__init__(world=world, max_time=3000)
+        super(HowManyPropertiesDoesAnObjectHaveTask, self).__init__(world = world, max_time = 3000)
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used, visted_dirs, ndir, def outside __init__
+        # TODO event not used, property_count, def outside __init__
         """ pick some object in a random basket.  counting properties of selected object
 
         :param event:
@@ -436,7 +435,7 @@ class HowManyPropertiesDoesAnObjectHaveTask(BaseTask):
         object_ = random.choice(list(global_properties[basket].keys()))
         self.property_count = len(global_properties[basket][object_])
         self.set_message("how many property does {object} have "
-                         "in {owner}'s basket?".format(object=object_, owner=basket))
+                         "in {owner}'s basket?".format(object = object_, owner = basket))
 
     @on_message()
     def check_response(self, event):
@@ -459,7 +458,7 @@ class HowManyPropertiesDoesAnObjectHaveTask(BaseTask):
         :param event:
         :return:
         """
-        self.set_message('the right answer is: {answer}.'.format(answer=msg.number_to_string(self.property_count)))
+        self.set_message('the right answer is: {answer}.'.format(answer = msg.number_to_string(self.property_count)))
 
 
 class ListObjectsWithACertainPropertyTask(BaseTask):
@@ -471,11 +470,11 @@ class ListObjectsWithACertainPropertyTask(BaseTask):
 
         :param world:
         """
-        super(ListObjectsWithACertainPropertyTask, self).__init__(world=world, max_time=3500)
+        super(ListObjectsWithACertainPropertyTask, self).__init__(world = world, max_time = 3500)
 
     @on_start()
     def give_instructions(self, event):
-        # TODO event not used, question, re_query, def outside __init__, basket from outer scope
+        # TODO event not used, question, objects, re_query, def outside __init__, basket from outer scope
         """ chose a random property.  retrieving the objects that have this property. building a regexp to match
         the answer.  final string must be delimited by period
 
@@ -485,7 +484,7 @@ class ListObjectsWithACertainPropertyTask(BaseTask):
         basket = random.choice(list(rev_global_properties.keys()))
         property_ = random.choice(list(rev_global_properties[basket].keys()))
         self.objects = set(rev_global_properties[basket][property_])
-        self.question = "which objects are {property} in {owner}'s basket?".format(property=property_, owner=basket)
+        self.question = "which objects are {property} in {owner}'s basket?".format(property = property_, owner = basket)
         self.set_message(self.question)
         enum_re = delimiters.join([r'([a-z]+)'] * len(self.objects))
         enum_re += r'\.$'
@@ -507,7 +506,7 @@ class ListObjectsWithACertainPropertyTask(BaseTask):
             self.set_reward(1, random.choice(msg.congratulations))
         else:
             answer = self.get_shuffled_correct_objects(self.objects)
-            feedback = 'the right objects are: {answer}. please try again. '.format(answer=answer)
+            feedback = 'the right objects are: {answer}. please try again. '.format(answer = answer)
             feedback += self.question
             self.set_message(feedback)
 
@@ -520,7 +519,7 @@ class ListObjectsWithACertainPropertyTask(BaseTask):
         :return:
         """
         answer = self.get_shuffled_correct_objects(self.objects)
-        self.set_message('you are too slow. the right objects are: {answer}.'.format(answer=answer))
+        self.set_message('you are too slow. the right objects are: {answer}.'.format(answer = answer))
 
     def get_shuffled_correct_objects(self,ordered_correct_objects):
         # TODO static function
@@ -543,7 +542,7 @@ class NameAnObjectWithAPropertyTask(BaseTask):
 
         :param world:
         """
-        super(NameAnObjectWithAPropertyTask, self).__init__(world=world, max_time=3000)
+        super(NameAnObjectWithAPropertyTask, self).__init__(world = world, max_time = 3000)
 
     @on_start()
     def give_instructions(self, event):
@@ -557,7 +556,7 @@ class NameAnObjectWithAPropertyTask(BaseTask):
         property_ = random.choice(list(rev_global_properties[basket].keys()))
         self.objects = rev_global_properties[basket][property_]
         self.question = "can you tell me an object that is {property} in {owner}'s basket?".format(
-                property=property_, owner=basket)
+                property = property_, owner = basket)
         self.set_message(self.question)
 
     @on_message('\.')
@@ -572,7 +571,7 @@ class NameAnObjectWithAPropertyTask(BaseTask):
                 self.set_reward(1, random.choice(msg.congratulations))
             else:
                 feedback = 'one right answer is: {answer}. please try again. '.format(
-                        answer=random.choice(self.objects))
+                        answer = random.choice(self.objects))
                 feedback += self.question
                 self.set_message(feedback)
 
@@ -586,7 +585,7 @@ class NameAnObjectWithAPropertyTask(BaseTask):
         :return:
         """
         self.set_message(
-                'you are too slow. one right answer is: {answer}.'.format(answer=random.choice(self.objects)))
+                'you are too slow. one right answer is: {answer}.'.format(answer = random.choice(self.objects)))
 
 class HowManyObjectsHaveACertainPropertyTask(BaseTask):
     """
@@ -597,7 +596,7 @@ class HowManyObjectsHaveACertainPropertyTask(BaseTask):
 
         :param world:
         """
-        super(HowManyObjectsHaveACertainPropertyTask, self).__init__(world=world, max_time=3000)
+        super(HowManyObjectsHaveACertainPropertyTask, self).__init__(world = world, max_time = 3000)
 
     @on_start()
     def give_instructions(self, event):
@@ -619,11 +618,12 @@ class HowManyObjectsHaveACertainPropertyTask(BaseTask):
         else:
             property_ = basket_properties[property_pick]
             self.object_count = len(rev_global_properties[basket][property_])
-        self.question = "how many objects are {property} in {owner}'s basket?".format(property=property_, owner=basket)
+        self.question = "how many objects are {property} in {owner}'s basket?".format(
+                property = property_, owner = basket)
         self.set_message(self.question)
 
     def get_random_property(self, basket_properties):
-        # TODO static
+        # TODO static, unresolved string
         """ return a random property that is not in basket_properties. generate random property.  make sure this is
         not, by chance, identical to a real property in the relevant basket
 
@@ -652,7 +652,7 @@ class HowManyObjectsHaveACertainPropertyTask(BaseTask):
             self.set_reward(1, random.choice(msg.congratulations))
         else:
             feedback = 'the right answer is: {answer}. please try again. '.format(
-                    answer=msg.number_to_string(self.object_count))
+                    answer = msg.number_to_string(self.object_count))
             feedback += self.question
             self.set_message(feedback)
 
@@ -665,7 +665,7 @@ class HowManyObjectsHaveACertainPropertyTask(BaseTask):
         :return:
         """
         self.set_message('you are too slow. the right answer is: {answer}.'.format(
-                answer=msg.number_to_string(self.object_count)))
+                answer = msg.number_to_string(self.object_count)))
 
 
 class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
@@ -677,7 +677,7 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
 
         :param world:
         """
-        super(WhoHasACertainObjectWithACertainPropertyTask, self).__init__(world=world, max_time=3500)
+        super(WhoHasACertainObjectWithACertainPropertyTask, self).__init__(world = world, max_time = 3500)
 
     @on_start()
     def give_instructions(self, event):
@@ -697,7 +697,7 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
         if not self.basket_set:
             self.basket_set.add('nobody')
         self.question = "who has {property_object} in the basket?".format(
-                property_object=msg.indef_article(property_ + " " + object_))
+                property_object = msg.indef_article(property_ + " " + object_))
         self.set_message(self.question)
         enum_re = delimiters.join([r'([a-z]+)'] * len(self.basket_set))
         enum_re += r'\.$'
@@ -737,7 +737,7 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
             self.set_reward(1, random.choice(msg.congratulations))
         else:
             answer = self.get_shuffled_correct_baskets(self.basket_set)
-            feedback = 'the right answer is: {answer}. please try again. '.format(answer=answer)
+            feedback = 'the right answer is: {answer}. please try again. '.format(answer = answer)
             feedback += self.question
             self.set_message(feedback)
 
@@ -750,7 +750,7 @@ class WhoHasACertainObjectWithACertainPropertyTask(BaseTask):
         :return:
         """
         answer = self.get_shuffled_correct_baskets(self.basket_set)
-        self.set_message('you are too slow. the right answer is: {answer}.'.format(answer=answer))
+        self.set_message('you are too slow. the right answer is: {answer}.'.format(answer = answer))
 
     def get_shuffled_correct_baskets(self,ordered_correct_baskets):
         # TODO static
@@ -773,7 +773,7 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
 
         :param world:
         """
-        super(ListThePropertiesThatAnObjectHasInABasketOnlyTask, self).__init__(world=world, max_time=3500)
+        super(ListThePropertiesThatAnObjectHasInABasketOnlyTask, self).__init__(world = world, max_time = 3500)
 
     @on_start()
     def give_instructions(self, event):
@@ -789,7 +789,7 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
         object_, object_baskets = self.get_object_in_many_baskets()
         basket = random.choice(object_baskets)
         self.question = "which properties does {object} have in {owner}'s basket only?".format(
-                object=object_, owner=basket)
+                object = object_, owner = basket)
         self.set_message(self.question)
         self.distinctive_properties_set = self.get_expected_answer(object_, basket, object_baskets)
         enum_re = delimiters.join([r'([a-z]+)'] * len(self.distinctive_properties_set))
@@ -853,7 +853,7 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
             self.set_reward(1, random.choice(msg.congratulations))
         else:
             answer = self.get_shuffled_correct_properties(self.distinctive_properties_set)
-            feedback = 'the right properties are: {answer}. please try again. '.format(answer=answer)
+            feedback = 'the right properties are: {answer}. please try again. '.format(answer = answer)
             feedback += self.question
             self.set_message(feedback)
 
@@ -866,7 +866,7 @@ class ListThePropertiesThatAnObjectHasInABasketOnlyTask(BaseTask):
         :return:
         """
         answer = self.get_shuffled_correct_properties(self.distinctive_properties_set)
-        self.set_message('you are too slow. the right properties are: {answer}.'.format(answer=answer))
+        self.set_message('you are too slow. the right properties are: {answer}.'.format(answer = answer))
 
     def get_shuffled_correct_properties(self,ordered_correct_properties):
         # TODO static
@@ -889,7 +889,7 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
 
         :param world:
         """
-        super(ListThePropertiesThatAnObjectHasInAllBasketsTask, self).__init__(world=world, max_time=3500)
+        super(ListThePropertiesThatAnObjectHasInAllBasketsTask, self).__init__(world = world, max_time = 3500)
 
     @on_start()
     def give_instructions(self, event):
@@ -903,7 +903,7 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
         :return:
         """
         object_, object_baskets = self.get_object_in_many_baskets()
-        self.question = "which properties does {object} have in all baskets?".format(object=object_)
+        self.question = "which properties does {object} have in all baskets?".format(object = object_)
         self.set_message(self.question)
         self.shared_properties_set = self.get_expected_answer(object_, object_baskets)
         enum_re = delimiters.join([r'([a-z]+)'] * len(self.shared_properties_set))
@@ -955,7 +955,7 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
         :return:
         """
         re_out=self.re_query.search(event.message)
-        if (re_out):
+        if re_out:
             potential_properties=set(re_out.groups())
         else:
             potential_properties=set()
@@ -963,7 +963,7 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
             self.set_reward(1, random.choice(msg.congratulations))
         else:
             answer = self.get_shuffled_correct_properties(self.shared_properties_set)
-            feedback = 'the right properties are: {answer}. please try again. '.format(answer=answer)
+            feedback = 'the right properties are: {answer}. please try again. '.format(answer = answer)
             feedback += self.question
             self.set_message(feedback)
 
@@ -977,9 +977,9 @@ class ListThePropertiesThatAnObjectHasInAllBasketsTask(BaseTask):
         :return:
         """
         answer = self.get_shuffled_correct_properties(self.shared_properties_set)
-        self.set_message('you are too slow. the right properties are: {answer}.'.format(answer=answer))
+        self.set_message('you are too slow. the right properties are: {answer}.'.format(answer = answer))
 
-    def get_shuffled_correct_properties(self,ordered_correct_properties):
+    def get_shuffled_correct_properties(self, ordered_correct_properties):
         # TODO self not used
         """
 
