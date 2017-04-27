@@ -7,7 +7,8 @@
     - Status: Under Development
     - First Beta Testing Release Target: June 2017
     - Vesion 1.0 Release Target: Sept 2017
-    - <a href="https://www.patreon.com/bePatron?u=5636094" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+    - <a href="https://www.patreon.com/bePatron?u=5636094" data-patreon-widget-type="become-patron-button">
+    Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
 
 The facebookresearch Team began the implementation of the CommAI-env in summer of 2016. Their work to date has provided
  me with an entry point into the ongoing development of the concepts detailed by Marco Baroni et al. in their paper
