@@ -9,15 +9,15 @@
 # This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this
 # source tree. An additional grant of patent rights can be found in the PATENTS file in the same directory.
 
+import zmq
+import random
+
 
 def main():
-    """
+    """ 1 or 0, or '-1' for None
 
     :return:
     """
-    import zmq
-    import random
-
     port = "5556"
     context = zmq.Context()
     socket = context.socket(zmq.PAIR)
@@ -26,11 +26,11 @@ def main():
     message = '00101110'
     cnt = 0
     while True:
-        reward = socket.recv()  # 1 or 0, or '-1' for None
+        reward = socket.recv()  #
         print(reward)
         msg_in = socket.recv()
         print(msg_in)
-        msg_out = str(random.getrandbits(1) if cnt % 7 == 0 else 1)  # think....
+        msg_out = str(random.getrandbits(1) if cnt % 7 == 0 else 1)
         if cnt % 2 == 0:
             msg_out = str(message[cnt % 8])
         socket.send(msg_out)
