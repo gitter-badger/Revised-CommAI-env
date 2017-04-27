@@ -1,9 +1,9 @@
-# Revised-CommAI-env Under Development
+## Revised-CommAI-env Under Development
 A standard environment for machine learning and general AI research
  <a href="https://www.patreon.com/bePatron?u=5636094"
  data-patreon-widget-type="become-patron-button">Become a Patron!</a>
 
-#### The Revised-CommAI-env, Pre-Release Ver. 0.1
+### The Revised-CommAI-env, Pre-Release Ver. 0.1
 Copyright (c) 2017, Stephen B. Hope, All rights reserved, see LICENSE.md for details.
 
 The facebookresearch Team began the implementation of the CommAI-env as detailed by Marco Baroni et al. The abstract is
@@ -29,11 +29,11 @@ Tel [00] 1-613-594-4727
 
 ### The facebookresearch/CommAI-env development ceased at beta-testing stage, completely untested, and unlinted.
 
-# The Revised-CommAI-env will refactor all source code to pure Python >=3.5, fully tested and linted.
+### The Revised-CommAI-env will refactor all source code to pure Python >=3.5, fully tested and linted.
 
 WIP - Repackage CommAI-env for standard deployments via Docker, Snap, and Virtualbox images.
 
-#### On the environment, CommAI: Evaluating the first steps towards a useful general AI
+### On the environment, CommAI: Evaluating the first steps towards a useful general AI
 Marco Baroni, Armand Joulin, Allan Jabri, Germàn Kruszewski, Angeliki Lazaridou, Klemen Simonic, Tomas Mikolov
 
 _With machine learning successfully applied to new daunting problems almost every day, general AI starts looking
@@ -45,7 +45,7 @@ desiderata, while keeping all further complexities to a minimum._
 
 Source: Cornell University Library, https://arxiv.org/abs/1701.08954
 
-#### Rationale for dropping support of Python 2.x
+### Rationale for dropping support of Python 2.x
 
 The current EOL for Python 2.7 is 2020, back-porting with future imports to 2.x adds a layer of unnecessary code,
 and is the underlying cause of many of the existing issues. Localizing to Python >=3.5 provides a native bytecode
