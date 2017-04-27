@@ -27,10 +27,6 @@ Tel [00] 1-613-594-4727
 
  CommAI-env, https://arxiv.org/abs/1511.08130 The Github repository, https://github.com/facebookresearch/CommAI-env
 
-### The facebookresearch/CommAI-env development ceased at beta-testing stage, completely untested, and unlinted.
-
-### The Revised-CommAI-env will refactor all source code to pure Python >=3.5, fully tested and linted.
-
 WIP - Repackage CommAI-env for standard deployments via Docker, Snap, and Virtualbox images.
 
 ### On the environment, CommAI: Evaluating the first steps towards a useful general AI
