@@ -11,8 +11,8 @@
 
 # TODO fix revised_core.seializer, .channels imports
 import unittest
-import core.serializer as serializer
-import core.channels as channels
+import revised_core.serializer as serializer
+import revised_core.channels as channels
 
 
 class TestChannels(unittest.TestCase):
