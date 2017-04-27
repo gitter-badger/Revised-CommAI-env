@@ -93,7 +93,7 @@ class TestRepetitionTasks(unittest.TestCase):
         self.assertEqual(m.get_cumulative_reward(), 0, "Doing nothing is not a solution")
 
     def repeat_everything(self, m, get_correct_answer):
-        # TODO get_correct_answer not ussed
+        # TODO get_correct_answer not used
         """ first, send one silence. repeat the previous char sent by the teacher.  read feedback, if any.
 
         :param m:
@@ -164,7 +164,7 @@ class TestRepetitionTasks(unittest.TestCase):
             :param m:
             :return:
             """
-            answer, = m.search_last_message(r"(?:{verb}) (\w)\.".format(verb="|".join(repetition.verbs)))
+            answer, = m.search_last_message(r"(?:{verb}) (\w)\.".format(verb = "|".join(repetition.verbs)))
             return answer
         task = repetition.RepeatCharacterTask
         with task_messenger(task) as m:
@@ -185,7 +185,7 @@ class TestRepetitionTasks(unittest.TestCase):
             :param m:
             :return:
             """
-            answer, = m.search_last_message(r"(?:{verb}) (.*)\.".format(verb="|".join(repetition.verbs)))
+            answer, = m.search_last_message(r"(?:{verb}) (.*)\.".format(verb = "|".join(repetition.verbs)))
             return answer
         self.do_test_battery(repetition.RepeatWhatISayTask, get_correct_answer)
 
@@ -201,7 +201,7 @@ class TestRepetitionTasks(unittest.TestCase):
             :return:
             """
             answer, = m.search_last_message(r"(?:{verb}) (.*) (?:{context})\.".format(
-                    verb="|".join(repetition.verbs), context="|".join(repetition.context)))
+                    verb = "|".join(repetition.verbs), context = "|".join(repetition.context)))
             return answer
         self.do_test_battery(repetition.RepeatWhatISay2Task, get_correct_answer)
 
@@ -217,7 +217,7 @@ class TestRepetitionTasks(unittest.TestCase):
             :return:
             """
             answer, n = m.search_last_message(
-                r"(?:{verb}) (.*) (\w+) times\.".format(verb="|".join(repetition.verbs)))
+                r"(?:{verb}) (.*) (\w+) times\.".format(verb = "|".join(repetition.verbs)))
             return " ".join([answer] * msg.string_to_number(n))
 
         self.do_test_battery(repetition.RepeatWhatISayMultipleTimesTask, get_correct_answer)
@@ -234,7 +234,7 @@ class TestRepetitionTasks(unittest.TestCase):
             :return:
             """
             answer, n = m.search_last_message(r"(?:{verb}) (.*) (\w+) times (?:{context})\.".format(
-                    verb="|".join(repetition.verbs), context="|".join(repetition.context)))
+                    verb = "|".join(repetition.verbs), context = "|".join(repetition.context)))
             return " ".join([answer] * msg.string_to_number(n))
         self.do_test_battery(repetition.RepeatWhatISayMultipleTimes2Task, get_correct_answer)
 
@@ -250,7 +250,7 @@ class TestRepetitionTasks(unittest.TestCase):
             :return:
             """
             answer, n = m.search_last_message(r"(?:{verb}) (.*) (\w+) times separated".format(
-                    verb="|".join(repetition.verbs),  context="|".join(repetition.context)))
+                    verb = "|".join(repetition.verbs),  context = "|".join(repetition.context)))
             return ", ".join([answer] * msg.string_to_number(n))
         self.do_test_battery(repetition.RepeatWhatISayMultipleTimesSeparatedByCommaTask, get_correct_answer)
 
@@ -266,7 +266,7 @@ class TestRepetitionTasks(unittest.TestCase):
             :return:
             """
             answer, n = m.search_last_message(r"(?:{verb}) (.*) (\w+) times separated".format(
-                    verb="|".join(repetition.verbs), context="|".join(repetition.context)))
+                    verb = "|".join(repetition.verbs), context = "|".join(repetition.context)))
             return " and ".join([answer] * msg.string_to_number(n))
         self.do_test_battery(repetition.RepeatWhatISayMultipleTimesSeparatedByAndTask, get_correct_answer)
 
@@ -282,7 +282,7 @@ class TestRepetitionTasks(unittest.TestCase):
             :return:
             """
             answer, n = m.search_last_message(r"(?:{verb}) (.*) (\w+) times separated".format(
-                        verb="|".join(repetition.verbs), context="|".join(repetition.context)))
+                        verb = "|".join(repetition.verbs), context = "|".join(repetition.context)))
             enum = [answer] * msg.string_to_number(n)
             return " and ".join([", ".join(enum[:-1]), enum[-1]])
         self.do_test_battery(repetition.RepeatWhatISayMultipleTimesSeparatedByCATask, get_correct_answer)
