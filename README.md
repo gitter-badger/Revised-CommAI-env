@@ -1,5 +1,3 @@
-# FIXME
-
 ## Revised-CommAI-env Pre-Release Ver. 0.2
 
 #### Setting a new standard for a stable, containerised, development, testing,  and evaluation environment
