@@ -16,16 +16,14 @@ a refactor of the Github facebookreseacrh/CommAI-env Beta-Test release.
 
 ## WHY NOW?
 
-The kick-start that spurred me to make all of my development public, with the consequence's of making the proto version
-subject to open examination was entirely do to Nat Friedman's AIGrant: Get $5,000 for your open source AI project:
-https://nat.org/aigrant-get-5-000-for-your-open-source-ai-project-1118dd7db083
+I was motivated to start publicly coding instead of just contemplating the project privately by: Nat Friedman's AIGrant: Get $5,000 for your open source AI project: https://nat.org/aigrant-get-5-000-for-your-open-source-ai-project-1118dd7db083 I am including the initial development from forking as a consequence as part of my entry.
 
-I subscribe to Nat's feed via Medium: https://medium.com Nat is one a number of writers who's work publishes on Medium
-which I make time to read when I see a new post.
+I subscribe to Nat's feed via Medium: https://medium.com Nat is one a number of writers whose work, published at Medium
+I make time to read when I see a new post.
 
 ## UPDATE
 
-Nat's ideal gained a spounser for his contest, prize pool extened from five to TEN $5000 AI Grants. 
+Nat's ideal gained a sponsor for his contest, the prize pool extended from one prize of $5000 to ten $5000 AI Grants. 
 
 ### AI Grant gets a sponsor! Thanks, Floodgate
 https://nat.org/ai-grant-gets-a-sponsor-thanks-floodgate-a945afc79470
@@ -35,7 +33,7 @@ http://floodgate.com/
 
 ## Week One Progress Report
 
-I'm very excited both at the rapid pace of development as both the Project Lead, and as the sole contributor to the
+I'm very excited at the rapid pace of development as both the Project Lead and as the sole contributor to the
 effort. I hit the ground running to speed the process of refactoring my code and docstrings to a level where more than
 one contributor can check out files.
 
@@ -43,16 +41,16 @@ one contributor can check out files.
 All Python source files have been refactored into Python style pseudo code, and tagged with notations where
 conversions are required to use the code blocks individually as functional code.
 
-The development style here, in regards to the scope of this project is:
+The development style here, in regards to the scope of this project, is:
 
-_Any discussion whiich adds to the progress towards a working implimentation of general intelligence must done in the form of a logical statement. The form factor does not matter, as an equation, symbolic logic, psuedo code, a structured language like Python, they all represent the same thing.  Discussions in other mediums have great value for other purposes. However for the purposes outlined here are simply not relavent to progress in the implimentation of general AI. Anything outside of those constraints, however well reasoned, are exmaples of speculative fiction._
+_Any discussion which adds to the progress towards a working implementation of general intelligence must be done in the form of a logical statement. The form factor does not matter, as an equation, symbolic logic, psuedo code, a structured language like Python, they all represent the same thing.  Discussions in other media have great value for other purposes. However for the purposes outlined here are simply not relevent to progress in the implementation of general AI. Anything outside of those constraints, however well-reasoned, are exmaples of speculative fiction._
 
 ### WIP [Work in Progress]
 
 Creating an Issue for each file containing #TODOs or #FIXME, completion: Week 2.
 
 Everything else. One of the core of elements of my development process is: _Don't spend time preparing for description of
-future work when completing the work itself is possible within the given constraints. Also if the task is too complex to comunicte in a few sentences to a peer, it needs to be reduced further._
+future work when completing the work itself is possible within the given constraints. Also if the task is too complex to comunicate in a few sentences to a peer, it needs to be reduced further._
 
 ### METRICS
 
@@ -60,7 +58,7 @@ As the initial week has no baseline to provide metrics, first metrics reports wi
 
 ### RAW INFORMATION
 
-Raw reports of lines added & deleted, commits, and other activity can be viewed via the Pulse and other other tabs at
+Raw reports of lines added & deleted, commits, and other activity can be viewed via the Pulse and other tabs at
 the top of the page.
 
 ### CommAI-env Background
@@ -78,7 +76,7 @@ The approach I propose to further the development of the source code and documen
 the conventions I've observed in my limited reviews of existing development work-flows and wfm (workforce management)
 strategies.
 
-I am still exploring how best to communicate the work flow information.  A few stubs were add to the Github Wiki here.
+I am still exploring how best to communicate the work flow information.  A few stubs were added to the Github Wiki here.
 https://github.com/stephenbhope/Revised-CommAI-env/wiki
 
 I will be documenting my techniques, tools, and strategies during the process from idea to release 1.0 in the hope
@@ -87,11 +85,11 @@ work style, and working environment. Or simply as another data point in their se
 
 ### About the LICENSE
 
-The GNU 3.0+ style LICENSE is the most well suited to my objectives. In essence it grants everyone permission to use
+The GNU 3.0+ style LICENSE is the most well suited to my objectives. In essence, it grants everyone permission to use
 the intellectual property contained in this body (* outside of the actual facebookresearch source code which is
 governed by the CommAI-env_software_LICENSE.txt in the root directory). Without charge, forever.
 
-In addition the GNU license makes this work available without imposing concerns for users or contributors of future
+In addition, the GNU license makes this work available without imposing constraints on users or contributors of future
 Licensing or Patent enforcement by third parties and opens doors to people bound by other agreements.
 
 
@@ -108,7 +106,7 @@ Tel [00] 1-613-594-4727
 #### On the environment, CommAI: Evaluating the first steps towards a useful general AI
 Marco Baroni, Armand Joulin, Allan Jabri, Germàn Kruszewski, Angeliki Lazaridou, Klemen Simonic, Tomas Mikolov
 
-_With machine learning successfully applied to new daunting problems almost every day, general AI starts looking
+_With machine learning succesfully applied to new daunting problems almost every day, general AI starts looking
 like an attainable goal. However, most current research focuses instead on important but narrow applications,
 such as image classification or machine translation. We believe this to be largely due to the lack of objective
 ways to measure progress towards broad machine intelligence. In order to fill this gap, we propose here a set of
