@@ -27,10 +27,10 @@ which I make time to read when I see a new post.
 
 Nat's ideal gained a spounser for his contest, prize pool extened from five to TEN $5000 AI Grants. 
 
-###AI Grant gets a sponsor! Thanks, Floodgate
+### AI Grant gets a sponsor! Thanks, Floodgate
 https://nat.org/ai-grant-gets-a-sponsor-thanks-floodgate-a945afc79470
 
-Floodgate backs the Prime Movers before the rest of the world believes.
+### Floodgate backs the Prime Movers before the rest of the world believes.
 http://floodgate.com/
 
 ## Week One Progress Report
