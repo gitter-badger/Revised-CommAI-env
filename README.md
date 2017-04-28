@@ -28,8 +28,8 @@ conversions are required to use the code blocks individually as functional code.
 
 #### WIP [Work in Progress]
 
-Everything else. The core of my development process is don't spend time preparing for description of future work when
-completing the work itself is possible within the given constraints.
+Everything else. One of the core of elements of my development process is: _Don't spend time preparing for description of future work when
+completing the work itself is possible within the given constraints._
 
 #### METRICS
 
