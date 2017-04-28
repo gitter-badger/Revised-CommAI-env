@@ -9,9 +9,37 @@
     - First Beta Testing Release Target: June 2017
     - Vesion 1.0 Release Target: Sept 2017
 
-As the initial week has no differential to provide metrics, will report May 5, 2017.
+## Prelude
 
-A raw report of lines added, commits, and other activity can be viewed via the Pulse Tab at the top of the page.
+I began work on the implementation of the CommAI-env based on the release incorporated within the code provided in a
+commercial AI contest. After some initial exploration and refactoring, I confirmed my theory it would more efficient
+to fork farther upstream. On April 15th I set aside my work to date, and initiated this repository as
+a refactor of the Github facebookreseacrh/CommAI-env Beta-Test release.
+
+## Week One Progress Report
+
+I'm very excited both at the rapid pace of development as both the Project Lead, and as the sole contributor to the
+effort. I hit the ground running to speed the process of refactoring my code and docstrings to a level where more than
+one contributor can check out files.
+
+#### Completed
+All Python source files have been refactored into Python style pseudo code, and tagged with notations where
+conversions are required to use the code blocks individually as functional code. Initial work
+
+#### WIP [Work in Progress]
+
+Everything else. The core of my development process is don't spend time preparing for description of future work when
+completing the work itself is possible within the given constraints.
+
+#### METRICS
+
+As the initial week has no baseline to provide metrics, first metrics reports will be provided on May 5, 2017.
+
+#### RAW INFORMATION
+
+Raw reports of lines added & deleted, commits, and other activity can be viewed via the Pulse and other other tabs at
+the top of the page.
+
 
 The facebookresearch Team began the implementation of the CommAI-env in summer of 2016. Their work to date has provided
  me with an entry point into the ongoing development of the concepts detailed by Marco Baroni et al. in their paper
