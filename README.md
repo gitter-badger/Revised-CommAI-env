@@ -16,6 +16,15 @@ commercial AI contest. After some initial exploration and refactoring, I confirm
 to fork farther upstream. On April 15th I set aside my work to date, and initiated this repository as
 a refactor of the Github facebookreseacrh/CommAI-env Beta-Test release.
 
+## WHY NOW?
+
+The kick-start that spurred me to make all of my development public, with the consequence's of making the proto version
+subject to open examination was entirely do to #### Nat Friedman's AIGrant: Get $5,000 for your open source AI project:
+https://nat.org/aigrant-get-5-000-for-your-open-source-ai-project-1118dd7db083
+
+I subscribe to Nat' feed via Medium: https://medium.com Nat is one a number of writers who's work publishes on Medium
+which I there make time to read when I see a new post.
+
 ## Week One Progress Report
 
 I'm very excited both at the rapid pace of development as both the Project Lead, and as the sole contributor to the
@@ -40,10 +49,13 @@ As the initial week has no baseline to provide metrics, first metrics reports wi
 Raw reports of lines added & deleted, commits, and other activity can be viewed via the Pulse and other other tabs at
 the top of the page.
 
+### CoomAI-env Background
 
 The facebookresearch Team began the implementation of the CommAI-env in summer of 2016. Their work to date has provided
  me with an entry point into the ongoing development of the concepts detailed by Marco Baroni et al. in their paper
  CommAI-env. The abstract is available in /docs/CommAI_PDF_1701.08954.pdf.
+
+### Revsied CommAI-env History
 
 After a line-by-line examination of the facebookresearch implementation, I was inspired by the possibilities a fresh
  perspective could bring to the table, and ultimately contribute to the existing body of work.
