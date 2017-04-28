@@ -23,7 +23,7 @@ subject to open examination was entirely do to #### Nat Friedman's AIGrant: Get 
 https://nat.org/aigrant-get-5-000-for-your-open-source-ai-project-1118dd7db083
 
 I subscribe to Nat' feed via Medium: https://medium.com Nat is one a number of writers who's work publishes on Medium
-which I there make time to read when I see a new post.
+which I make time to read when I see a new post.
 
 ## Week One Progress Report
 
