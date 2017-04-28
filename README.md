@@ -23,7 +23,7 @@ I make time to read when I see a new post.
 
 ## UPDATE
 
-Nat's ideal gained a sponsor for his contest, the prize pool extended from one prize of $5000 to ten $5000 AI Grants. 
+Nat's ideal gained a sponsor for his contest, the prize pool extended from five $5000 to ten $5000 AI Grants. 
 
 ### AI Grant gets a sponsor! Thanks, Floodgate
 https://nat.org/ai-grant-gets-a-sponsor-thanks-floodgate-a945afc79470
