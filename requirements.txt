@@ -2,7 +2,7 @@ flask
 redis
 nose
 contextlib2
-unittest
+unittest2
 curses
 collections_extended
 logging
