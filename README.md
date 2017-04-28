@@ -1,8 +1,6 @@
 # FIXME
 
-## Revised-CommAI-env Pre-Release Ver. 0.2 <
-a href="https://www.patreon.com/bePatron?u=5636094" data-patreon-widget-type="become-patron-button"
->Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+## Revised-CommAI-env Pre-Release Ver. 0.2
 
 #### Setting a new standard for a stable, containerised, development, testing,  and evaluation environment
 #### for Machine Learning and AI researchers and developers. GNU 3.0+ Licensed
