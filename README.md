@@ -79,6 +79,8 @@ I will be documenting my techniques, tools, and strategies during the process fr
 the information will be of use to the community at large to 'cherry pick' any material relevant to their requirements,
 work style, and working environment. Or simply as another data point in their set.
 
+### About the LICENSE
+
 The GNU 3.0+ style LICENSE is the most well suited to my objectives. In essence it grants everyone permission to use
 the intellectual property contained in this body (* outside of the actual facebookresearch source code which is
 governed by the CommAI-env_software_LICENSE.txt in the root directory). Without charge, forever.
@@ -108,8 +110,6 @@ concrete desiderata for general AI, together with a platform to test machines on
 desiderata, while keeping all further complexities to a minimum._
 
 Source: Cornell University Library, https://arxiv.org/abs/1701.08954
-
-# TODO license info
 
 # TODO Contributions.md
 
