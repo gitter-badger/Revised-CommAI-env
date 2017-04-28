@@ -20,6 +20,9 @@ The approach I propose to further the development of the source code and documen
 the conventions I've observed in my limited reviews of existing development work-flows and wfm (workforce management)
 strategies.
 
+I am still exploring how best to communicate the work flow information.  A few stubs were add to the Github Wiki here.
+https://github.com/stephenbhope/Revised-CommAI-env/wiki
+
 I will be documenting my techniques, tools, and strategies during the process from idea to release 1.0 in the hope
 the information will be of use to the community at large to 'cherry pick' any material relevant to their requirements,
 work style, and working environment. Or simply as another data point in their set.
