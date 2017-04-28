@@ -23,6 +23,16 @@ https://nat.org/aigrant-get-5-000-for-your-open-source-ai-project-1118dd7db083
 I subscribe to Nat's feed via Medium: https://medium.com Nat is one a number of writers who's work publishes on Medium
 which I make time to read when I see a new post.
 
+## UPDATE
+
+Nat's ideal gained a spounser for his contest, prize pool extened from five to TEN $5000 AI Grants. 
+
+###AI Grant gets a sponsor! Thanks, Floodgate
+https://nat.org/ai-grant-gets-a-sponsor-thanks-floodgate-a945afc79470
+
+Floodgate backs the Prime Movers before the rest of the world believes.
+http://floodgate.com/
+
 ## Week One Progress Report
 
 I'm very excited both at the rapid pace of development as both the Project Lead, and as the sole contributor to the
