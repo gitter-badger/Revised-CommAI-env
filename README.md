@@ -19,7 +19,7 @@ a refactor of the Github facebookreseacrh/CommAI-env Beta-Test release.
 ## WHY NOW?
 
 The kick-start that spurred me to make all of my development public, with the consequence's of making the proto version
-subject to open examination was entirely do to #### Nat Friedman's AIGrant: Get $5,000 for your open source AI project:
+subject to open examination was entirely do to Nat Friedman's AIGrant: Get $5,000 for your open source AI project:
 https://nat.org/aigrant-get-5-000-for-your-open-source-ai-project-1118dd7db083
 
 I subscribe to Nat' feed via Medium: https://medium.com Nat is one a number of writers who's work publishes on Medium
@@ -31,20 +31,20 @@ I'm very excited both at the rapid pace of development as both the Project Lead,
 effort. I hit the ground running to speed the process of refactoring my code and docstrings to a level where more than
 one contributor can check out files.
 
-#### Completed
+### Completed
 All Python source files have been refactored into Python style pseudo code, and tagged with notations where
 conversions are required to use the code blocks individually as functional code. Initial work
 
-#### WIP [Work in Progress]
+### WIP [Work in Progress]
 
-Everything else. One of the core of elements of my development process is: _Don't spend time preparing for description of future work when
-completing the work itself is possible within the given constraints._
+Everything else. One of the core of elements of my development process is: _Don't spend time preparing for description of
+future work when completing the work itself is possible within the given constraints._
 
-#### METRICS
+### METRICS
 
 As the initial week has no baseline to provide metrics, first metrics reports will be provided on May 5, 2017.
 
-#### RAW INFORMATION
+### RAW INFORMATION
 
 Raw reports of lines added & deleted, commits, and other activity can be viewed via the Pulse and other other tabs at
 the top of the page.
