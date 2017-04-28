@@ -9,6 +9,10 @@
     - First Beta Testing Release Target: June 2017
     - Vesion 1.0 Release Target: Sept 2017
 
+As the initial week has no differential to provide metrics, will report May 5, 2017.
+
+A raw report of lines added, commits, and other activity can be viewed via the Pulse Tab at the top of the page.
+
 The facebookresearch Team began the implementation of the CommAI-env in summer of 2016. Their work to date has provided
  me with an entry point into the ongoing development of the concepts detailed by Marco Baroni et al. in their paper
  CommAI-env. The abstract is available in /docs/CommAI_PDF_1701.08954.pdf.
