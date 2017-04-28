@@ -41,12 +41,14 @@ one contributor can check out files.
 
 ### Completed
 All Python source files have been refactored into Python style pseudo code, and tagged with notations where
-conversions are required to use the code blocks individually as functional code. Initial work
+conversions are required to use the code blocks individually as functional code. 
 
 ### WIP [Work in Progress]
 
+Creating an Issue for each file containing #TODOs or #FIXME, completion: Week 2.
+
 Everything else. One of the core of elements of my development process is: _Don't spend time preparing for description of
-future work when completing the work itself is possible within the given constraints._
+future work when completing the work itself is possible within the given constraints. Also if the task is too complex to comunicte in a few sentences to a peer, it needs to be reduced further._
 
 ### METRICS
 
@@ -57,7 +59,7 @@ As the initial week has no baseline to provide metrics, first metrics reports wi
 Raw reports of lines added & deleted, commits, and other activity can be viewed via the Pulse and other other tabs at
 the top of the page.
 
-### CoomAI-env Background
+### CommAI-env Background
 
 The facebookresearch Team began the implementation of the CommAI-env in summer of 2016. Their work to date has provided
  me with an entry point into the ongoing development of the concepts detailed by Marco Baroni et al. in their paper
