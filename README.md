@@ -41,7 +41,11 @@ one contributor can check out files.
 
 ### Completed
 All Python source files have been refactored into Python style pseudo code, and tagged with notations where
-conversions are required to use the code blocks individually as functional code. 
+conversions are required to use the code blocks individually as functional code.
+
+The development style here, in regards to the scope of this project is:
+
+_Any progress in the quest for a working implimentation of general intelligence must done in any form of logical statement. The form does not matter, as an equation, symbolic logic, psuedo code, a structured language like Python, they all represent the same thing.  Discussions in other mediums have great value for other purposes. However for the purposes outlined here are simply not relavent to progress in the implimentation of general AI. Anything outside of those constraints, however well reasoned, are exmaples of speculative fiction._
 
 ### WIP [Work in Progress]
 
