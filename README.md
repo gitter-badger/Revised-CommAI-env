@@ -58,7 +58,8 @@ As the initial week has no baseline to provide metrics, first metrics reports wi
 
 ### RAW INFORMATION
 
-    - Codeclimate rating from 1.04 - 3.46, 739 Issues 700+ issues, click Code Climate at top of page for detailts
+    - Codeclimate rating from 1.04 - 3.46, 739 Issues 700+ issues, 
+      (click Code Climate at top of page for detailts)
     
     - Excluding merges, I have pushed 365 commits to master and 365 commits to all branches. 
     - On master, 115 files have changed and there have been 14,070 additions and 69 deletions.
