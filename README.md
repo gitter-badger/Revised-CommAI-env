@@ -57,7 +57,7 @@ future work when completing the work itself is possible within the given constra
 As the initial week has no baseline to provide metrics, first metrics reports will be provided on May 5, 2017.
 
 ### RAW INFORMATION
-
+    - Excluding merges, 2 authors have pushed 365 commits to master and 365 commits to all branches. On master, 115 files have changed and there have been 14,070 additions and 69 deletions.
 Raw reports of lines added & deleted, commits, and other activity can be viewed via the Pulse and other tabs at
 the top of the page.
 
