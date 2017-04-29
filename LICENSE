@@ -4,22 +4,28 @@ Version 3.0+, 29 April 2017
 Copyright (C) 2017-, Stephen B. Hope. <stephenbhope@gmail.com>
 Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
 
-Project Contributors and available links where known:
+GNU 3.0+, LICENSE Provenance & Project Contributors and available links where known:
 
-Revised CommAI-env:
+Revised CommAI-env: 
 ===================
 Stephen B. Hope, Ottawa, Canada
 Sara Seale, Ottawa, Canada
-
+                 LICENSE: GNU 3.0+, LOCATION: LICENSE
+                 PATENT RIGHTS:Not granted LOCATION: n/a      
+                 
 facebookresearch CommAI-env:
 ============================
 facebookresearch Website https://research.fb.com/projects/commai/
                  Repository: https://github.com/facebookresearch/CommAI-env
+                 LICENSE: BSD License LOCATION: CommAi-env_software_LICENSE.txt
+                 PATENT RIGHTS:Granted LOCATION: facebookresearch_PATENTS.txt
 
 Foundation Source
 =================
 CommAI: Evaluating the first steps towards a useful general AI
     Marco Baroni, Armand Joulin, Allan Jabri, Germàn Kruszewski, Angeliki Lazaridou, Klemen Simonic, Tomas Mikolov
+                 arXiv:1701.08954v2 [cs.LG]
+                 Cornell University Library, https://arxiv.org/abs/1701.08954                  
 
 Preamble
 
