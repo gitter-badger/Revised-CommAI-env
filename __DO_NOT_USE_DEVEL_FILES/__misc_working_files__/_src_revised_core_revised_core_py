@@ -1,0 +1,179 @@
+_src_revised_core_revised_core_py
+
+9 # TODO fix imports
+19 # TODO unresolved ref Observable
+239 # TODO static method
+252 # TODO static method
+284 # TODO fix
+315 # TODO fix
+342 # TODO unresolved refs defaultdict, Observable, logging, _on_input_sequence_updated, _on_input_message_updated,
+343 # TODO line 2 _on_output_sequence_updated, _on_output_message_updated
+370 # TODO rewrite
+383 # TODO var reward not used, unresolved ref _allowable_reward, _switch_new_task
+391 # TODO this bit is dropped otherwise on a timeout...
+
+410 Error: unexpected indent (<unknown>, line 410)</unknown> OPEN
+
+                    self._output_channel_listener.consume_bit(output)
+
+412 # TODO return outside function, reward unresolved
+649 # TODO rewrite
+725 # TODO static func
+756 # TODO static
+795 # TODO: Create a BatchedScheduler that takes as an argument another
+    Severity: Minor
+810 # TODO unresolved ref defaultdict
+884 # TODO unresolved ref logging
+950 # TODO unresolved attrib ,tokenize class ScramblingSerializerWrapper
+959 # TODO unrelsolved attrib ,tokenize class ScramblingSerializerWrapper
+979 # TODO unresolved attrib ,tokenize class ScramblingSerializerWrapper
+997 # TODO unresolved attrib ,gen_pseudo_word class ScramblingSerializerWrapper
+1004 # TODO static, unresolved ref to string
+1042 # TODO arg name to lower case, unresolved ref random, math
+1090 # TODO unresolved ref logging
+1110 # TODO fix for python 3
+1134 # TODO replace
+1179 # TODO unresovled ref to math, logging
+1211 # TODO unresolved ref to codecs
+1239 # TODO can not return a value from __inti__
+1248 # TODO unresolved ref to Observable, defaultdict
+1278 # TODO fix
+1301 # TODO def outside __init__
+1357 # TODO def _current_task, outside __init__
+1395 # TODO unresolved ref namedtuple
+1405 # TODO 'horrible way of making second_state optional' authors words
+1401 # TODO fix for python 3
+1574 # TODO unresolved ref re
+1629 # TODO unresloved ref re
+1702 # TODO unresolved ref defaultdict
+1749 # TODO access to protected member of class
+1760 # TODO _owner._raise_state_changed access to protected member of class
+1773 # TODO unresolved ref logging
+1789 # TODO unresoveled refs to defaultdict, logger
+1804 # TODO access to _owner protected member of class
+1820 # TODO unresolved ref Obserable
+1849 # TODO state def outside __init__
+1869 # TODO fix for python 3
+1898 # TODO access to protected member of class _env._register_task_trigger
+1956 # TODO access to protected member of class _env._input_channel _env._serializer
+1998 # TODO access to protected member of class _env._output_channel
+2026 # TODO static
+2034 # TODO access to protected member of class _env._task_time
+2043 # TODO shadowing set_reward, redeclaired set_reward without use
+2057 # TODO shadowing set_message
+2069 # TODO access to protected member of class self._env._serializer
+
+
+
+
+
+
+
+
+751 # TODO static
+790 # TODO: Create a BatchedScheduler that takes as an argument another
+805 # TODO unresolved ref defaultdict
+944 # TODO unresolved attrib ,tokenize class ScramblingSerializerWrapper
+959 # TODO unrelsolved attrib ,tokenize class ScramblingSerializerWrapper
+973 # TODO unresolved attrib ,tokenize class ScramblingSerializerWrapper
+991 # TODO unresolved attrib ,gen_pseudo_word class ScramblingSerializerWrapper
+1006 # TODO unresolved ref to string
+1035 # TODO arg name to lower case, unresolved ref random, math
+1089 # TODO unresolved ref logging
+1103 # TODO fix for python 3
+1127 # TODO replace
+1172 # TODO unresovled ref to math, logging
+1204 # TODO unresolved ref to codecs
+1232 # TODO can not return a value from __inti__
+1254 # TODO unresolved ref to Observable, defaultdict
+1271 # TODO fix
+1294 # TODO def outside __init__
+1350 # TODO def outside __init__
+1388 # TODO unresolved ref namedtuple
+1398 # TODO 'horrible way of making second_state optional' authors words
+1474 # TODO fix for python 3
+1621 # TODO unresloved ref re
+1694 # TODO unresolved ref defaultdict
+1747 # TODO access to protected member of class
+1780 # TODO unresoveled refs to defaultdict, logger
+1795 # TODO access to protected member of class
+1811 # TODO unreslved ref Obserable
+1845 # TODO def outside __init__
+1865 # TODO fix for python 3
+1896 # TODO access to protected member of class
+1951 # TODO access to protected member of class
+1989 # TODO access to protected member of class
+2017 # TODO static
+2029 # TODO access to protected member of class
+2032 # TODO shadowing set_reward
+2047 # TODO shadowing set_message
+2063 # TODO access to protected member of class
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

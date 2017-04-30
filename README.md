@@ -16,10 +16,15 @@ a refactor of the Github facebookreseacrh/CommAI-env Beta-Test release.
 
 ## WHY NOW?
 
-I was motivated to start publicly coding instead of just contemplating the project privately by: Nat Friedman's AIGrant: Get $5,000 for your open source AI project: https://nat.org/aigrant-get-5-000-for-your-open-source-ai-project-1118dd7db083 I am including the initial development from forking as a consequence as part of my entry.
+I was motivated to start publicly coding instead of just contemplating the project privately by: Nat Friedman's
+AIGrant: Get $5,000 for your open source AI project:
 
-I subscribe to Nat's feed via Medium: https://medium.com Nat is one a number of writers whose work, published at Medium
-I make time to read when I see a new post.
+https://nat.org/aigrant-get-5-000-for-your-open-source-ai-project-1118dd7db083
+
+I am including the initial development from forking as a consequence as part of my entry.
+
+I subscribe to Nat's feed via Medium: https://medium.com Nat is one a number of writers whose work is available
+FREE of third party advertising, published at Medium. I make time to read when I see a new post.
 
 ## UPDATE
 
@@ -43,14 +48,19 @@ conversions are required to use the code blocks individually as functional code.
 
 The development style here, in regards to the scope of this project, is:
 
-_Any discussion which adds to the progress towards a working implementation of general intelligence must be done in the form of a logical statement. The form factor does not matter, as an equation, symbolic logic, psuedo code, a structured language like Python, they all represent the same thing.  Discussions in other media have great value for other purposes. However for the purposes outlined here are simply not relevent to progress in the implementation of general AI. Anything outside of those constraints, however well-reasoned, are exmaples of speculative fiction._
+_Any discussion which adds to the progress towards a working implementation of general intelligence must be done in
+the form of a logical statement. The form factor does not matter, as an equation, symbolic logic, psuedo code, a
+structured language like Python, they all represent the same thing.  Discussions in other media have great value for
+other purposes. However for the purposes outlined here are simply not relevant to progress in the implementation of
+general AI. Anything outside of those constraints, however well-reasoned, are examples of speculative fiction._
 
 ### WIP [Work in Progress]
 
 Creating an Issue for each file containing #TODOs or #FIXME, completion: Week 2.
 
-Everything else. One of the core of elements of my development process is: _Don't spend time preparing for description of
-future work when completing the work itself is possible within the given constraints. Also if the task is too complex to comunicate in a few sentences to a peer, it needs to be reduced further._
+Everything else. One of the core of elements of my development process is: _Don't spend time preparing for description
+of future work when completing the work itself is possible within the given constraints. Also if the task is too
+complex to communicate in a few sentences to a peer, it needs to be reduced further._
 
 ### METRICS
 
