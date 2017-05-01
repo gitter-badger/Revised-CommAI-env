@@ -1,9 +1,9 @@
-# FIXME
+
 
 core.serializer module
 ======================
 
-.. automodule:: core.serializer
+.. automodule:: revised_core.serializer
     :members:
     :undoc-members:
     :show-inheritance:
