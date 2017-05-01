@@ -1,11 +1,10 @@
-# FIXME
 
-core
-====
+revised_core
+============
 
 .. toctree::
    :maxdepth: 4
 
-   core
+   revised_core
    view
    worlds
