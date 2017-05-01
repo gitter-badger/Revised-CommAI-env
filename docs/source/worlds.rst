@@ -1,4 +1,3 @@
-# FIXME
 
 worlds package
 ==============
