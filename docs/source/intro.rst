@@ -22,7 +22,7 @@ A Learner is just any object that can handle a `next` method, which given a bit 
 
 The Environment, on the other hand, executes one **Task** at a time based on a *Scheduler*'s decision. A Task is
 defined through a set of messages and rewards that are delivered to the Learner by the Environment as a reaction to
-different kinds of Events. The possible events are described throughly in :ref:`events`. To capture these events,
+different kinds of Events. The possible events are described thoroughly in :ref:`events`. To capture these events,
 the Environment registers **Triggers** to an **EventManager**. The **Triggers** consist simply on: a type of event,
 a condition to filter out events by specific details and a callback function that will be invoked when an Event
 arrises. When an event is handled by some function, it can either modify some internal variables to keep track of
