@@ -1,4 +1,4 @@
-# FIXME
+
 
 Meta-documentation
 ==================
