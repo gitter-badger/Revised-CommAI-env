@@ -1,31 +1,32 @@
 src_tasks_competition_repetition_py
 
-12 # TODO fix imports
-26 # FIXME: replace with association's objects and properties?
-63 # TODO event not used
-83 # TODO event not used
-105 # TODO event not used
-136 # TODO event not used
-166 # TODO event not used
-199 # TODO event not used
-231 # TODO event not used
-264 # TODO event not used
-296 # TODO event not used
-332 # TODO event not used
-362 # TODO event not used
-396 # TODO event not used
-427 # TODO event not used
-461 # TODO event not used
-491 # TODO event not used
-491 # TODO event not used
-527 # TODO event not used
-557 # TODO event not used
-587 # TODO event not used
-613 # TODO event not used
-652 # TODO event not used
-674 cyclonic complexity
-681 # TODO event not used
+12 # TODO fix revised_core, tasks imports
+25 # FIXME: replace with association's objects and properties?
+49 # TODO event not used, flag_failed outside __init__
+63# TODO event not used, flag_failed outside __init__
+78 # TODO event not used
+84 self.set_reward(1, random.choice(msg.congratulations))
+Error: unexpected indent
+100 # TODO event not used, cur_char def outside __init__
+127 # TODO event not used
+157# TODO event not used, cur_phrase def outside __init__
+184 # TODO event not used
+214 # TODO event not used, cur_phrase def outside __init__
+240# TODO event not used
+270# TODO event not used, cur_char, n target def outside __init__
+300 # TODO event not used
+360# TODO event not used
+390 # TODO event not used, cur_phrase, n, target, def outside __init__
+419 # TODO event not used
+449 # TODO event not used, cur_phrase, n, target  def outside __init__
+479 # FIXME ref before assign
+489 # TODO expected statement
+511 # TODO event not used, cur_phrase, n, target  def outside __init__
+536 # TODO figure out the intended action
+542 # TODO event not used
+564 # TODO event not used, cur_phrases, answers def outside init
+595 # TODO event not used
+615 # TODO event not used, cur_phrase, negation1, negation2, answer_parts, target  def outside __init__
+683 # TODO event not used
+716 # TODO event not used, target_verb  def outside __init__
 739 # TODO event not used
-777 # TODO event not used
-800 # TODO event not used
-
