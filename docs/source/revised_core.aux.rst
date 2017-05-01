@@ -1,19 +1,19 @@
-# FIXME
 
-core.obs package
-================
+
+revised_core.obs package
+========================
 
 Submodules
 ----------
 
 .. toctree::
 
-   core.obs.observer
+   revised_core.obs.observer
 
 Module contents
 ---------------
 
-.. automodule:: core.obs
+.. automodule:: revised_core.obs
     :members:
     :undoc-members:
     :show-inheritance:

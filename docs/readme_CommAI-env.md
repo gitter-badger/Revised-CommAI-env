@@ -1,5 +1,7 @@
 _This is the readme of the original CommAI-env repository._
 
+Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
+
 ## This information is not current, provided for background information only.
 ##New documents will be created when the code base has been stabilised
 

@@ -1,4 +1,3 @@
-# FIXME
 
 # Makefile for Sphinx documentation
 #

@@ -1,9 +1,9 @@
-# FIXME
+
 
 core.scheduler module
 =====================
 
-.. automodule:: core.scheduler
+.. automodule:: revised_core.scheduler
     :members:
     :undoc-members:
     :show-inheritance:

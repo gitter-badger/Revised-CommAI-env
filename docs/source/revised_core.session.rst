@@ -1,9 +1,9 @@
-# FIXME
+
 
 core.session module
 ===================
 
-.. automodule:: core.session
+.. automodule:: revised_core.session
     :members:
     :undoc-members:
     :show-inheritance:

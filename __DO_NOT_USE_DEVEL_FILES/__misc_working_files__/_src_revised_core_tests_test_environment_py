@@ -1,13 +1,20 @@
 _src_revised_core_tests_test_environment_py
 
-12 # TODO fix imports
+12 # TODO fix revised_core.task,  revised_core.environment imports
+   Severity: Minor
 19 # TODO static class
 45 # TODO static function
-71 # TODO attr event not used
-111 Error: invalid syntax
-113 # TODO attr event not used
-121 # TODO fix im_func
-126 # TODO attr event not used
-150 # TODO rewrite - humor
-155 # TODO rewrite - humor
+79 # TODO attr event not used
+90 # TODO check deferential to see original location, acces to members of protected class env._register_task_triggers
+91 # TODO line 2 env._deregister_task_triggers
+92 tt = TestTask(max_time=10) Error: unexpected indent
+122 # TODO attr event not used
+130 # FIXME im_func, python 3
+137 # TODO attr event not used
+138 # FIXME remove humour from docstring
+149 # TODO check deferential to see original location
+150 # TODO tt, env from outer scope
+154 # TODO access to protected member of class env._register_task_triggers, env._deregister_task_triggers,
+155 # TODO line 2 env._register_task_triggers, env._deregister_task_triggers
+
 

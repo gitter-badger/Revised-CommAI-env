@@ -1,9 +1,9 @@
-# FIXME
 
-core.obs.observer module
+
+revised_core.task module
 ========================
 
-.. automodule:: core.obs.observer
+.. automodule:: revised_core.task
     :members:
     :undoc-members:
     :show-inheritance:
