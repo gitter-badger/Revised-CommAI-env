@@ -1,33 +1,33 @@
-# FIXME
 
-core package
-============
+
+revised_core package
+====================
 
 Subpackages
 -----------
 
 .. toctree::
 
-    core.obs
+    revised_core.obs
 
 Submodules
 ----------
 
 .. toctree::
 
-   core.channels
-   core.config_loader
-   core.environment
-   core.events
-   core.scheduler
-   core.serializer
-   core.session
-   core.task
+   revised_core.channels
+   revised_core.config_loader
+   revised_core.environment
+   revised_core.events
+   revised_core.scheduler
+   revised_core.serializer
+   revised_core.session
+   revised_core.task
 
 Module contents
 ---------------
 
-.. automodule:: core
+.. automodule:: revised_core
     :members:
     :undoc-members:
     :show-inheritance:
