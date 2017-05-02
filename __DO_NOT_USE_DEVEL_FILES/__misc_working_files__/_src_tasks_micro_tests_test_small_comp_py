@@ -1,0 +1,7 @@
+src/tasks/micro/tests/test_small_comp.py
+
+10 # TODO fix tasks, revised_core, imports
+22 # TODO agr case to lower
+71 # TODO statement expected
+
+45 Error: unexpected indent, def testReverseXTask(self):

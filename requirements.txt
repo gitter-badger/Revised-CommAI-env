@@ -10,5 +10,14 @@ random
 itertools
 zmq
 
-
 re
+
+# Caffe
+
+libprotobuf-dev
+libleveldb-dev
+libsnappy-dev
+libopencv-dev
+libhdf5-serial-dev
+protobuf-compiler
+ibboost-all-dev

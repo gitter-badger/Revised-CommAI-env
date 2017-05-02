@@ -119,6 +119,11 @@ Ottawa, Canada
 stephenbhope@gmail.com
 Tel [00] 1-613-594-4727
 
+### Join the Revised CommAI-env
+
+By Friday May 5th more structured methods for communicating and sharing will be found in docs/Contributions.md file.
+
+
 #### On the environment, CommAI: Evaluating the first steps towards a useful general AI
 Marco Baroni, Armand Joulin, Allan Jabri, Germàn Kruszewski, Angeliki Lazaridou, Klemen Simonic, Tomas Mikolov
 
@@ -131,8 +136,6 @@ desiderata, while keeping all further complexities to a minimum._
 
 arXiv:1701.08954v2 [cs.LG]
 Cornell University Library, https://arxiv.org/abs/1701.08954
-
-# TODO Contributions.md
 
 CommAI-env, https://arxiv.org/abs/1511.08130 The Github repository, https://github.com/facebookresearch/CommAI-env
 

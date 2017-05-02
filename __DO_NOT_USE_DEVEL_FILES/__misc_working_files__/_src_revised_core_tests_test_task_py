@@ -1,8 +1,11 @@
 _src_revised_core_tests_test_task_py
 
-12 # TODO fox imports
-163 # TODO event not used
-170 # TODO self and event not used
+12 # TODO fix revised_core import
+162 # TODO event not used
+169 # TODO self and event not used end_handler_func outside __init__
+188 # TODO triggers shadow outer scope
 204 # TODO task not used
-221 # TODO get rid of static method
+219 # TODO src / revised_core / tests / test_task.py:220
+223 # FIXME rewrite to python
 
+94, 115 Similar code

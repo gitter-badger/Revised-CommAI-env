@@ -4,5 +4,6 @@ src_run_py
 81 # TODO: move into some misc aux functions module
 108 # TODO exception too broad
 152 # TODO unreslove ref to fformat
+
 155 ""fformat}' of" " {filename}".format(fformat=fformat, filename=tasks_config_file))
 Error: invalid syntax
