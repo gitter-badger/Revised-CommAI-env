@@ -1,6 +1,8 @@
 _src_revised_core_tests_test_channels_py
 
-12 # TODO fix imports
-120 # TODO fix len(test_string)
-132 # TODO REDESIGN into DEMENTED PYTHON
+12 # TODO fix revised_core.seializer, .channels imports
+123 # TODO fix len(test_string)
+127 # TODO REDESIGN into DEMENTED PYTHON
+
+109, 140 identical code
 
