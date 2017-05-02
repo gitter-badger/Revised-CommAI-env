@@ -1,26 +1,18 @@
 _src_worlds_grid_world_py
 
-13 # TODO fix imports
+13 # TODO fix tasks, revised_core imports
 173 # TODO event not used
-180 Error: invalid syntax
-188 # TODO event not used
-200 # TODO event not used
-212 # TODO event not used
-222 # TODO event not used
+181 # TODO unresloved ref $ Agent faces one direction
+190 # TODO event not used
+202 # TODO event not used
+214 # TODO event not used
+224 # TODO event not used
 300 # TODO dx, dy ref before assignment
-321 # TODO convert to python 3.5, fix function complexity
+323 # TODO convert to python 3.5, fix function complexity
+330 # TODO rewrite, list_literal
+336 # TODO rewrite, list_literal
 
-
-
-
-
-
-
-
-
-
-
-
+182 Error: invalid syntax self.state.learner_direction = self._init_direction  $ Agent faces one direction
 
 
 
