@@ -14,10 +14,12 @@ _src_tasks_micro_nano_py
 195 # TODO event not used, def outside __init__
 207 # TODO event not used, def outside __init__
 237 # TODO event not used, def outside __init__
+247 # TODO event not used, def outside __init__
 259 # TODO event not used, def outside __init__
 
+262 Cyclomatic complexity
 
-
+188, 240 Similar code
 
 
 
