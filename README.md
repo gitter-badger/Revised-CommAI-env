@@ -151,7 +151,6 @@ ways to measure progress towards broad machine intelligence. In order to fill th
 concrete desiderata for general AI, together with a platform to test machines on how well they satisfy such
 desiderata, while keeping all further complexities to a minimum._
 
-
 arXiv:1701.08954v2 [cs.LG]
 Cornell University Library, https://arxiv.org/abs/1701.08954
 
