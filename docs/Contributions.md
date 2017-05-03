@@ -33,11 +33,14 @@ in that precise context. You will not know. Ask instead ask for general advice i
 I want to stress this should not confine you from asking any OTHER questions you may also want to ask without any
 preparation._
 
-A Q&A with startups using machine learning to change their industries
-Monday, May 15, 2017 7:00 PM
-Machine Learning Ottawa
+### MeetUp
+https://www.meetup.com/
 
+This is a sample of the kinds of Meets in Ottawa, Canada, which are open to the public.
 
+#### A Q&A with startups using machine learning to change their industries ####
+https://www.meetup.com/ticketing/ticket_printable/?event_id=239695157
+Monday, May 15, 2017 7:00 PM                  Machine Learning Ottawa
 
 ### Steps to Register as a Contributor
 
