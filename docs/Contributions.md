@@ -27,7 +27,11 @@ collective wisdom and experience's of the leaders of the the field, be respectfu
 
 _To sum up, regardless of the medium, in person, via web front end, telephone, do your research FIRST. Then ask.
 If the task is too complex to communicate in a few sentences to a peer, it needs to be reduced further. If you can not
-frame the question as a closed question, yes/no, you likely will not understand the experts answer in that application._
+frame the question as a closed question, yes/no, you likely will not understand the experts answer which MAY only apply
+in that precise context. You will not know. Ask instead ask for general advice if your not prepared.
+
+I want to stress this should not confine you from asking any OTHER questions you may also want to ask without any
+preparation._
 
 A Q&A with startups using machine learning to change their industries
 Monday, May 15, 2017 7:00 PM
