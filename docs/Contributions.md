@@ -22,8 +22,8 @@ contribution and standing in other communities.
 ### How to start NOW!
 
 Join a local Meet-Up group of your area of interest. It's a great place to both learn from presenter's. Spend a hour
-before the meeting preparing any questions into a specific yes / no reply format.  Want to ask just one question of
-collective wisdom and experience's of the leaders of the the field, be respectful of their time.
+before the meeting preparing any questions into a specific yes / no reply format.  When you Want to ask just one
+question of the collective wisdom and experience's of the leaders of the the field, be respectful of their time.
 
 _To sum up, regardless of the medium, in person, via web front end, telephone, do your research FIRST. Then ask.
 If the task is too complex to communicate in a few sentences to a peer, it needs to be reduced further. If you can not
