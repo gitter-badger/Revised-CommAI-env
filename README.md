@@ -42,7 +42,7 @@ May 3, 2017
 + 9.91 CAD
 __________
 
-$ 9.91 CAD Total external costs to date.
+$ 9.91 CAD Total development costs to date.
 ==========
 
 Nat's contest gained a sponsor, the prize pool has been extended from five $5000 to ten $5000 AI Grants. 
