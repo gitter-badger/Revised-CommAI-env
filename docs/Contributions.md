@@ -19,6 +19,22 @@ Age of Empires release series through closed testing of Age of Kings.
 - An ongoing commitment to be courteous and show respect to all members of the community irrespective of their
 contribution and standing in other communities.
 
+### How to start NOW!
+
+Join a local Meet-Up group of your area of interest. It's a great place to both learn from presenter's. Spend a hour
+before the meeting preparing any questions into a specific yes / no reply format.  Want to ask just one question of
+collective wisdom and experience's of the leaders of the the field, be respectful of their time.
+
+_To sum up, regardless of the medium, in person, via web front end, telephone, do your research FIRST. Then ask.
+If the task is too complex to communicate in a few sentences to a peer, it needs to be reduced further. If you can not
+frame the question as a closed question, yes/no, you likely will not understand the experts answer in that application._
+
+A Q&A with startups using machine learning to change their industries
+Monday, May 15, 2017 7:00 PM
+Machine Learning Ottawa
+
+
+
 ### Steps to Register as a Contributor
 
 ### Special note for Students
