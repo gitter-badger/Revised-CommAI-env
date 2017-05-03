@@ -1,5 +1,7 @@
 ## Revised-CommAI-env Pre-Release Ver. 0.2
 
+[![Join the chat at https://gitter.im/Revised-CommAI-env/Lobby](https://badges.gitter.im/Revised-CommAI-env/Lobby.svg)](https://gitter.im/Revised-CommAI-env/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 #### Setting a new standard for a stable, containerised, development, testing,  and evaluation environment
 #### for _Intelligent Machine Learning_ researchers and developers. GNU 3.0+ Licensed
 
