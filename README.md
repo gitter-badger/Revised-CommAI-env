@@ -152,6 +152,9 @@ concrete desiderata for general AI, together with a platform to test machines on
 desiderata, while keeping all further complexities to a minimum._
 
 Source: Cornell University Library
+==================================
+arXiv:1701.08954v2 [cs.LG]
+Cornell University Library, https://arxiv.org/abs/1701.08954
 
 CommAI-env, https://arxiv.org/abs/1511.08130 The Github repository, https://github.com/facebookresearch/CommAI-env
 
