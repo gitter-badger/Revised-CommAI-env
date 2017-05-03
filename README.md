@@ -1,7 +1,7 @@
 ## Revised-CommAI-env Pre-Release Ver. 0.2
 
 #### Setting a new standard for a stable, containerised, development, testing,  and evaluation environment
-#### for Machine Learning and AI researchers and developers. GNU 3.0+ Licensed
+#### for _Intelligent Machine Learning_ researchers and developers. GNU 3.0+ Licensed
 
     - Status: Under Development
     - First Beta Testing Release Target: June 2017
@@ -26,7 +26,24 @@ I am including the initial development from forking as a consequence as part of 
 I subscribe to Nat's feed via Medium: https://medium.com Nat is one a number of writers whose work is available
 FREE of third party advertising, published at Medium. I make time to read when I see a new post.
 
-## UPDATE
+## UPDATE May 3, 2017.
+
+### First external expense incurred by the Revised CommAI-env:
+
+Type: Github personal accounts
+Purpose: Enable features on top of Github's FREE features
+
+From amount 	$9.91 CAD
+To amount 	$7.00 USD
+Exchange rate: 1 CAD = 0.706704 USD
+
+May 3, 2017
+
++ 9.91 CAD
+__________
+
+$ 9.91 CAD Total external costs to date.
+==========
 
 Nat's contest gained a sponsor, the prize pool has been extended from five $5000 to ten $5000 AI Grants. 
 
@@ -133,6 +150,7 @@ such as image classification or machine translation. We believe this to be large
 ways to measure progress towards broad machine intelligence. In order to fill this gap, we propose here a set of
 concrete desiderata for general AI, together with a platform to test machines on how well they satisfy such
 desiderata, while keeping all further complexities to a minimum._
+
 
 arXiv:1701.08954v2 [cs.LG]
 Cornell University Library, https://arxiv.org/abs/1701.08954
